@@ -1,0 +1,10 @@
+
+
+gnuplot> set title "Ejercicio 1 - Burbuja"      // Poner título a la gráfica
+gnuplot> plot "tiempos_ej1.dat"                 // Crear gráfico
+gnuplot> set xlabel "Repeticiones"              // Renombrar el eje de abscisas
+gnuplot> set ylabel "Tiempo(s)"                 // Renombrar el eje de ordenadas
+gnuplot> q                                      // Salir
+
+gnuplot> f(x)=a*x*x+b*x+c                       // Definir función
+gnuplot> fit f(x) "tiempos.dat" via a, b,c  // Ajustar un polinomio de segundo grado a f(x) en función de "tiempos.dat" 
