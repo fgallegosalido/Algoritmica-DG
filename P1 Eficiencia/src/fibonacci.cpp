@@ -6,6 +6,7 @@
 #include <iostream>
 using namespace std;
 #include <ctime>
+#include <chrono>
 
 
 /**
@@ -34,10 +35,16 @@ int main(int argc, char **argv)
 
   int n = atoi(argv[1]);
   int f;
+  chrono::high_resolution_clock::time_point tantes, tdespues;
+  chrono::duration<double> transcurrido;
 
+  tantes = chrono::high_resolution_clock::now();
   f = fibo(n);
+  tdespues = chrono::high_resolution_clock::now();
+  transcurrido = chrono::duration_cast<chrono::duration<double>>(tdespues - tantes);
 
-  cout << "El t�rmino " << n << "-�simo es: " << f << endl;
+  /// Formato de salida para GNUPlot, x elemento, y tiempo
+  cout << n << " " << transcurrido.count() << endl;
 
   return 0;
 }
