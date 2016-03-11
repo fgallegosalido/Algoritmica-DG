@@ -4,5 +4,5 @@ El formato de los archivos será:
     <algoritmo><optimizacion><PARAMETRO>.jpeg
 
 donde PARAMETRO debería ser vuestro nombre.
-Si necesitais borrar una ejecución por haberos equivocado con el nombre ejecutad:
+Si necesitais borrar una ejecución por haberos equivocado con el parámetro:
     ./borrrar <NOMBRE ANTERIOR>
