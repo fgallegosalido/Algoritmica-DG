@@ -21,7 +21,7 @@ mkdir ../Graficas/Heapsort 2> /dev/null
 mkdir ../Graficas/Heapsort/Datos 2> /dev/null
 mv fichero.jpeg ../Graficas/Heapsort/heapsortO0_$1.jpeg
 mv datos.dat ../Graficas/Heapsort/Datos/heapsortO0_$1.dat
-echo "Heapsort completado\n"
+echo "Heapsort completado"
 
 
 # MERGESORT
@@ -39,7 +39,7 @@ mkdir ../Graficas/Mergesort 2> /dev/null
 mkdir ../Graficas/Mergesort/Datos 2> /dev/null
 mv fichero.jpeg ../Graficas/Mergesort/mergesortO0_$1.jpeg
 mv datos.dat ../Graficas/Mergesort/Datos/mergesortO0_$1.dat
-echo "Mergesort completado\n"
+echo "Mergesort completado"
 
 
 # INSERCION
@@ -57,7 +57,7 @@ mkdir ../Graficas/Insercion 2> /dev/null
 mkdir ../Graficas/Insercion/Datos 2> /dev/null
 mv fichero.jpeg ../Graficas/Insercion/insercionO0_$1.jpeg
 mv datos.dat ../Graficas/Insercion/Datos/insercionO0_$1.dat
-echo "Insercion completado\n"
+echo "Insercion completado"
 
 
 # SELECCION
@@ -75,7 +75,7 @@ mkdir ../Graficas/Seleccion 2> /dev/null
 mkdir ../Graficas/Seleccion/Datos 2> /dev/null
 mv fichero.jpeg ../Graficas/Seleccion/seleccionO0_$1.jpeg
 mv datos.dat ../Graficas/Seleccion/Datos/seleccionO0_$1.dat
-echo "Seleccion completado\n"
+echo "Seleccion completado"
 
 
 # QUICKSORT
@@ -93,7 +93,7 @@ mkdir ../Graficas/Quicksort 2> /dev/null
 mkdir ../Graficas/Quicksort/Datos 2> /dev/null
 mv fichero.jpeg ../Graficas/Quicksort/quicksortO0_$1.jpeg
 mv datos.dat ../Graficas/Quicksort/Datos/quicksortO0_$1.dat
-echo "Quicksort completado\n"
+echo "Quicksort completado"
 
 
 # BURBUJA
@@ -111,7 +111,7 @@ mkdir ../Graficas/Burbuja 2> /dev/null
 mkdir ../Graficas/Burbuja/Datos 2> /dev/null
 mv fichero.jpeg ../Graficas/Burbuja/burbujaO0_$1.jpeg
 mv datos.dat ../Graficas/Burbuja/Datos/burbujaO0_$1.dat
-echo "Burbuja completado\n"
+echo "Burbuja completado"
 
 
 # FIBONACCI
@@ -129,7 +129,7 @@ mkdir ../Graficas/Fibonacci 2> /dev/null
 mkdir ../Graficas/Fibonacci/Datos 2> /dev/null
 mv fichero.jpeg ../Graficas/Fibonacci/fibonacciO0_$1.jpeg
 mv datos.dat ../Graficas/Fibonacci/Datos/fibonacciO0_$1.dat
-echo "Fibonacci completado\n"
+echo "Fibonacci completado"
 
 
 # HANOI
@@ -147,7 +147,7 @@ mkdir ../Graficas/Hanoi 2> /dev/null
 mkdir ../Graficas/Hanoi/Datos 2> /dev/null
 mv fichero.jpeg ../Graficas/Hanoi/hanoiO0_$1.jpeg
 mv datos.dat ../Graficas/Hanoi/Datos/hanoiO0_$1.dat
-echo "Hanoi completado\n"
+echo "Hanoi completado"
 
 
 # FLOYD
@@ -165,6 +165,7 @@ mkdir ../Graficas/Floyd 2> /dev/null
 mkdir ../Graficas/Floyd/Datos 2> /dev/null
 mv fichero.jpeg ../Graficas/Floyd/floydO0_$1.jpeg
 mv datos.dat ../Graficas/Floyd/Datos/floydO0_$1.dat
-echo "Fibonacci completado\n"
+echo "Floyd completado"
 
 rm a.out
+rm fit.log
