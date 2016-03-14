@@ -4,4 +4,7 @@ set output "fichero.jpeg"
 set title "Eficiencia burbuja"
 set xlabel "Tamaño del vector"
 set ylabel "Tiempo (s)"
-plot "datos.dat"
+set fit quiet
+f(x) = a*x*x+b*x+c
+fit f(x) "datos.dat" via a, b, c
+plot "datos.dat", f(x)
