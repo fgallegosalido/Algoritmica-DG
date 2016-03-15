@@ -1,0 +1,139 @@
+- Básico
+\textit{cursiva} --> {\bfseries texto"}
+\textbf{negrita} --> {\itshape "texto"}
+\begin{center} texto \end{center} --> centrar texto
+
+- Secciones
+\section
+\subsection
+\subsubsection
+\paragraph
+\subparagraph
+
+- Fórmulas matemáticas
+http://www.rinconmatematico.com/instructivolatex/formulas.htm
+
+- Encabezados
+\pagestyle{empty/plain/headings/myheadings}
+\thispagestyle{empty/plain/headings/myheadings}
+Especificar myheadings:
+\markboth{"encabezado izquierdo"}{"encabezado dere-
+cho"}
+\markright{"encabezado derecho"}
+Para cambiar el estilo:
+\usepackage{titleps}
+\newpagestyle{main}{
+\set-head[\thepage][\chaptertitle][(\thesection] % pares
+{\thesection)}{\sectiontitle}{\thepage}} % impares
+\pagestyle{main}
+
+- Tipos de letra
+{\rmfamily "letras con remates"}
+{\sffamily "letras sin remates"}
+{\ttfamily "letras mecanográficas"}
+
+- Tamaños de fuentes
+\tiny 	5
+\scriptsize 	7
+\footnotesize 	8
+\small 	9
+\normalsize 	10
+\large 	12
+\Large 	14.40
+\LARGE 	17.28
+\huge 	20.74
+\Huge 	24.88
+
+- Colores (white, black, red, green, blue, cyan, magenta, yellow.)
+\textcolor{blue}{azul}
+
+- Evitar separaciones entre palabras
+O.~Wilde
+\hyphenation{ne-o-or-to-do-xia bi-o-a-e-ro-sol}
+
+- Sangría y separación entre párrafos
+\setlength{\parindent}{1em}
+\setlength{\parskip}{10pt}
+
+- Listas (se pueden anidar)
+\begin{itemize}
+\item leche
+\item arroz
+\end{itemize}
+
+- Tablas
+• l : Columna alineada a la izquierda
+• c : Columna centrada
+• r : Columna alineada a la derecha
+Por ejemplo, la tabla (\ref{tabla:sencilla}):
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{|l|l|}
+  \hline
+  País & Ciudad \\
+  \hline \hline
+  España & Madrid \\ \hline
+  España & Valencia \\ \hline
+  Francia & París \\ \hline
+  \end{tabular}
+  \caption{Tabla muy sencilla.}
+  \label{tabla:sencilla}
+\end{center}
+\end{table}
+
+Ajustando ancho:
+\begin{tabular*}{0.75\textwidth}{@{\extracolsep{\fill}}
+| c | c | c | r | } \hline label 1 & label 2 & label 3 & label
+4 \\ \hline item 1 & item 2 & item 3 & item 4 \\ \hline
+\end{tabular*}
+
+- Medidas
+• pt : punto anglosajón, 1/72 de pulgada
+• in : pulgada (2,54 cm)
+• ex : altura d'x , altura de una letra sin el trazo vertical ni el palo inferior de la fuente utilizada.
+• em : cuadratín, grosso modo la anchura de una M (capital) en la fuente utilizada.
+
+- Comandos de longitud
+• \parindent : El tamaño del desplazamiento a la derecha
+• \baselineskip : Distancia vertical entre las líneas
+• \parskip : Espacio suplementario entre los párrafos
+• \textwidth : La anchura de una línea de texto en el entorno local
+• \textheight : La altura del texto en la página
+
+- Hiperenlaces
+\textcolor{blue}{ \href{http://www.wikibooks.org}{Wikibooks home}}
+
+- Ecuaciones
+\[ \sum \] equivale a
+\begin{equation}
+	\sum
+\label{referencia}
+\end{equation}
+
+En la misma línea;
+\( \sum \)
+ó
+$\sum$
+
+- Insertar imágenes
+\begin{figure}[options] \caption{texto inferior} \label{etiqueta} \end{figure} (opcional)
+Opciones:
+h 	Establece la posición del elemento flotante «aquí».
+    Ésto es, aproximadamente en el mismo punto donde aparece en el código
+t 	Inserta la figura al inicio de la página.
+b 	Inserta la figura al final de la página.
+H 	Establece el elemento flotante precisamente en el mismo lugar en el que aparece en el código,
+    se requiere importar el paquete float.
+
+\includegraphics[width=3cm, height=4cm]{lion-logo}
+\includegraphics[width=0.25\textwidth]{universe}
+\includegraphics[scale=1.2, angle=45]{lion-logo}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.25\textwidth]{mesh}
+    \caption{a nice plot}
+    \label{fig:mesh1}
+\end{figure}
+Referenciar la página de la imagen: \pageref{fig:mesh1}
+Generar lista de figuras: \listoffigures
