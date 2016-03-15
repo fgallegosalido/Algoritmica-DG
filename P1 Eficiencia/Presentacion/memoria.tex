@@ -1,0 +1,313 @@
+\documentclass[11pt,spanish]{article} % Idioma
+\usepackage{babel}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[utf8]{inputenc} % Puede depender del instrucción, sistema o editor
+\usepackage{wrapfig} % Imagenes 
+% \graphicspath{ {./imagenes/} }
+
+%\usepackage[left=2cm,top=2.5cm,right=2cm,bottom=2.5cm]{geometry} % Márgenes
+%\usepackage{pstricks} % Gráficas, movilidad, árboles y otros
+
+\usepackage{amssymb, amsmath} % Símbolos matemáticos
+\usepackage{amsthm} % Teoremas, lemas, pruebas...
+\usepackage{cancel} % Cancelar expresiones
+\usepackage{multirow} % Tablas
+\usepackage{graphicx} % Inserción de imágenes
+\usepackage{xcolor} % Colores
+\usepackage{color}
+\definecolor{gray97}{gray}{.97}
+\definecolor{gray75}{gray}{.75}
+\definecolor{gray45}{gray}{.45}
+
+\usepackage[hidelinks]{hyperref}  % Enlaces
+\usepackage{multirow} % Tablas
+
+\usepackage{listings} % Escribir código en diferentes lenguajes de programación
+\lstset{ frame=Ltb,
+framerule=0pt,
+aboveskip=0.5cm,
+framextopmargin=3pt,
+framexbottommargin=3pt,
+framexleftmargin=0.4cm,
+framesep=0pt,
+rulesep=.4pt,
+backgroundcolor=\color{gray97},
+rulesepcolor=\color{black},
+%
+stringstyle=\ttfamily,
+showstringspaces = false,
+basicstyle=\small\ttfamily,
+commentstyle=\color{gray45},
+keywordstyle=\bfseries,
+%
+numbers=left,
+numbersep=15pt,
+numberstyle=\tiny,
+numberfirstline = false,
+breaklines=true,
+}
+
+\title{Memoria de algor\'itmica}
+\author{Rubén Morales Pérez 
+		\and Francisco Javier Morales Piqueras
+		\and Bruno Santindrian Manzanedo 
+		\and Ignacio de Loyola Barragan Lozano
+		\and Francisco Leopoldo Gallego Salido}
+\date{\today}
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+%					 Inicio del documento
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+\begin{document} 
+\maketitle
+\tableofcontents % Generando el indice
+\newpage
+\setlength\parindent{0pt} % Quitamos la sangría
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Explicaci\'on del m\'etodo utilizado}
+Para la obtenci\'on de los datos deseados hemos realizado un script de bash que genera las tablas de datos y las gráficas con su correspondiente ajuste. 
+\begin{lstlisting}[language=bash]
+#!/bin/bash
+
+if [ $# -ne 1 ]
+then
+    echo "Uso: $0 <nombre>"
+    exit 1
+fi
+
+# HEAPSORT
+g++ -std=c++11 ../src/heapsort.cpp
+nelementos=200
+echo "" > datos.dat
+while [ $nelementos -lt 10000 ]; do
+    ./a.out $nelementos >> datos.dat
+    let nelementos=nelementos+100
+done
+
+gnuplot ./gnuplot/heapsort.gp # Salida: "fichero.jpeg"
+
+mkdir ../Graficas/Heapsort 2> /dev/null
+mkdir ../Graficas/Heapsort/Datos 2> /dev/null
+mv fichero.jpeg ../Graficas/Heapsort/heapsortO0_$1.jpeg
+mv datos.dat ../Graficas/Heapsort/Datos/heapsortO0_$1.dat
+echo "Heapsort completado"
+
+
+# MERGESORT
+g++ -std=c++11 ../src/mergesort.cpp
+nelementos=200
+echo "" > datos.dat
+while [ $nelementos -lt 10000 ]; do
+    ./a.out $nelementos >> datos.dat
+    let nelementos=nelementos+100
+done
+
+gnuplot ./gnuplot/mergesort.gp # Salida: "fichero.jpeg"
+
+mkdir ../Graficas/Mergesort 2> /dev/null
+mkdir ../Graficas/Mergesort/Datos 2> /dev/null
+mv fichero.jpeg ../Graficas/Mergesort/mergesortO0_$1.jpeg
+mv datos.dat ../Graficas/Mergesort/Datos/mergesortO0_$1.dat
+echo "Mergesort completado"
+
+
+# INSERCION
+g++ -std=c++11 ../src/insercion.cpp
+nelementos=200
+echo "" > datos.dat
+while [ $nelementos -lt 10000 ]; do
+    ./a.out $nelementos >> datos.dat
+    let nelementos=nelementos+100
+done
+
+gnuplot ./gnuplot/insercion.gp # Salida: "fichero.jpeg"
+
+mkdir ../Graficas/Insercion 2> /dev/null
+mkdir ../Graficas/Insercion/Datos 2> /dev/null
+mv fichero.jpeg ../Graficas/Insercion/insercionO0_$1.jpeg
+mv datos.dat ../Graficas/Insercion/Datos/insercionO0_$1.dat
+echo "Insercion completado"
+
+
+# SELECCION
+g++ -std=c++11 ../src/seleccion.cpp
+nelementos=200
+echo "" > datos.dat
+while [ $nelementos -lt 10000 ]; do
+    ./a.out $nelementos >> datos.dat
+    let nelementos=nelementos+100
+done
+
+gnuplot ./gnuplot/insercion.gp # Salida: "fichero.jpeg"
+
+mkdir ../Graficas/Seleccion 2> /dev/null
+mkdir ../Graficas/Seleccion/Datos 2> /dev/null
+mv fichero.jpeg ../Graficas/Seleccion/seleccionO0_$1.jpeg
+mv datos.dat ../Graficas/Seleccion/Datos/seleccionO0_$1.dat
+echo "Seleccion completado"
+
+
+# QUICKSORT
+g++ -std=c++11 ../src/quicksort.cpp
+nelementos=200
+echo "" > datos.dat
+while [ $nelementos -lt 10000 ]; do
+    ./a.out $nelementos >> datos.dat
+    let nelementos=nelementos+100
+done
+
+gnuplot ./gnuplot/quicksort.gp # Salida: "fichero.jpeg"
+
+mkdir ../Graficas/Quicksort 2> /dev/null
+mkdir ../Graficas/Quicksort/Datos 2> /dev/null
+mv fichero.jpeg ../Graficas/Quicksort/quicksortO0_$1.jpeg
+mv datos.dat ../Graficas/Quicksort/Datos/quicksortO0_$1.dat
+echo "Quicksort completado"
+
+
+# BURBUJA
+g++ -std=c++11 ../src/burbuja.cpp
+nelementos=200
+echo "" > datos.dat
+while [ $nelementos -lt 10000 ]; do
+    ./a.out $nelementos >> datos.dat
+    let nelementos=nelementos+100
+done
+
+gnuplot ./gnuplot/burbuja.gp # Salida: "fichero.jpeg"
+
+mkdir ../Graficas/Burbuja 2> /dev/null
+mkdir ../Graficas/Burbuja/Datos 2> /dev/null
+mv fichero.jpeg ../Graficas/Burbuja/burbujaO0_$1.jpeg
+mv datos.dat ../Graficas/Burbuja/Datos/burbujaO0_$1.dat
+echo "Burbuja completado"
+
+
+# FIBONACCI
+g++ -std=c++11 ../src/fibonacci.cpp
+nelementos=1
+echo "" > datos.dat
+while [ $nelementos -lt 50 ]; do
+    ./a.out $nelementos >> datos.dat
+    let nelementos=nelementos+2
+done
+
+gnuplot ./gnuplot/fibonacci.gp # Salida: "fichero.jpeg"
+
+mkdir ../Graficas/Fibonacci 2> /dev/null
+mkdir ../Graficas/Fibonacci/Datos 2> /dev/null
+mv fichero.jpeg ../Graficas/Fibonacci/fibonacciO0_$1.jpeg
+mv datos.dat ../Graficas/Fibonacci/Datos/fibonacciO0_$1.dat
+echo "Fibonacci completado"
+
+
+# HANOI
+g++ -std=c++11 ../src/hanoi.cpp
+nelementos=3
+echo "" > datos.dat
+while [ $nelementos -lt 30 ]; do
+    ./a.out $nelementos >> datos.dat
+    let nelementos=nelementos+1
+done
+
+gnuplot ./gnuplot/hanoi.gp # Salida: "fichero.jpeg"
+
+mkdir ../Graficas/Hanoi 2> /dev/null
+mkdir ../Graficas/Hanoi/Datos 2> /dev/null
+mv fichero.jpeg ../Graficas/Hanoi/hanoiO0_$1.jpeg
+mv datos.dat ../Graficas/Hanoi/Datos/hanoiO0_$1.dat
+echo "Hanoi completado"
+
+
+# FLOYD
+g++ -std=c++11 ../src/floyd.cpp
+nelementos=200
+echo "" > datos.dat
+while [ $nelementos -lt 1000 ]; do
+    ./a.out $nelementos >> datos.dat
+    let nelementos=nelementos+10
+done
+
+gnuplot ./gnuplot/floyd.gp # Salida: "fichero.jpeg"
+
+mkdir ../Graficas/Floyd 2> /dev/null
+mkdir ../Graficas/Floyd/Datos 2> /dev/null
+mv fichero.jpeg ../Graficas/Floyd/floydO0_$1.jpeg
+mv datos.dat ../Graficas/Floyd/Datos/floydO0_$1.dat
+echo "Floyd completado"
+
+rm a.out
+rm fit.log
+\end{lstlisting}
+
+Para la obtención de las gráficas de forma directa utilizamos script de gnuplot que tienen la forma siguiente, en este caso adjuntamos "burbuja.gp". 
+
+\begin{lstlisting}[language=gnuplot]
+set terminal jpeg
+set output "fichero.jpeg"
+
+set title "Eficiencia burbuja"
+set xlabel "Tamano del vector"
+set ylabel "Tiempo (s)"
+set fit quiet
+f(x) = a*x*x+b*x+c
+fit f(x) "datos.dat" via a, b, c
+plot "datos.dat", f(x)
+\end{lstlisting}
+
+Los diferentes ajustes se han conseguido así:
+
+\begin{lstlisting}[language=gnuplot]
+f(x) = a*x*x*x+b*x*x+c*x+d
+g(x) = a*x*x+b*x+c
+h(x) = a*x*(log(x)/log(2))
+i(x) = a*(((1+sqrt(5))/2)**x)
+\end{lstlisting}
+
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{C\'alculo de la eficiencia emp\'irica}
+%\hspace*{1cm}\textbf{Ejercicio 1.}
+
+\subsection{Tabla con los algor\'itmos cuadr\'aticos}
+\subsection{Tabla con los algor\'itmos c\'ubicos}
+\subsection{Tabla con los algor\'itmos nlog(n)}
+\subsection{Tabla con el algor\'itmo de Fibonacci}
+\subsection{Tabla con el algor\'itmo de Hanoi}
+\subsection{Tabla con los algoritmos de ordenaci\'on}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Gr\'aficas}
+
+\subsection{Ordenaci\'ion}
+\subsubsection{Burbuja}
+\subsubsection{Inserci\'on}
+\subsubsection{Selecci\'on}
+\subsubsection{Mergesort}
+\subsubsection{Quicksort}
+\subsubsection{Heapsort}
+\subsubsection{Comparativa algoritmos de ordenaci\'ion}
+
+
+\subsection{Fibonacci}
+\subsection{Hanoi}
+\subsection{Floyd}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+%					 Bibliografía
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% input{bibliografia}
+
+\end{document}
