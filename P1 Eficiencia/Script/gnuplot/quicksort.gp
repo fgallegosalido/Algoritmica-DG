@@ -1,4 +1,4 @@
-set terminal jpeg
+set terminal pngcairo
 set output "fichero.jpeg"
 
 set title "Eficiencia quicksort"
