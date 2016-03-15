@@ -1,0 +1,134 @@
+\section{Introducción}
+
+\subsection{Instalación}
+
+\begin{frame}{¡Contribuye!}
+  El código fuente de éstas diapositivas está disponible en:
+\begin{center}
+  \huge \href{http://github.com/dgiim/beamer}{github.com/dgiim/beamer}
+\end{center}
+  Erratas, correcciones y aportaciones son bienvenidas.
+  \espacio
+  \begin{columns}[c]
+    \column{.5\textwidth}
+      \hyperlink{beamer}{\beamergotobutton{Ya sé \LaTeX \smiley{}}}
+    \column{.5\textwidth}
+      \hyperlink{latex}{\beamergotobutton{No sé \LaTeX \frownie{}}}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{¿Qué es \LaTeX?}
+  \hypertarget<1>{latex}{}
+  \LaTeX es un lenguaje de marcado que permite crear documentos. Los elementos
+  básicos dentro del código de un documento son:
+  \espacio
+  \begin{overlayarea}{\textwidth}{5cm}
+      \only<1>{\begin{block}{Comandos}
+        El comando \texttt{com} se llama incluyendo \comando{com}.
+        \espacio
+        \begin{description}
+          \item[Argumentos] \comando{com}\texttt{\{arg1\}\{arg2\}}
+          \item[Opciones]   \comando{com}\texttt{[op]\{arg\}}
+        \end{description}
+        Algunos comandos sólo son válidos en ciertos entornos.
+      \end{block}}
+
+      \only<2>{\begin{block}{Entornos}
+        Un entorno es una sección del documento que permite el uso de ciertos comandos:
+        \begin{center}
+          \ejemplo{entorno.tex}
+        \end{center}
+      \end{block}}
+  \end{overlayarea}
+\end{frame}
+
+\begin{frame}{Estructura básica de un documento \LaTeX}
+  La estructura básica de un documento \LaTeX consta de 2 partes:
+  \espacio
+  \begin{description}
+    \item[Clase de documento] Se indica con \comando{documentclass}\texttt{\{clase\}}.
+    \item[Paquetes y opciones] Se incluyen con \comando{usepackage}\texttt{\{paquete\}}.
+    \item[Documento] Se escribe dentro del entorno \texttt{document}.
+  \end{description}
+  \pause
+  \espacio
+  \begin{exampleblock}{Plantillas}
+    Puedes utilizar como plantilla el código que genera este documento o usar
+    una de las plantillas en
+    \href{https://github.com/M42/plantillas/tree/master/presentacion}{M42/plantillas}.
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}{¿Qué es \beamer?}
+  \hypertarget<1>{beamer}{}
+  \href{https://www.ctan.org/pkg/beamer}{\beamer} es una clase de documento de \LaTeX
+  que genera diapositivas o transparencias.
+
+  Puede compilarse con casi cualquier compilador de \LaTeX y personalizarse al detalle.
+
+  \pause
+  \espacio
+
+  \begin{block}{\texttt{pandoc}}
+    \texttt{pandoc} no sirve \frownie{}. Podemos generar presentaciones con
+     \href{http://johnmacfarlane.net/pandoc/demo/example9/producing-slide-shows-with-pandoc}{
+     RMarkdown} y el aspecto será idéntico a \beamer pero no a partir de un archivo
+     \texttt{.tex}.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Instalación}
+  Para usar \beamer se necesitan 3 paquetes:
+
+  \begin{itemize}
+    \item \beamer
+    \item \texttt{pgf}
+    \item \texttt{xcolor}
+  \end{itemize}
+
+  \pause
+  \espacio
+
+  \begin{block}{Debian/Ubuntu y derivados}
+    En Debian y derivados podemos instalar \texttt{latex-beamer}. También podemos
+    utilizar \href{http://www.ctan.org/pkg/texliveonfly}{\texttt{texliveonfly}}.
+  \end{block}
+\end{frame}
+
+\subsection{Lo básico}
+
+\begin{frame}{Primeros pasos}
+
+  Para empezar a usar \beamer, indicamos la clase del documento:
+
+    \begin{center}
+      \Large \comando{documentclass}\color{black}\{beamer\}
+    \end{center}
+
+  \pause
+  \begin{exampleblock}{En español}
+    Si vamos a escribir en español lo indicamos con:
+    \ejemplo{idioma.tex}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Diapositivas}
+  Los documentos de \beamer se dividen en diapositivas. Las creamos utilizando
+  el entorno \texttt{frame}:
+
+  \ejemplo{frame.tex}
+
+  \pause
+  \begin{block}{Tipos de diapositivas}
+    \begin{itemize}
+      \item \texttt{shrink}:  Reduce el tamaño para introducir más contenido.
+      \item \texttt{plain}:   Diapositiva simple, útil para imágenes.
+      \item \texttt{fragile}: Necesario para mostrar \texttt{verbatim}.
+      \item \texttt{allowframebreaks}: Divide el contenido en diapositivas.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[plain]
+  \ejemplo{presentacion.tex}
+\end{frame}
