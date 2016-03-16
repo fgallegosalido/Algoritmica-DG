@@ -78,17 +78,17 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 
 %% Temas %%
 % Tema y tema de color
-  \usetheme{Dresden}
-  \usecolortheme{dolphin}
-  \useinnertheme{circles}
+  \usetheme{Szeged}
+  \usecolortheme{crane}
+% \useinnertheme{circles}
   \setbeamercovered{transparent}
 % Colores bloques
-  \setbeamercolor{block title}{bg=title,fg=links}
-  \setbeamercolor{block body}{bg=backg,fg=black}
-  \setbeamercolor{block title alerted}{fg=red!70!black,bg=title!92!red}
-  \setbeamercolor{block body alerted}{fg=black,bg=backg}
-  \setbeamercolor{block title example}{fg=green!70!black,bg=title!92!green}
-  \setbeamercolor{block body example}{fg=black,bg=backg}
+%  \setbeamercolor{block title}{bg=title,fg=links}
+%  \setbeamercolor{block body}{bg=backg,fg=black}
+%  \setbeamercolor{block title alerted}{fg=red!70!black,bg=title!92!red}
+%  \setbeamercolor{block body alerted}{fg=black,bg=backg}
+%  \setbeamercolor{block title example}{fg=green!70!black,bg=title!92!green}
+%  \setbeamercolor{block body example}{fg=black,bg=backg}
 % Enlaces (tex.stackexchange.com/questions/13423)
 \hypersetup{colorlinks,linkcolor=,urlcolor=links}
 % Quita enlaces de navegación (stackoverflow.com/questions/3017030)
@@ -131,6 +131,7 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 
 
 \section{Presentación}
+\subsection{Introducción}
 \begin{frame}
 	\begin{block}{Eficiencia}
 	Hemos usado los siguientes algoritmos en esta práctica
@@ -282,7 +283,7 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 	\end{block}
 \end{frame}
 
-\begin{frame}{Burbuja}	
+\begin{frame}	
 	\begin{alertblock}{Imagen}
 	\begin{center}
 	\includegraphics[scale=0.55]{../Graficas/Burbuja/burbujaO0_ruben.jpeg}
@@ -309,7 +310,7 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 	\end{block}
 \end{frame}
 
-\begin{frame}{Inserción}
+\begin{frame}
 	\begin{alertblock}{Imagen}
 	\begin{center}
 	\includegraphics[scale=0.55]{../Graficas/Insercion/insercionO0_ruben.jpeg}
@@ -332,7 +333,7 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 	\end{block}
 \end{frame}
 
-\begin{frame}{Selección}
+\begin{frame}
 	\begin{alertblock}{Imagen}
 	\begin{center}
 	\includegraphics[scale=0.55]{../Graficas/Seleccion/seleccionO0_ruben.jpeg}					\end{center}
@@ -364,6 +365,7 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\subsection{Quicksort}
 \begin{frame}{Quicksort}
 	\begin{block}{Función}
 	El algoritmo de ordenación más rápido en término medio: quicksort
@@ -375,7 +377,7 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 	$a               = 2.3704\cdot 10^{-8}       \pm 5.497\cdot 10^{-10}    (2.319\%) $
 	\end{block}
 \end{frame}
-\begin{frame}{Quicksort}
+\begin{frame}
 	\begin{alertblock}{Imagen}
 	\begin{center}
 	\includegraphics[scale=0.55]{../Graficas/Quicksort/quicksortO0_bruno.jpeg}					\end{center}	
@@ -384,6 +386,7 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\subsection{Comparación}
 \begin{frame}{Algoritmos de ordenación}
 	\begin{block}{Función}
 	Se observa una diferencia notable entre los algoritmos $O(nlog_2(n))$ y los
@@ -404,6 +407,7 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 % Resto de algoritmos
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\subsection{Fibonacci}
 \begin{frame}{Fibonacci}
 	\begin{block}{Función}
 		Fibonacciiiii
@@ -417,7 +421,7 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 	\end{block}
 \end{frame}
 
-\begin{frame}{Fibonacci}
+\begin{frame}
 	\begin{alertblock}{Imagen}
 	\begin{center}
 	\includegraphics[scale=0.55]{../Graficas/Fibonacci/fibonacciO0_ruben.jpeg}
@@ -428,6 +432,7 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\subsection{Hanoi}
 \begin{frame}{Hanoi}
 	\begin{block}{Función}
 		Hanoi
@@ -440,7 +445,7 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 	\end{block}
 \end{frame}
 
-\begin{frame}{Hanoi}
+\begin{frame}
 	\begin{alertblock}{Imagen}
 	\begin{center}
 	\includegraphics[scale=0.55]{../Graficas/Hanoi/hanoiO0_ruben.jpeg}
@@ -451,7 +456,7 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+\subsection{Floyd}
 \begin{frame}{Floyd}
 	\begin{block}{Función}
 	Tipo de algoritmo con programación dinámica para encontrar el camino mínimo en grafos 		ponderados.
@@ -469,16 +474,18 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 	\end{block}
 \end{frame}
 
-\begin{frame}{Floyd}
+\begin{frame}
 	\begin{alertblock}{Imagen}
 	\begin{center}
-	\includegraphics[scale=0.55]{../Graficas/Floyd/floydO0_ruben.jpeg}	
+	\includegraphics[scale=0.50]{../Graficas/Floyd/floydO0_ruben.jpeg}	
 	\end{center}
 	\end{alertblock}
 \end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Optimización}
 \begin{frame}{Optimizando algoritmos}
 	\begin{block}{Algoritmos}
 	En este apartado optimizaremos diferentes algoritmos.
