@@ -13,6 +13,8 @@
 \usepackage{amsthm} % Teoremas, lemas, pruebas...
 \usepackage{cancel} % Cancelar expresiones
 \usepackage{multirow} % Tablas
+\usepackage{multicol}
+
 \usepackage{graphicx} % Inserción de imágenes
 \usepackage{xcolor} % Colores
 \usepackage{color}
@@ -48,6 +50,8 @@ numberstyle=\tiny,
 numberfirstline = false,
 breaklines=true,
 }
+
+
 
 \title{Memoria de algor\'itmica}
 \author{Rubén Morales Pérez
@@ -270,9 +274,77 @@ h(x) = a*x*(log(x)/log(2))
 i(x) = a*(((1+sqrt(5))/2)**x)
 \end{lstlisting}
 
+\subsection{Comparativa entre diferentes ordenadores}
+Para conseguir las gráficas con  todos los datos hemos usado otro script de bash.
+
+\begin{lstlisting}[language=gnuplot]
+\#!/bin/bash
+for DIR in `ls Graficas/`; do
+  if [ $DIR != Ajustes ] && [ -d Graficas/$DIR ]
+    then
+    archivo="temporal.gp"
+
+    echo "set terminal jpeg" > \$archivo
+    echo "set output \"fichero.jpeg\"" >> $archivo
+    echo "set title \"Eficiencia $DIR\"" >> $archivo
+    echo "set xlabel \"Tamano del vector\"" >> $archivo
+    echo "set ylabel \"Tiempo (s)\"" >> $archivo
+    echo "set fit quiet" >> $archivo
+    echo "unset key" >> $archivo
+
+    num=0
+    dir="Graficas/$DIR/Datos"
+
+    for FILE in `ls $dir`; do
+      if [ $DIR == Burbuja ] || [ $DIR == Insercion ] || [ $DIR == Seleccion ]
+        then
+        echo "f$num(x) = a*x*x+b*x+c" >> $archivo
+        echo "fit f$num(x) \"$dir/$FILE\" via a, b, c" >> $archivo
+      elif [ $DIR == Mergesort ] || [ $DIR == Quicksort ] || [ $DIR == Heapsort ]
+        then
+        echo "f$num(x) = a*x*(log(x)/log(2))" >> $archivo
+        echo "fit f$num(x) \"$dir/$FILE\" via a" >> $archivo
+      elif [ $DIR == Fibonacci ]
+        then
+        echo "f$num(x) = a*(((1+sqrt(5))/2)**x)" >> $archivo
+        echo "fit f$num(x) \"$dir/$FILE\" via a" >> $archivo
+      elif [ $DIR == Floyd ]
+        then
+        echo "f$num(x) = a*x*x*x+b*x*x+c*x+d" >> $archivo
+        echo "fit f$num(x) \"$dir/$FILE\" via a, b, c, d" >> $archivo
+      elif [ $DIR == Hanoi ]
+        then
+        echo "f$num(x) = a*(2**x)" >> $archivo
+        echo "fit f$num(x) \"$dir/$FILE\" via a" >> $archivo
+      fi
+
+      let num=num+1
+    done
+
+    num=0
+    printf "plot" >> $archivo
+
+    for FILE in `ls $dir`; do
+      if [ $num == 0 ]
+        then
+        printf  " \"$dir/$FILE\", f$num(x)" >> $archivo
+      else printf ", \"$dir/$FILE\", f$num(x)" >> $archivo
+      fi
+
+      let num=num+1
+    done
+
+    gnuplot ./temporal.gp
+    mv fichero.jpeg ./Graficas/$DIR/total_$DIR.jpeg
+  fi
+done
+
+rm temporal.gp
+rm fit.log
+\end{lstlisting}
 
 \newpage
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{C\'alculo de la eficiencia emp\'irica}
 %\hspace*{1cm}\textbf{Ejercicio 1.}
@@ -471,6 +543,8 @@ N   & FLOYD     \\ \hline
 990 & 5.19035   \\ \hline
 \end{longtable}
 \end{center}
+
+
 
 \subsection{Tabla con los algor\'itmos nlog(n)}
 \begin{center}
@@ -763,9 +837,9 @@ Cada algoritmo lleva su ajuste correspondiente.
 \subsubsection{Burbuja}
 $f(x) = a\cdot x^2 + b\cdot x + c \implies$
 $\left\{ \begin{array}{c}
-a               = 4.31433\cdot 10^{-9}      +/- 2.378\cdot 10^{-10}    (5.511\%) \\
-b               = 3.94506\cdot 10^{-6}      +/- 2.476\cdot 10^{-6}    (62.75\%) \\
-c               = -0.00311235      +/- 0.005425     (174.3\%)
+a               = 4.31433\cdot 10^{-9}      \pm 2.378\cdot 10^{-10}    (5.511\%) \\
+b               = 3.94506\cdot 10^{-6}      \pm 2.476\cdot 10^{-6}    (62.75\%) \\
+c               = -0.00311235      \pm 0.005425     (174.3\%)
 \end{array}\right.$
 \begin{center}
 \includegraphics[scale=0.55]{../Graficas/Burbuja/burbujaO0_ruben.jpeg}
@@ -774,9 +848,9 @@ c               = -0.00311235      +/- 0.005425     (174.3\%)
 \subsubsection{Inserci\'on} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
 $f(x) = a\cdot x^2 + b\cdot x + c \implies$
 $\left\{ \begin{array}{c}
-a               = 2.36229\cdot 10^{-9}      +/- 2.503\cdot 10^{-10}    (10.6\%) \\
-b               = -2.27723\cdot 10^{-6}     +/- 2.606\cdot 10^{-6}    (114.5\%) \\
-c               = 0.00096037       +/- 0.005712     (594.8\%)
+a               = 2.36229\cdot 10^{-9}      \pm 2.503\cdot 10^{-10}    (10.6\%) \\
+b               = -2.27723\cdot 10^{-6}     \pm 2.606\cdot 10^{-6}    (114.5\%) \\
+c               = 0.00096037       \pm 0.005712     (594.8\%)
 \end{array}\right.$
 
 \begin{center}
@@ -786,7 +860,7 @@ c               = 0.00096037       +/- 0.005712     (594.8\%)
 \newpage
 \subsubsection{Selecci\'on}
 $f(x) = a\cdot x^2 + b\cdot x + c \implies$
-$ a               = 2.36327\cdot 10^{-9}      +/- 3.232\cdot 10^{-11}    (1.368\%) $
+$ a               = 2.36327\cdot 10^{-9}      \pm 3.232\cdot 10^{-11}    (1.368\%) $
 \begin{center}
 \includegraphics[scale=0.55]{../Graficas/Seleccion/seleccionO0_ruben.jpeg}
 \end{center}
@@ -795,7 +869,7 @@ $ a               = 2.36327\cdot 10^{-9}      +/- 3.232\cdot 10^{-11}    (1.368\
 
 \subsubsection{Mergesort}
 $ f(x) = a\cdot x\cdot log_2(x) \implies$
-$ a               = 3.5231\cdot 10^{-8}       +/- 1.191\cdot 10^{-9}    (3.382\%) $
+$ a               = 3.5231\cdot 10^{-8}       \pm 1.191\cdot 10^{-9}    (3.382\%) $
 \begin{center}
 \includegraphics[scale=0.55]{../Graficas/Mergesort/mergesortO0_ruben.jpeg}
 \end{center}
@@ -803,14 +877,14 @@ $ a               = 3.5231\cdot 10^{-8}       +/- 1.191\cdot 10^{-9}    (3.382\%
 
 \subsubsection{Quicksort}
 $ f(x) = a\cdot x\cdot log_2(x) \implies$
-$ a               = 2.3704\cdot 10^{-8}       +/- 5.497\cdot 10^{-10}    (2.319\%) $
+$ a               = 2.3704\cdot 10^{-8}       \pm 5.497\cdot 10^{-10}    (2.319\%) $
 \begin{center}
 \includegraphics[scale=0.55]{../Graficas/Quicksort/quicksortO0_ruben.jpeg}
 \end{center}
 
 \subsubsection{Heapsort}
 $ f(x) = a\cdot x\cdot log_2(x) \implies$
-$a               = 2.49016\cdot 10^{-8}      +/- 7.983\cdot 10^{-10}    (3.206\%)$
+$a               = 2.49016\cdot 10^{-8}      \pm 7.983\cdot 10^{-10}    (3.206\%)$
 \begin{center}
 \includegraphics[scale=0.55]{../Graficas/Heapsort/heapsortO0_ruben.jpeg}
 \end{center}
@@ -827,7 +901,7 @@ También nos percatamos de la diferencia dentro de los mismos algoritmos con efi
 
 \subsection{Fibonacci}
 $ f(x) = a\cdot ((1+\sqrt(5))/2)^x \implies$
-$a               = 5.59738\cdot 10^{-9}      +/- 2.093\cdot 10^{-12}    (0.0374\%)$
+$a               = 5.59738\cdot 10^{-9}      \pm 2.093\cdot 10^{-12}    (0.0374\%)$
 
 \begin{center}
 \includegraphics[scale=0.55]{../Graficas/Fibonacci/fibonacciO0_ruben.jpeg}
@@ -835,7 +909,7 @@ $a               = 5.59738\cdot 10^{-9}      +/- 2.093\cdot 10^{-12}    (0.0374\
 \newpage
 \subsection{Hanoi}
 $f(x) = a\cdot(2^x) \implies$
-$a               = 1.12636\cdot 10^{-8}      +/- 1.391\cdot 10^{-11}    (0.1235\%)$
+$a               = 1.12636\cdot 10^{-8}      \pm 1.391\cdot 10^{-11}    (0.1235\%)$
 \begin{center}
 \includegraphics[scale=0.55]{../Graficas/Hanoi/hanoiO0_ruben.jpeg}
 \end{center}
@@ -844,10 +918,10 @@ $a               = 1.12636\cdot 10^{-8}      +/- 1.391\cdot 10^{-11}    (0.1235\
 \subsection{Floyd}
 $f(x) = a\cdot x^3 + b\cdot x^2 + c\cdot x + d \implies$
 $\left\{ \begin{array}{c}
-a               = 1.11725\cdot 10^{-8}      +/- 3.725\cdot 10^{-10}    (3.334\%) \\
-b               = -2.27723\cdot 10^{-6}     +/- 6.692\cdot 10^{-7}    (29.39\%) \\
-c               = 0.00096037       +/- 0.0003713    (38.66\%) \\
-d               = -0.115743        +/- 0.06234      (53.86\%)
+a               = 1.11725\cdot 10^{-8}      \pm 3.725\cdot 10^{-10}    (3.334\%) \\
+b               = -2.27723\cdot 10^{-6}     \pm 6.692\cdot 10^{-7}    (29.39\%) \\
+c               = 0.00096037       \pm 0.0003713    (38.66\%) \\
+d               = -0.115743        \pm 0.06234      (53.86\%)
 \end{array}\right.$
 
 \begin{center}
@@ -864,7 +938,7 @@ Esto es una prueba gráfica de que hay que tener en cuenta la eficiencia de los 
 \includegraphics[scale=0.55]{../Graficas/Burbuja/burbuja_optimizacion.png}
 \end{center}
 
-Una observación curiosa es que el algoritmo Quicksort realmente es un algoritmo con eficiencia en el caso peor de $O(n^2)$, ya que si le pasamos un vector que está ordenado es cuadrático. Por otro lado Heapsort es un $O(nlog_2n)$ puro, pero en término medio es peor que Quicksort, ya que los datos que se suelen pasar a estos algoritmos no están ordenados.
+Una observación curiosa es que el algoritmo Quicksort realmente es un algoritmo con eficiencia en el caso peor de $O(n^2)$, ya que si le pasamos un vector que está ordenado es cuadrático. Por otro lado Heapsort es un $O(nlog_2(n))$ puro, pero en término medio es peor que Quicksort, ya que los datos que se suelen pasar a estos algoritmos no están ordenados.
 
 \begin{center}
 \includegraphics[scale=0.55]{../Graficas/Quicksort/quicksort_optimizacion.png}

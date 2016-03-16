@@ -130,7 +130,7 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 \end{frame}
 
 
-
+\section{Presentación}
 \begin{frame}
 	\begin{block}{Eficiencia}
 	Hemos usado los siguientes algoritmos en esta práctica
@@ -197,7 +197,9 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 	\begin{block}{Scripts de gnuplot}
 		Podemos hacer que gnuplot automatice su trabajo.
 		
-		Suponemos que el fichero donde están los datos es "datos.dat"
+		Suponemos que el fichero donde están los datos es "datos.dat", como indicamos anteriormente los scripts de gnuplot se ejecutan:
+		
+		\hspace{2cm} gnuplot algoritmo.gp
 	\end{block}
 	\pause
 	
@@ -208,7 +210,7 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 	
 	set output "fichero.jpeg"
 	
-	set title "Eficiencia burbuja"
+	set title ''Eficiencia algoritmo"
 	
 	set xlabel "Tamaño del vector"
 
@@ -256,8 +258,10 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 	\end{alertblock}
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Algoritmos de ordenación}
+\subsection{Burbuja}
 \begin{frame}{Burbuja}
 	\begin{block}{Función}
 	Este algoritmo tiene una eficiencia cuadrática, debemos ajustar una función del tipo
@@ -280,12 +284,15 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 
 \begin{frame}{Burbuja}	
 	\begin{alertblock}{Imagen}
+	\begin{center}
 	\includegraphics[scale=0.55]{../Graficas/Burbuja/burbujaO0_ruben.jpeg}
+	\end{center}
 	\end{alertblock}
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Inserción}
 \begin{frame}{Inserción}
 	\begin{block}{Función}
 	Aunque el algoritmo de inserción tenga una eficiencia $O(n^2)$ tiene una constante 			multiplicativa menor que el burbuja, y similar al selección.
@@ -304,13 +311,15 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 
 \begin{frame}{Inserción}
 	\begin{alertblock}{Imagen}
+	\begin{center}
 	\includegraphics[scale=0.55]{../Graficas/Insercion/insercionO0_ruben.jpeg}
+	\end{center}
 	\end{alertblock}
 \end{frame}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
+\subsection{Selección}
 \begin{frame}{Selección}
 	\begin{block}{Función}
 		Este algoritmo tiene dos partes una ordenada y otra no, en cada iteración coge el 			máximo/mínimo de los elementos no ordenados y los inserta en los ordenados.
@@ -325,13 +334,15 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 
 \begin{frame}{Selección}
 	\begin{alertblock}{Imagen}
-	\includegraphics[scale=0.55]{../Graficas/Seleccion/seleccionO0_ruben.jpeg}
+	\begin{center}
+	\includegraphics[scale=0.55]{../Graficas/Seleccion/seleccionO0_ruben.jpeg}					\end{center}
 	\end{alertblock}
 \end{frame}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Mergesort}
 \begin{frame}{Mergesort}
 	\begin{block}{Función}
 	Siguiente algoritmo de ordenación: mergesort
@@ -340,12 +351,14 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 	\begin{block}{Ajuste}
 	$ f(x) = a\cdot x\cdot log_2(x)$
 	
-	$ a               = 3.5231\cdot 10^{-8}       +/- 1.191\cdot 10^{-9}    (3.382\%) $
+	$ a               = 3.5231\cdot 10^{-8}       \pm 1.191\cdot 10^{-9}    (3.382\%) $
 	\end{block}
 \end{frame}
-\begin{frame}{Mergesort}
+\begin{frame}
 	\begin{alertblock}{Imagen}
-	\includegraphics[scale=0.55]{../Graficas/Mergesort/mergesortO0_ruben.jpeg}
+	\begin{center}
+	\includegraphics[scale=0.55]{../Graficas/Mergesort/mergesortO0_bruno.jpeg}
+	\end{center}
 	\end{alertblock}
 \end{frame}
 
@@ -359,12 +372,13 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 	\begin{block}{Ajuste}
 	$f(x) = a\cdot x\cdot log_2(x)$
 
-	$a               = 2.3704\cdot 10^{-8}       +/- 5.497\cdot 10^{-10}    (2.319\%) $
+	$a               = 2.3704\cdot 10^{-8}       \pm 5.497\cdot 10^{-10}    (2.319\%) $
 	\end{block}
 \end{frame}
 \begin{frame}{Quicksort}
 	\begin{alertblock}{Imagen}
-	\includegraphics[scale=0.55]{../Graficas/Quicksort/quicksortO0_ruben.jpeg}
+	\begin{center}
+	\includegraphics[scale=0.55]{../Graficas/Quicksort/quicksortO0_bruno.jpeg}					\end{center}	
 	\end{alertblock}
 \end{frame}
 
@@ -372,15 +386,18 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 
 \begin{frame}{Algoritmos de ordenación}
 	\begin{block}{Función}
-	Se observa una diferencia notable entre los algoritmos O(nlog 2 (n)) y los
+	Se observa una diferencia notable entre los algoritmos $O(nlog_2(n))$ y los
 	$O(n^2)$, casi no se aprecian los primeros.
 	\end{block}
-
-	\begin{alertblock}{Imagen}
-	\includegraphics[scale=0.55]{../Graficas/todos.png}
-	\end{alertblock}
 \end{frame}
 
+\begin{frame}
+	\begin{alertblock}{Imagen}
+	\begin{center}
+	\includegraphics[scale=0.45]{../Graficas/todos.png}
+	\end{center}
+	\end{alertblock}
+\end{frame}
 
 
 
@@ -393,15 +410,18 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 	\end{block}
 	
 	\begin{block}{Ajuste}
-	$ f(x) = a\cdot ((1+\sqrt(5))/2)^x $
+	$ f(x) = a\cdot   \left( \displaystyle\frac{1+\sqrt5}{2} \right)^x $
 
-	$a               = 5.59738\cdot 10^{-9}      +/- 2.093\cdot 10^{-12}    (0.0374\%)$
+	{\ }
+	$a               = 5.59738\cdot 10^{-9}      \pm 2.093\cdot 10^{-12}    (0.0374\%)$
 	\end{block}
 \end{frame}
 
 \begin{frame}{Fibonacci}
 	\begin{alertblock}{Imagen}
+	\begin{center}
 	\includegraphics[scale=0.55]{../Graficas/Fibonacci/fibonacciO0_ruben.jpeg}
+	\end{center}
 	\end{alertblock}
 \end{frame}
 
@@ -416,13 +436,15 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 	\begin{block}{Ajuste}
 	$f(x) = a\cdot(2^x) $
 	
-	$a               = 1.12636\cdot 10^{-8}      +/- 1.391\cdot 10^{-11}    (0.1235\%)$
+	$a               = 1.12636\cdot 10^{-8}      \pm 1.391\cdot 10^{-11}    (0.1235\%)$
 	\end{block}
 \end{frame}
 
 \begin{frame}{Hanoi}
 	\begin{alertblock}{Imagen}
+	\begin{center}
 	\includegraphics[scale=0.55]{../Graficas/Hanoi/hanoiO0_ruben.jpeg}
+	\end{center}
 	\end{alertblock}
 \end{frame}
 
@@ -432,31 +454,33 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 
 \begin{frame}{Floyd}
 	\begin{block}{Función}
-	
+	Tipo de algoritmo con programación dinámica para encontrar el camino mínimo en grafos 		ponderados.
 	\end{block}
 	
 	\begin{block}{Ajuste}
 	$f(x) = a\cdot x^3 + b\cdot x^2 + c\cdot x + d $
 
 	$\left\{ \begin{array}{c}
-	a               = 1.11725\cdot 10^{-8}      +/- 3.725\cdot 10^{-10}    (3.334\%) \\
-	b               = -2.27723\cdot 10^{-6}     +/- 6.692\cdot 10^{-7}    (29.39\%) \\
-	c               = 0.00096037       +/- 0.0003713    (38.66\%) \\
-	d               = -0.115743        +/- 0.06234      (53.86\%)
+	a               = 1.11725\cdot 10^{-8}      \pm 3.725\cdot 10^{-10}    (3.334\%) \\
+	b               = -2.27723\cdot 10^{-6}    \pm 6.692\cdot 10^{-7}    (29.39\%) \\
+	c               = 0.00096037       \pm 0.0003713    (38.66\%) \\
+	d               = -0.115743        \pm 0.06234      (53.86\%)
 	\end{array}\right.$
 	\end{block}
 \end{frame}
 
 \begin{frame}{Floyd}
 	\begin{alertblock}{Imagen}
-	\includegraphics[scale=0.55]{../Graficas/Floyd/floydO0_ruben.jpeg}
+	\begin{center}
+	\includegraphics[scale=0.55]{../Graficas/Floyd/floydO0_ruben.jpeg}	
+	\end{center}
 	\end{alertblock}
 \end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-	\begin{block}
+\begin{frame}{Optimizando algoritmos}
+	\begin{block}{Algoritmos}
 	En este apartado optimizaremos diferentes algoritmos.
 	\begin{itemize}
 	\item Burbuja
@@ -465,7 +489,8 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 	\end{itemize}
 	\end{block}
 	
-	\begin{block}
+	\pause
+	\begin{block}{Observación}
 	Como podemos comprobar, por mucho que optimicemos el algoritmo de burbuja no llega a igualarse al mejor algoritmo de ordenación (en término medio), quicksort. La optimización más agresiva sin riesgo de pérdida de información es -O2 y llega a ser 10 veces más lento que quicksort sin optimización (con 10.000 elementos).
 	\end{block}
 \end{frame}
@@ -476,27 +501,34 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 
 \begin{frame}{Burbuja optimizado}
 	\begin{alertblock}{Imagen}
-	\includegraphics[scale=0.55]{../Graficas/Burbuja/burbuja_optimizacion.png}
+	\begin{center}
+	\includegraphics[scale=0.45]{../Graficas/Burbuja/burbuja_optimizacion.png}
+	\end{center}
 	\end{alertblock}
 \end{frame}
 
 \begin{frame}{Quicksort optimizado}
 	\begin{alertblock}{Imagen}
-	\includegraphics[scale=0.55]{../Graficas/Quicksort/quicksort_optimizacion.png}				\end{alertblock}
+	\begin{center}
+	\includegraphics[scale=0.45]{../Graficas/Quicksort/quicksort_optimizacion.png}	
+	\end{center}
+	\end{alertblock}
 \end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}
-	\begin{alertblock}
+	\begin{alertblock}{Conclusión}
 	Esto es una prueba gráfica de que hay que tener en cuenta la eficiencia de los 				algoritmos, ya que la mejora hardware no es suficiente en caso de que tengamos 				restricciones de tiempo.
 	\end{alertblock}
 \end{frame}
 
 \begin{frame}{Burbuja optimizado}
 	\begin{alertblock}{Imagen}
-	\includegraphics[scale=0.55]{../Graficas/Burbuja/burbuja_optimizacion.png}
+	\begin{center}
+	\includegraphics[scale=0.45]{../Graficas/Burbuja/burbuja_optimizacion.png}
+	\end{center}
 	\end{alertblock}
 \end{frame}
 
@@ -509,7 +541,9 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 
 \begin{frame}{Inserción}
 	\begin{alertblock}{Imagen}
-	\includegraphics[scale=0.55]{../Graficas/Floyd/floyd_optimizacion.png}
+	\begin{center}
+	\includegraphics[scale=0.45]{../Graficas/Floyd/floyd_optimizacion.png}
+	\end{center}
 	\end{alertblock}
 \end{frame}
 
