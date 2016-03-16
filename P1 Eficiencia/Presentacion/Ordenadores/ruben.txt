@@ -1,0 +1,7 @@
+HP Pavilion g series (Pavilion g6)
+Sistema operativo: ubuntu 14.04 LTS
+Memoria: 3.8 GiB (4Gb)
+Procesador: Inter Core i3-2330M CPU @ 2.20GHz x 4
+Gráficos: Intel Sandybridge Mobile
+Tipo de SO: 64 bits
+Disco: 487.9 GB

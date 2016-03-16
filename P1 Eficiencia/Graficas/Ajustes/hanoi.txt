@@ -1,0 +1,5 @@
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+
+a               = 1.12636e-08      +/- 1.391e-11    (0.1235%)
+
