@@ -101,6 +101,10 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 % Evita wranings itemize
 \renewcommand\textbullet{\ensuremath{\bullet}}
 
+% tikz
+\usepackage{tikz}
+\usetikzlibrary{shapes.multipart}
+
 %% Título y otros %%
 \title{Presentación práctica de eficiencia}                                               % Título
 \subtitle{Asignatura: Algorítmica}                                  % Subtítulo
@@ -120,14 +124,396 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 \begin{frame}
 \titlepage
 \end{frame}
-
 \begin{frame}{Índice}
   \hypertarget{index}{}
   \tableofcontents
 \end{frame}
 
-\begin{frame}{Titulo}{Subtitulo}
-	Esto es una diapositiva
+
+
+\begin{frame}
+	\begin{block}{Eficiencia}
+	Hemos usado los siguientes algoritmos en esta práctica
+	\end{block}
+	
+\begin{columns}  
+\begin{column}{5cm}   
+	\vspace*{1cm}
+	\begin{block}{Ordenaci\'on} 
+	\begin{itemize}
+		\item Burbuja
+		\item Inserción
+		\item Selección
+		\item Mergesort
+		\item Quicksort
+		\item Heapsort
+	\end{itemize}      
+	\end{block}            
+\end{column}	
+
+\begin{column}{5cm} 
+	\begin{block}{Otros}
+	\begin{itemize}
+		\item Fibonacci
+		\item Hanoi
+		\item Floyd
+	\end{itemize}    
+	\end{block}	                 
+\end{column}  
+\end{columns}	
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+	\begin{block}{Script}
+		El siguiente script automatizaba el proceso de obtención de las gráficas y los 				datos.		
+	\end{block}
+	
+	\begin{exampleblock}{script.sh}
+		g++ -std=c++11 ../src/algoritmo.cpp
+		
+		nelementos=200
+				
+		while [ 	\$nelementos -lt 10000 ]; do
+		
+    		\hspace{0.75cm}	./a.out \$nelementos >> datos.dat
+    			
+    		\hspace{0.75cm}	let nelementos=nelementos+100
+    			
+		done
+		
+
+		gnuplot ./gnuplot/algoritmo.gp \# Salida: fichero.jpeg
+		
+		mv fichero.jpeg ../Graficas/Algoritmo/algoritmo.jpeg
+		
+		mv datos.dat ../Graficas/Algoritmo/Datos/algoritmo.dat
+	\end{exampleblock}
+	
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+	\begin{block}{Scripts de gnuplot}
+		Podemos hacer que gnuplot automatice su trabajo.
+		
+		Suponemos que el fichero donde están los datos es "datos.dat"
+	\end{block}
+	\pause
+	
+	\begin{columns}
+	\begin{column}{5cm}
+	\begin{exampleblock}{algoritmo.gp}
+	set terminal pngcairo
+	
+	set output "fichero.jpeg"
+	
+	set title "Eficiencia burbuja"
+	
+	set xlabel "Tamaño del vector"
+
+	set ylabel "Tiempo (s)"
+
+	set fit quiet
+
+	f(x) = a*x*x+b*x+c
+
+	fit f(x) "datos.dat" via a, b, c
+
+	plot "datos.dat", f(x)
+	\end{exampleblock}
+	\end{column}
+	\pause
+	
+	\begin{column}{5cm}
+	\begin{block}{Funciones ajustadas}
+		\[f(x)=ax^3 + bx^2 + cx + d\]
+		\[g(x)=ax^2 + bx + c\]
+		\[h(x)=ax\cdot log_2(x)\]
+		\[i(x)=a \cdot ((1+ \sqrt(5))/2)^x\]
+	\end{block}
+	\end{column}
+	
+	\end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+	\begin{alertblock}{Ordenador usado para la ejecuci\'on}
+	HP Pavilion g series (Pavilion g6)
+
+	Sistema operativo: ubuntu 14.04 LTS
+
+	Memoria: 3.8 GiB (4Gb)
+
+	Procesador: Inter Core i3-2330M CPU @ 2.20GHz x 4
+
+	Gráficos: Intel Sandybridge Mobile
+
+	Tipo de SO: 64 bits
+
+	Disco: 487.9 GB	
+	\end{alertblock}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Burbuja}
+	\begin{block}{Función}
+	Este algoritmo tiene una eficiencia cuadrática, debemos ajustar una función del tipo
+	$f(x)= ax^2 + bx +c$
+	\end{block}
+	\pause
+
+	\begin{block}{Ajuste}
+	$f(x) = a\cdot x^2 + b\cdot x + c$
+	
+	En el ajuste también tenemos un margen de error:
+	
+	$\left\{ \begin{array}{c}
+	a               = 4.31433\cdot 10^{-9}      \pm 2.378\cdot 10^{-10}    (5.511\%) \\
+	b               = 3.94506\cdot 10^{-6}      \pm 2.476\cdot 10^{-6}    (62.75\%) \\
+	c               = -0.00311235     \pm 0.005425     (174.3\%)
+	\end{array}\right.$
+	\end{block}
+\end{frame}
+
+\begin{frame}{Burbuja}	
+	\begin{alertblock}{Imagen}
+	\includegraphics[scale=0.55]{../Graficas/Burbuja/burbujaO0_ruben.jpeg}
+	\end{alertblock}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Inserción}
+	\begin{block}{Función}
+	Aunque el algoritmo de inserción tenga una eficiencia $O(n^2)$ tiene una constante 			multiplicativa menor que el burbuja, y similar al selección.
+	\end{block}
+	
+	\begin{block}{Ajuste}
+	$f(x) = a\cdot x^2 + b\cdot x + c$
+	
+	$\left\{ \begin{array}{c}
+	a               = 2.36229\cdot 10^{-9}      \pm 2.503\cdot 10^{-10}    (10.6\%) \\
+	b               = -2.27723\cdot 10^{-6}     \pm 2.606\cdot 10^{-6}    (114.5\%) \\
+	c               = 0.00096037       \pm 0.005712     (594.8\%)
+	\end{array}\right.$	
+	\end{block}
+\end{frame}
+
+\begin{frame}{Inserción}
+	\begin{alertblock}{Imagen}
+	\includegraphics[scale=0.55]{../Graficas/Insercion/insercionO0_ruben.jpeg}
+	\end{alertblock}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{frame}{Selección}
+	\begin{block}{Función}
+		Este algoritmo tiene dos partes una ordenada y otra no, en cada iteración coge el 			máximo/mínimo de los elementos no ordenados y los inserta en los ordenados.
+	\end{block}
+	
+	\begin{block}{Ajuste}
+	$f(x) = a\cdot x^2 + b\cdot x + c$
+	
+	$ a               = 2.36327\cdot 10^{-9}      \pm 3.232\cdot 10^{-11}    (1.368\%) $
+	\end{block}
+\end{frame}
+
+\begin{frame}{Selección}
+	\begin{alertblock}{Imagen}
+	\includegraphics[scale=0.55]{../Graficas/Seleccion/seleccionO0_ruben.jpeg}
+	\end{alertblock}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Mergesort}
+	\begin{block}{Función}
+	Siguiente algoritmo de ordenación: mergesort
+	\end{block}
+	
+	\begin{block}{Ajuste}
+	$ f(x) = a\cdot x\cdot log_2(x)$
+	
+	$ a               = 3.5231\cdot 10^{-8}       +/- 1.191\cdot 10^{-9}    (3.382\%) $
+	\end{block}
+\end{frame}
+\begin{frame}{Mergesort}
+	\begin{alertblock}{Imagen}
+	\includegraphics[scale=0.55]{../Graficas/Mergesort/mergesortO0_ruben.jpeg}
+	\end{alertblock}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Quicksort}
+	\begin{block}{Función}
+	El algoritmo de ordenación más rápido en término medio: quicksort
+	\end{block}
+	
+	\begin{block}{Ajuste}
+	$f(x) = a\cdot x\cdot log_2(x)$
+
+	$a               = 2.3704\cdot 10^{-8}       +/- 5.497\cdot 10^{-10}    (2.319\%) $
+	\end{block}
+\end{frame}
+\begin{frame}{Quicksort}
+	\begin{alertblock}{Imagen}
+	\includegraphics[scale=0.55]{../Graficas/Quicksort/quicksortO0_ruben.jpeg}
+	\end{alertblock}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Algoritmos de ordenación}
+	\begin{block}{Función}
+	Se observa una diferencia notable entre los algoritmos O(nlog 2 (n)) y los
+	$O(n^2)$, casi no se aprecian los primeros.
+	\end{block}
+
+	\begin{alertblock}{Imagen}
+	\includegraphics[scale=0.55]{../Graficas/todos.png}
+	\end{alertblock}
+\end{frame}
+
+
+
+
+% Resto de algoritmos
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Fibonacci}
+	\begin{block}{Función}
+		Fibonacciiiii
+	\end{block}
+	
+	\begin{block}{Ajuste}
+	$ f(x) = a\cdot ((1+\sqrt(5))/2)^x $
+
+	$a               = 5.59738\cdot 10^{-9}      +/- 2.093\cdot 10^{-12}    (0.0374\%)$
+	\end{block}
+\end{frame}
+
+\begin{frame}{Fibonacci}
+	\begin{alertblock}{Imagen}
+	\includegraphics[scale=0.55]{../Graficas/Fibonacci/fibonacciO0_ruben.jpeg}
+	\end{alertblock}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Hanoi}
+	\begin{block}{Función}
+		Hanoi
+	\end{block}
+	
+	\begin{block}{Ajuste}
+	$f(x) = a\cdot(2^x) $
+	
+	$a               = 1.12636\cdot 10^{-8}      +/- 1.391\cdot 10^{-11}    (0.1235\%)$
+	\end{block}
+\end{frame}
+
+\begin{frame}{Hanoi}
+	\begin{alertblock}{Imagen}
+	\includegraphics[scale=0.55]{../Graficas/Hanoi/hanoiO0_ruben.jpeg}
+	\end{alertblock}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{frame}{Floyd}
+	\begin{block}{Función}
+	
+	\end{block}
+	
+	\begin{block}{Ajuste}
+	$f(x) = a\cdot x^3 + b\cdot x^2 + c\cdot x + d $
+
+	$\left\{ \begin{array}{c}
+	a               = 1.11725\cdot 10^{-8}      +/- 3.725\cdot 10^{-10}    (3.334\%) \\
+	b               = -2.27723\cdot 10^{-6}     +/- 6.692\cdot 10^{-7}    (29.39\%) \\
+	c               = 0.00096037       +/- 0.0003713    (38.66\%) \\
+	d               = -0.115743        +/- 0.06234      (53.86\%)
+	\end{array}\right.$
+	\end{block}
+\end{frame}
+
+\begin{frame}{Floyd}
+	\begin{alertblock}{Imagen}
+	\includegraphics[scale=0.55]{../Graficas/Floyd/floydO0_ruben.jpeg}
+	\end{alertblock}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+	\begin{block}
+	En este apartado optimizaremos diferentes algoritmos.
+	\begin{itemize}
+	\item Burbuja
+	\item Quicksort
+	\item Floyd
+	\end{itemize}
+	\end{block}
+	
+	\begin{block}
+	Como podemos comprobar, por mucho que optimicemos el algoritmo de burbuja no llega a igualarse al mejor algoritmo de ordenación (en término medio), quicksort. La optimización más agresiva sin riesgo de pérdida de información es -O2 y llega a ser 10 veces más lento que quicksort sin optimización (con 10.000 elementos).
+	\end{block}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{frame}{Burbuja optimizado}
+	\begin{alertblock}{Imagen}
+	\includegraphics[scale=0.55]{../Graficas/Burbuja/burbuja_optimizacion.png}
+	\end{alertblock}
+\end{frame}
+
+\begin{frame}{Quicksort optimizado}
+	\begin{alertblock}{Imagen}
+	\includegraphics[scale=0.55]{../Graficas/Quicksort/quicksort_optimizacion.png}				\end{alertblock}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+	\begin{alertblock}
+	Esto es una prueba gráfica de que hay que tener en cuenta la eficiencia de los 				algoritmos, ya que la mejora hardware no es suficiente en caso de que tengamos 				restricciones de tiempo.
+	\end{alertblock}
+\end{frame}
+
+\begin{frame}{Burbuja optimizado}
+	\begin{alertblock}{Imagen}
+	\includegraphics[scale=0.55]{../Graficas/Burbuja/burbuja_optimizacion.png}
+	\end{alertblock}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Floyd}
+	\begin{block}{Algoritmo}
+	El algoritmo floyd, tipo de algoritmo con programación dinámica para encontrar el 			camino mínimo en grafos ponderados.
+	\end{block}
+\end{frame}
+
+\begin{frame}{Inserción}
+	\begin{alertblock}{Imagen}
+	\includegraphics[scale=0.55]{../Graficas/Floyd/floyd_optimizacion.png}
+	\end{alertblock}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}
