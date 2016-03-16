@@ -11,6 +11,7 @@ for DIR in `ls Graficas/`; do
     echo "set xlabel \"Tamaño del vector\"" >> $archivo
     echo "set ylabel \"Tiempo (s)\"" >> $archivo
     echo "set fit quiet" >> $archivo
+    echo "unset key" >> $archivo
 
     num=0
     dir="Graficas/$DIR/Datos"
