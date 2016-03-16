@@ -1,6 +1,10 @@
 #!/bin/bash
 
-
+if [ $# -ne 1 ]
+then
+    echo "Uso: $0 <nombre>"
+    exit 1
+fi
 
 rm -f *~
 rm -f ./gnuplot/*~
@@ -23,5 +27,3 @@ rm -f ../Graficas/Quicksort/*$1*
 rm -f ../Graficas/Quicksort/Datos/*$1*
 rm -f ../Graficas/Seleccion/*$1*
 rm -f ../Graficas/Seleccion/Datos/*$1*
-
-
