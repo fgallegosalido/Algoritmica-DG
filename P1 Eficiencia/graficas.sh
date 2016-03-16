@@ -1,7 +1,7 @@
 #!/bin/bash
 
 for DIR in `ls Graficas/`; do
-  if [ -d $dir ]
+  if [ $DIR != Ajustes ] && [ -d Graficas/$DIR ]
     then
     archivo="temporal.gp"
 
@@ -60,3 +60,4 @@ for DIR in `ls Graficas/`; do
 done
 
 rm temporal.gp
+rm fit.log
