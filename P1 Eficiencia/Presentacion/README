@@ -1,2 +1,6 @@
 
 En principio la presentación hemos pensado en hacerla con beamer de latex
+
+Los archivos con el código para la generación de los pdf's son:
+    - memoria.tex
+    - beamer.tex
