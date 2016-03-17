@@ -209,7 +209,7 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 	\begin{exampleblock}{algoritmo.gp}
 	set terminal pngcairo
 	
-	set output "fichero.jpeg"
+	set output "fichero.png"
 	
 	set title ''Eficiencia algoritmo"
 	
@@ -411,7 +411,7 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 \subsection{Fibonacci}
 \begin{frame}{Fibonacci}
 	\begin{block}{Función}
-		Fibonacci
+		Fibonacci: $a_n=a_{n-1} + a_{n-2}$ con $a_0=1, a_1=1$
 	\end{block}
 	
 	\begin{block}{Ajuste}
@@ -501,7 +501,7 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 	
 	\pause
 	\begin{block}{Observación}
-	Como podemos comprobar, por mucho que optimicemos el algoritmo de burbuja no llega a igualarse al mejor algoritmo de ordenación (en término medio), quicksort. La optimización más agresiva sin riesgo de pérdida de información es -O2 y llega a ser 10 veces más lento que quicksort sin optimización (con 10.000 elementos).
+	Como podemos comprobar, por mucho que optimicemos el algoritmo de burbuja no llega a igualar al mejor algoritmo de ordenación (en término medio), quicksort. La optimización del burbuja más agresiva sin riesgo de pérdida de información es -O2 y es 10 veces más lento que quicksort sin optimización con 10.000 elementos. Esta diferencia aumenta con el tamaño.
 	\end{block}
 \end{frame}
 
