@@ -1,5 +1,6 @@
 #!/bin/bash
 find . -regex ".*~" -exec rm -r {} \;
+
 rm -f ./Presentacion/beamer.aux
 rm -f ./Presentacion/beamer.log
 rm -f ./Presentacion/beamer.nav
