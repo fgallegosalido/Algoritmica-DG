@@ -175,12 +175,14 @@ int main(int argc, char** argv){
     rankings[i] = i;
   }
   random_shuffle(rankings, rankings+n);
-/*
+
+#ifndef GP_OUT
   cout << "ranking: ";
   for (int i=0; i<n; i++)
     cout << rankings[i] << " ";
   cout << endl;
-*/
+#endif
+
   chrono::high_resolution_clock::time_point tantes, tdespues;
   chrono::duration<double> transcurrido;
   int n_inv;
@@ -190,6 +192,9 @@ int main(int argc, char** argv){
   tdespues = chrono::high_resolution_clock::now();
   transcurrido = chrono::duration_cast<chrono::duration<double>>(tdespues - tantes);
 
-  //cout << "Num inversiones: " << n_inv << endl;
+#ifndef GP_OUT
+  cout << "Num inversiones: " << n_inv << endl;
+#else
   cout << n << " " << transcurrido.count() << endl;
+#endif
 }

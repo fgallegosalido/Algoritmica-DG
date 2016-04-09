@@ -36,11 +36,21 @@ int main(int argc, char** argv){
 
   chrono::high_resolution_clock::time_point tantes, tdespues;
   chrono::duration<double> transcurrido;
+  int n_inv;
 
   tantes = chrono::high_resolution_clock::now();
-  inversiones(rankings);
+  n_inv = inversiones(rankings);
   tdespues = chrono::high_resolution_clock::now();
   transcurrido = chrono::duration_cast<chrono::duration<double>>(tdespues - tantes);
 
-  cout << n << " " << transcurrido.count() << endl;
+  #ifndef GP_OUT
+    cout << "ranking: ";
+    for (int i=0; i<n; i++)
+      cout << rankings[i] << " ";
+    cout << endl;
+    cout << "Num inversiones: " << n_inv << endl;
+  #else
+    cout << n << " " << transcurrido.count() << endl;
+  #endif
+
 }

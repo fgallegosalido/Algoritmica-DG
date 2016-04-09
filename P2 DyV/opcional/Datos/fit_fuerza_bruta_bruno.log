@@ -1,7 +1,7 @@
 
 
 *******************************************************************************
-Sat Apr  9 22:30:36 2016
+Sun Apr 10 00:22:29 2016
 
 
 FIT:    data read from "datos.dat"
@@ -26,19 +26,19 @@ b               = 1
 c               = 1
 
 After 10 iterations the fit converged.
-final sum of squares of residuals : 0.00131739
-rel. change during last iteration : -2.40427e-09
+final sum of squares of residuals : 0.000109559
+rel. change during last iteration : -2.89642e-08
 
 degrees of freedom    (FIT_NDF)                        : 496
-rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.00162973
-variance of residuals (reduced chisquare) = WSSR/ndf   : 2.65603e-06
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.000469985
+variance of residuals (reduced chisquare) = WSSR/ndf   : 2.20885e-07
 
 Final set of parameters            Asymptotic Standard Error
 =======================            ==========================
 
-a               = 4.62478e-09      +/- 3.931e-11    (0.85%)
-b               = -1.80988e-06     +/- 2.03e-07     (11.21%)
-c               = 0.000935906      +/- 0.0002198    (23.48%)
+a               = 4.13323e-09      +/- 1.134e-11    (0.2743%)
+b               = -4.61072e-08     +/- 5.853e-08    (127%)
+c               = 1.42312e-06      +/- 6.337e-05    (4453%)
 
 
 correlation matrix of the fit parameters:

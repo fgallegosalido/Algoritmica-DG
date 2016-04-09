@@ -10,7 +10,7 @@ mkdir ../Graficas 2> /dev/null
 mkdir ../Datos 2> /dev/null
 
 # Fuerza bruta
-g++ -std=c++11 ../src/fuerza_bruta.cpp
+g++ -std=c++11 -D GP_OUT ../src/fuerza_bruta.cpp
 nelementos=10
 echo "" > datos.dat
 while [ $nelementos -lt 5000 ]; do
@@ -25,7 +25,7 @@ mv fit.log ../Datos/fit_fuerza_bruta_$1.log
 echo "Fuerza bruta completado"
 
 # DyV
-g++ -std=c++11 ../src/dyv.cpp
+g++ -std=c++11 -D GP_OUT ../src/dyv.cpp
 nelementos=10
 echo "" > datos.dat
 while [ $nelementos -lt 5000 ]; do
