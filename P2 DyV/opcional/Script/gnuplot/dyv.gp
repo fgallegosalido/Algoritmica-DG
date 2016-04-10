@@ -1,5 +1,5 @@
 set terminal pngcairo
-set output "grafica.jpeg"
+set output "grafica.png"
 
 set title "Divide y vencerás"
 set xlabel "Tamaño del vector"

@@ -19,7 +19,7 @@ while [ $nelementos -lt 5000 ]; do
 done
 gnuplot ./gnuplot/fuerza_bruta.gp
 
-mv grafica.jpeg ../Graficas/fuerza_bruta_$1.jpeg
+mv grafica.png ../Graficas/fuerza_bruta_$1.png
 mv datos.dat ../Datos/fuerza_bruta_$1.dat
 mv fit.log ../Datos/fit_fuerza_bruta_$1.log
 echo "Fuerza bruta completado"
@@ -34,7 +34,7 @@ while [ $nelementos -lt 5000 ]; do
 done
 gnuplot ./gnuplot/dyv.gp
 
-mv grafica.jpeg ../Graficas/dyv_$1.jpeg
+mv grafica.png ../Graficas/dyv_$1.png
 mv datos.dat ../Datos/dyv_$1.dat
 mv fit.log ../Datos/fit_dyv_$1.log
 echo "DyV completado"
