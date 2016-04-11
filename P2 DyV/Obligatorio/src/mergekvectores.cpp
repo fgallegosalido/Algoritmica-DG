@@ -5,7 +5,7 @@ int * GeneraVector(int** matriz, int n_vec, int n_elem){
 
   for (int i=0; i<n_vec; ++i){
     for (int j=0; j<n_elem; ++j){
-      vector[i*n_elem+j] = matriz[i][j];
+      vector[i*n_vec+j] = matriz[i][j];
     }
   }
 
