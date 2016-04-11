@@ -74,7 +74,7 @@ void MergeKPartitions(int* &vector, int n_elem, int ini, int fin){
 }
 
 // Función que llama a todo el algoritmo
-int* MergeVectors(int** vectors, int n_vec, int n_elem){
+int* MezclaDyV(int** vectors, int n_vec, int n_elem){
   int * full_vector = GeneraVector(vectors, n_vec, n_elem); // Generamos el vector a devolver
   MergeKPartitions(full_vector, n_elem, 0, n_vec*n_elem-1); // Aplicamos la partición y mezcla
 
