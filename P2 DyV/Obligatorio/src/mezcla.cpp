@@ -1,12 +1,15 @@
 #include <iostream>
-using namespace std;
 #include <ctime>
 #include <cstdlib>
 #include <climits>
 #include <cassert>
-#include "mezcla_DyV.cpp"
+#include <fstream>
+#include <chrono>
+#include "mergekvectores.cpp"
+#include "mezcla_no_DyV.cpp"
 //#include <algorithm>
 //#include <vector>
+using namespace std;
 
 //generador de ejemplor para el problema de mezcla de k vectores ordenados.
 //Para obtener k vectores ordenados de forma creciente cada uno con n elementos,
@@ -31,8 +34,6 @@ int main(int argc, char * argv[]){
 
   int n = atoi(argv[1]);
   int k=atoi(argv[2]);
-
-
   int **T;
   T =  new int * [k];
   assert(T);
@@ -63,19 +64,47 @@ int main(int argc, char * argv[]){
       }
     }
   }
+  int* ordenado;
 
-  delete [] aux;
+  chrono::high_resolution_clock::time_point tantes, tdespues;
+  chrono::duration<double> transcurrido, transcurrido2;
+  tantes = chrono::high_resolution_clock::now();
 
-  for (int i=0; i<k; i++) {
+  ordenado = MergeVectors(T, k, n);
+
+  tdespues = chrono::high_resolution_clock::now();
+  transcurrido = chrono::duration_cast<chrono::duration<double>>(tdespues - tantes);
+
+
+  // merge
+  int **M;
+  M =  new int * [k];
+  assert(M);
+
+  for (int i = 0; i < k; i++)
+    M[i]= new int [n];
+
+  for (int i=0; i<k; i++) 
     for (int j=0; j<n; j++)
-      cout << T[i][j] << " ";
-    cout << " " << endl;
-  }
+      M[i][j] = T[i][j];
 
-  int* ordenado = MezclaDyV(T, k, n);
 
-  for (int i=0; i<k*n; i++){
-    cout << ordenado[i] << " ";
-  }
-  cout << endl;
+  int* ordenado_merge;
+  tantes = chrono::high_resolution_clock::now();
+
+  ordenado_merge = mezcla_no_DyV(M, k, n);
+
+  tdespues = chrono::high_resolution_clock::now();
+  transcurrido2 = chrono::duration_cast<chrono::duration<double>>(tdespues - tantes);
+
+
+// Impresion
+  ofstream fuerza_bruta("fuerza_bruta.dat"), dyv("dyv.dat");
+    
+  fuerza_bruta << k << " " << n << " " <<  transcurrido.count();
+  dyv << k << " " << n << " " << transcurrido2.count();       
+  
+  fuerza_bruta.close();
+  dyv.close();
+  delete [] aux;
 }
