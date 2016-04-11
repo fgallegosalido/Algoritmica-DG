@@ -67,6 +67,8 @@ void MergeKPartitions(int* &vector, int n_elem, int ini, int fin){
   // Si hay más de dos particiones:
   else if(partitions > 2){
     int division = ini + (partitions/2)*n_elem; // Cálculo de la división
+    // Aquí es basicamente donde aplicamos divide y vencerás, el cual nos acaba
+    // proporcionando la eficiencia deseada para esta situación.
     MergeKPartitions(vector, n_elem, ini, division-1);  // Llamada al primer conjunto de particiones
     MergeKPartitions(vector, n_elem, division, fin);    // Llamada al segundo conjunto de particiones
     Merge(vector, ini, division, fin);  // Mezclamos los dos conjuntos de particiones, ya ordenados
