@@ -1,11 +1,11 @@
 // Función que genera un vector a partir de una matriz, colocando cada vector
 // seguido de otro.
-int * GeneraVector(int** matriz, int n_vec, int n_elem){
+int * GeneraVector(int** &matriz, int n_vec, int n_elem){
   int* vector = new int[n_vec*n_elem];
 
   for (int i=0; i<n_vec; ++i){
     for (int j=0; j<n_elem; ++j){
-      vector[i*n_vec+j] = matriz[i][j];
+      vector[i*n_elem+j] = matriz[i][j];
     }
   }
 
@@ -13,8 +13,8 @@ int * GeneraVector(int** matriz, int n_vec, int n_elem){
 }
 
 // Función que mezcla dos vectores ordenados en uno ordenado
-int Merge(int* vector, int ini, int pivot, int fin){
-  int size = ini-fin+1;
+void Merge(int* &vector, int ini, int pivot, int fin){
+  int size = fin-ini+1;
   int f_count = 0, s_count = 0;// Contadores de cada vector
   int selected;
   int* aux = new int[size];
@@ -57,8 +57,8 @@ int Merge(int* vector, int ini, int pivot, int fin){
 // Función que hace la partición del vector, teniendo en cuenta donde empieza,
 // donde termina y el número de elementos de la partición, y devuelve ese trozo
 // ya ordenado
-void MergeKPartitions(int* vector, int n_elem, int ini, int fin){
-  int size = ini - fin + 1;
+void MergeKPartitions(int* &vector, int n_elem, int ini, int fin){
+  int size = fin - ini + 1;
   int partitions = size/n_elem;
   // Caso base: Si hay 2 particiones de igual tamaño, las mezcla
   if(partitions == 2){
