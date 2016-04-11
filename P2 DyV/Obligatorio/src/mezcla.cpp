@@ -5,7 +5,7 @@
 #include <cassert>
 #include <fstream>
 #include <chrono>
-#include "mergekvectores.cpp"
+#include "mezcla_DyV.cpp"
 #include "mezcla_no_DyV.cpp"
 //#include <algorithm>
 //#include <vector>
@@ -64,13 +64,13 @@ int main(int argc, char * argv[]){
       }
     }
   }
-  int* ordenado;
+  int* ordenado_dyv;
 
   chrono::high_resolution_clock::time_point tantes, tdespues;
   chrono::duration<double> transcurrido, transcurrido2;
   tantes = chrono::high_resolution_clock::now();
 
-  ordenado = MergeVectors(T, k, n);
+  ordenado_dyv = MezclaDyV(T, k, n);
 
   tdespues = chrono::high_resolution_clock::now();
   transcurrido = chrono::duration_cast<chrono::duration<double>>(tdespues - tantes);
@@ -84,15 +84,15 @@ int main(int argc, char * argv[]){
   for (int i = 0; i < k; i++)
     M[i]= new int [n];
 
-  for (int i=0; i<k; i++) 
+  for (int i=0; i<k; i++)
     for (int j=0; j<n; j++)
       M[i][j] = T[i][j];
 
 
-  int* ordenado_merge;
+  int* ordenado_no_dyv;
   tantes = chrono::high_resolution_clock::now();
 
-  ordenado_merge = mezcla_no_DyV(M, k, n);
+  ordenado_no_dyv = MezclaNoDyV(M, k, n);
 
   tdespues = chrono::high_resolution_clock::now();
   transcurrido2 = chrono::duration_cast<chrono::duration<double>>(tdespues - tantes);
@@ -100,10 +100,10 @@ int main(int argc, char * argv[]){
 
 // Impresion
   ofstream fuerza_bruta("fuerza_bruta.dat"), dyv("dyv.dat");
-    
+
   fuerza_bruta << k << " " << n << " " <<  transcurrido.count();
-  dyv << k << " " << n << " " << transcurrido2.count();       
-  
+  dyv << k << " " << n << " " << transcurrido2.count();
+
   fuerza_bruta.close();
   dyv.close();
   delete [] aux;
