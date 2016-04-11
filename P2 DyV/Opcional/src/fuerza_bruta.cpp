@@ -7,7 +7,6 @@
 using namespace std;
 
 
-
 int inversiones(vector<int> v){
   int count = 0;
   int size = v.size();
@@ -29,9 +28,9 @@ int main(int argc, char** argv){
   int n = atoi(argv[1]);
   vector<int> rankings(n);
   srandom(time(0));
-  for (int i=0; i < n; i++){
+  for (int i=0; i < n; i++)
     rankings[i] = i;
-  }
+
   random_shuffle(rankings.begin(), rankings.end());
 
   chrono::high_resolution_clock::time_point tantes, tdespues;
@@ -41,6 +40,7 @@ int main(int argc, char** argv){
   tantes = chrono::high_resolution_clock::now();
   n_inv = inversiones(rankings);
   tdespues = chrono::high_resolution_clock::now();
+
   transcurrido = chrono::duration_cast<chrono::duration<double>>(tdespues - tantes);
 
   #ifndef GP_OUT
