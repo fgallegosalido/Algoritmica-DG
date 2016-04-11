@@ -72,7 +72,7 @@ int main(int argc, char * argv[]){
     cout << " " << endl;
   }
 
-  int* ordenado = MergeVectors(T, k, n);
+  int* ordenado = MezclaDyV(T, k, n);
 
   for (int i=0; i<k*n; i++){
     cout << ordenado[i] << " ";

@@ -1,7 +1,3 @@
-#include <iostream>
-#include <fstream>
-using namespace std;
-
 /*
 Función que calcula el mínimo de entre los elementos apuntados por los índices
 */
@@ -18,7 +14,7 @@ int f_pos_min(int* vec_indices, int** M, int num_vec){
   return pos_min;
 }
 
-int* mezcla_no_DyV(int** M, int num_vec, int num_elem){
+int* MezclaNoDyV(int** M, int num_vec, int num_elem){
   int* vec_indices = new int[num_vec]; //Vector que almacena los índices
   for (int i=0; i<num_vec; ++i)
     vec_indices[i]=0;
