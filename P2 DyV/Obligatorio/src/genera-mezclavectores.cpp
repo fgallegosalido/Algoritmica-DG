@@ -4,6 +4,7 @@ using namespace std;
 #include <cstdlib>
 #include <climits>
 #include <cassert>
+#include "mergekvectores.cpp"
 //#include <algorithm>
 //#include <vector>
 
@@ -70,4 +71,11 @@ int main(int argc, char * argv[]){
       cout << T[i][j] << " ";
     cout << " " << endl;
   }
+
+  int* ordenado = MergeVectors(T, k, n);
+
+  for (int i=0; i<k*n; i++){
+    cout << ordenado[i] << " ";
+  }
+  cout << endl;
 }
