@@ -1,0 +1,60 @@
+/*
+Función que calcula el mínimo de entre los elementos apuntados por los índices
+*/
+int* ordena_vectores(int* vec1, int* vec2, int tam1, int tam2){
+  int* ret = new int[tam1 + tam2];
+  int index1 = 0, index2 = 0;
+  bool terminado1 = false, terminado2 = false;
+
+  for (int i=0; i< tam1*tam2; i++){
+    if (terminado1){
+        ret[i] = vec2[index2];
+        index2++;
+    }
+    else if (terminado2){
+        ret[i] = vec1[index1];
+        index1++;
+    }
+    else if (vec2[index2] > vec1[index1]){
+        ret[i] = vec1[index1];
+        index1++;    
+    }
+    else if (vec2[index2] <= vec1[index1]){
+        ret[i] = vec2[index2];
+        index2++;    
+    }
+
+    if ((index1+1) == tam1)
+        terminado1 = true;
+    if ((index2+1) == tam2)
+        terminado2 = true;
+
+  }
+
+  return ret;
+}
+
+int* MezclaBasica(int** M, int num_vec, int num_elem){
+  int tam_v_pal = num_elem;
+  int* vec_pal = new int[num_elem];
+  int* vec_aux;
+
+  for (int i=0; i<num_elem; i++)
+    vec_pal[i] = M[0][i];
+
+  for (int i=1; i<num_vec; i++){
+    vec_aux = ordena_vectores(vec_pal, M[i], tam_v_pal, num_elem);
+    delete [] vec_pal;
+//
+    vec_pal = new int[tam_v_pal];
+    for (int i=0; i<(tam_v_pal+num_elem); i++)
+        vec_pal[i] = vec_aux[i];
+    delete [] vec_aux;
+//
+    
+    tam_v_pal = tam_v_pal + num_elem;
+    vec_pal = vec_aux;
+  }
+
+  return vec_pal;
+}

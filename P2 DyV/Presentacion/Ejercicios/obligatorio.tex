@@ -1,0 +1,16 @@
+
+Se tienen $k$ vectores ordenados (de menor a mayor), cada uno con $n$ elementos, y queremos
+combinarlos en un \'unico vector ordenado (con $kn$ elementos). Una posible alternativa consiste en, utilizando un algoritmo cl\'asico, mezclar los dos primeros vectores, posteriormente mezclar el resultado con el tercero, y as\'i sucesivamente.
+
+\begin{itemize}
+    \item ¿Cu\'al ser\'ia el tiempo de ejecuci\'on de este algoritmo?
+	\item Diseñe, analice la eficiencia e implemente un algoritmo de mezcla m\'as eficiente, 		  basado en \"divide y vencer\'as\".
+	\item Realizar tambi\'en un estudio emp\'irico e h\'ibrido de la eficiencia de ambos 				  algoritmos.
+\end{itemize}
+
+\subsection{Estudio preliminar}
+Plante\'ando el problema es posible imponer una cota superior te\'orica a la mezcla. Teniendo en cuenta que hay $kn$ elementos, si aplic\'asemos un algoritmo con eficiencia  $O(n)=nlog(n)$ deducimos que podemos encontrar un algoritmo de ordenaci\'on b\'asica con eficiencia $O(k,n)=nklog(nk)$. En este caso estar\'iamos representando los $k$ vectores de $n$ elementos como un \'unico vector, sin aprovechar a\'un el hecho de que parte del \"\ vector\ \" est\'a ordenado.
+
+\subsection{Tiempo de ejecuci\'on}
+\subsection{Mezcla con divide y vencer\'as}
+\subsection{Estudio emp\'irico e h\'ibrido}
