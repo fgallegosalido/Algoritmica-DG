@@ -1,6 +1,6 @@
-/*
-Función que calcula el mínimo de entre los elementos apuntados por los índices
-*/
+
+//Función que calcula el mínimo de entre los elementos apuntados por los índices
+
 int f_pos_min(int* vec_indices, int** M, int num_vec){
   int pos_min = 0;
   while((vec_indices[pos_min] <0) && (pos_min < num_vec))

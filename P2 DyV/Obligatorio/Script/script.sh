@@ -21,11 +21,18 @@ g++ -std=c++11 ../src/mezcla.cpp
 nelementos=10
 nvectores=10
 while [ $nelementos -lt 1000 ]; do
-   while [ $nvectores -lt 1000 ]; do
-       ./a.out $nelementos $nvectores 1
-       let nvectores=nvectores+100
-   done
-    let nelementos=nelementos+100
+   ./a.out $nelementos 10 1
+   ./a.out $nelementos 110 1
+   ./a.out $nelementos 210 1
+   ./a.out $nelementos 310 1
+   ./a.out $nelementos 410 1
+   ./a.out $nelementos 510 1
+   ./a.out $nelementos 610 1
+   ./a.out $nelementos 710 1
+   ./a.out $nelementos 810 1
+   ./a.out $nelementos 910 1
+   echo $nelementos
+   let nelementos=nelementos+100
 done
 
 
@@ -42,3 +49,4 @@ mv dyv.dat ../Datos/dyv_3d_$1.dat
 
 rm fit.log
 echo "Terminado"
+exit 0
