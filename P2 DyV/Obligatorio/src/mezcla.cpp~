@@ -99,18 +99,18 @@ int main(int argc, char * argv[]){
 
 
 // Impresion
-  cout << k << " " << n << endl;
-  ofstream fuerza_bruta("fuerza_bruta.dat"), dyv("dyv.dat");
-    if (argv[3] == "3D"){
+//cout << atoi(argv[3]) <<endl;
+//  cout << k << " " << n << endl;
+  ofstream fuerza_bruta("fuerza_bruta.dat", ios::app), dyv("dyv.dat", ios::app);
+    if ( atoi(argv[3]) == 1 ){ // 3D
       fuerza_bruta << k << " " << n << " " <<  transcurrido2.count() << endl;
       dyv << k << " " << n << " " << transcurrido.count()<< endl;
     }
-    else if ( strcmp(argv[3],"kvectores") ){
-        cout << "-----";
+    else if ( atoi(argv[3]) == "2" ){ // kvectores, varian los vectores
       fuerza_bruta << k << " " << transcurrido2.count()<< endl;
       dyv << k << " " << transcurrido.count() << endl;
     }
-    else if (argv[3] == "nelementos"){
+    else if ( atoi(argv[3]) == 3 ){ //nelementos, varia el numero de elementos de cada vector
       fuerza_bruta << n << " " <<  transcurrido2.count() << endl;
       dyv << n << " " << transcurrido.count() << endl;
     }
