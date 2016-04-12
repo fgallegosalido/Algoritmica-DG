@@ -53,3 +53,11 @@ mv grafica.png ../Graficas/dyv_mergesort_$1.png
 mv datos.dat ../Datos/dyv_mergesort_$1.dat
 mv fit.log ../Datos/fit_dyv_mergesort_$1.log
 echo "DyV mergesort completado"
+
+#Comparativa
+cd gnuplot
+gnuplot comparativa.gp
+
+mv comparativa.png ../../Graficas/comparativa.png
+echo "comparativa completada"
+cd ..
