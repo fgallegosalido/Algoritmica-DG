@@ -1,10 +1,10 @@
 set terminal pngcairo
-set output "grafica.png"
+set output "grafica_d.png"
 
-set title "Divide y vencerás"
-set xlabel "Tamaño del vector"
+set title "Mezcla por divide y vencerás"
+set xlabel "Número de vectores"
 set ylabel "Tiempo (s)"
 set fit quiet
-f(x) = a*x*x + b*x + c
-fit f(x) "datos.dat" via a, b, c
-plot "datos.dat", f(x)
+f(x) = a*x*(log(x)/log(2))
+fit f(x) "dyv.dat" via a
+plot "dyv.dat", f(x)

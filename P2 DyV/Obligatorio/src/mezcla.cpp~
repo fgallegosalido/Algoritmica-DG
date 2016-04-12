@@ -105,7 +105,7 @@ int main(int argc, char * argv[]){
       fuerza_bruta << k << " " << n << " " <<  transcurrido2.count() << endl;
       dyv << k << " " << n << " " << transcurrido.count()<< endl;
     }
-    else if ( strcmp(argv[3],"kvectores")==0 ){
+    else if ( strcmp(argv[3],"kvectores") ){
         cout << "-----";
       fuerza_bruta << k << " " << transcurrido2.count()<< endl;
       dyv << k << " " << transcurrido.count() << endl;
