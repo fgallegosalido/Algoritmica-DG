@@ -1,0 +1,43 @@
+
+
+*******************************************************************************
+Tue Apr 12 18:24:07 2016
+
+
+FIT:    data read from "datos.dat"
+        format = z
+        #datapoints = 499
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+fitted parameters initialized with current variable values
+
+
+
+ Iteration 0
+ WSSR        : 5.79915e+11       delta(WSSR)/WSSR   : 0
+ delta(WSSR) : 0                 limit for stopping : 1e-05
+ lambda	  : 34090.4
+
+initial set of free parameter values
+
+a               = 1
+
+After 4 iterations the fit converged.
+final sum of squares of residuals : 2.73144e-06
+rel. change during last iteration : -1.36967e-11
+
+degrees of freedom    (FIT_NDF)                        : 498
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 7.40595e-05
+variance of residuals (reduced chisquare) = WSSR/ndf   : 5.48482e-09
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+
+a               = 1.99872e-08      +/- 9.725e-11    (0.4866%)
+
+
+correlation matrix of the fit parameters:
+
+               a      
+a               1.000 

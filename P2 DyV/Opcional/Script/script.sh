@@ -38,3 +38,18 @@ mv grafica.png ../Graficas/dyv_$1.png
 mv datos.dat ../Datos/dyv_$1.dat
 mv fit.log ../Datos/fit_dyv_$1.log
 echo "DyV completado"
+
+# DyV mergesort
+g++ -std=c++11 -D GP_OUT ../src/dyv_mergesort.cpp
+nelementos=10
+echo "" > datos.dat
+while [ $nelementos -lt 5000 ]; do
+    ./a.out $nelementos >> datos.dat
+    let nelementos=nelementos+10
+done
+gnuplot ./gnuplot/dyv_mergesort.gp
+
+mv grafica.png ../Graficas/dyv_mergesort_$1.png
+mv datos.dat ../Datos/dyv_mergesort_$1.dat
+mv fit.log ../Datos/fit_dyv_mergesort_$1.log
+echo "DyV mergesort completado"
