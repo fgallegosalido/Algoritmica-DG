@@ -106,7 +106,7 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 \usetikzlibrary{shapes.multipart}
 
 %% Título y otros %%
-\title{Presentación práctica divide y vencerás}                                               % Título
+\title{Presentación práctica de eficiencia}                                               % Título
 \subtitle{Asignatura: Algorítmica}                                  % Subtítulo
 \author{Rubén Morales Pérez
 		\and Francisco Javier Morales Piqueras
@@ -132,10 +132,180 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 
 \section{Presentación}
 \subsection{Introducción}
+\begin{frame}
+	\begin{block}{Eficiencia}
+	Divide y vencerás es una técnica algorítmica que consiste en resolver un problema 			diviéndolo en problemas más pequeños y combinando las soluciones. 
+	El proceso de división continúa hasta que los subproblemas llegan a ser lo 					suficientemente sencillos como para una resolución directa.
+	El hecho de que el tamaño de los subproblemas sea estrictamente menor que el tamaño 			original del problema nos garantiza la convergencia hacia los casos elementales.				\end{block}
+	
+\end{frame}
 
-\section{Mezcla de vectores}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Automatización}
+\begin{frame}
+	\begin{block}{Script}
+		Podemos obtener los datos fijando el n\'umero de vectores usados.
+	\end{block}
+	
+	\begin{exampleblock}{script.sh}
+	g++ -std=c++11 ../src/mezcla.cpp
 
-\section{•}
+	nelementos=10
+
+	while [ \$nelementos -lt 2500 ]; do
+    
+    		./a.out \$nelementos 200 3
+    
+    		let nelementos=nelementos+25
+	
+	done
+	\end{exampleblock}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+	\begin{block}{Script}
+		Si queremos fijar el n\'umero de vectores usaremos
+	\end{block}
+	
+	\begin{exampleblock}{script.sh}
+	kvectores=10
+
+	while [ \$kvectores -lt 2500 ]; do
+    
+    		./a.out 200 \$kvectores 2
+    	
+    		let kvectores=kvectores+25
+
+	done
+	\end{exampleblock}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+	\begin{block}{Script}
+	Datos en 3 dimensiones, número de vectores, elementos del vector, y tiempo del algoritmo
+	\end{block}
+	
+	\begin{exampleblock}{script.sh}
+	nelementos=10
+
+	nvectores=10
+
+	while [ \$nelementos -lt 1000 ]; do
+   	
+   		./a.out \$nelementos 10 1
+   
+   		./a.out \$nelementos 110 1
+   
+   		./a.out \$nelementos 210 1
+   
+   		./a.out \$nelementos 310 1
+   		
+   		./a.out \$nelementos 410 1
+   
+   		./a.out \$nelementos 510 1
+   
+   		./a.out \$nelementos 610 1
+   
+   		./a.out \$nelementos 710 1
+   
+   		./a.out \$nelementos 810 1
+   
+   		./a.out \$nelementos 910 1
+
+   		let nelementos=nelementos+100
+	done
+	\end{exampleblock}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+	\begin{block}{Scripts de gnuplot}
+		Podemos hacer que gnuplot automatice su trabajo.
+		
+		Suponemos que el fichero donde están los datos es "datos.dat", los scripts de 				gnuplot se ejecutan:
+		
+		\hspace{2cm}\$ gnuplot algoritmo.gp
+	\end{block}
+	\pause
+	
+	\begin{columns}
+
+	\begin{column}{5cm}
+	\begin{exampleblock}{algoritmo.gp}
+	set terminal pngcairo
+	
+	set output "grafica.png"
+
+	set title "..."
+
+	set xlabel "Numero de vectores/elementos del vector"
+
+	set ylabel "Tiempo (s)"
+
+	set fit quiet
+
+	f(x) = ...
+
+	fit f(x) "datos.dat" via a
+
+	plot "datos.dat", f(x)
+	\end{exampleblock}
+	\end{column}
+	\pause
+	
+	\begin{column}{5cm}
+	\begin{block}{Funciones ajustadas}
+		\[f(x) = a*x\]
+		\[g(x) = a*x*x\]
+		\[h(x) = a*x*(log(x)/log(2))\]
+	\end{block}
+	\end{column}
+	
+	\end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+	\begin{alertblock}{Ordenador usado para la ejecuci\'on}
+	HP Pavilion g series (Pavilion g6)
+
+	Sistema operativo: ubuntu 14.04 LTS
+
+	Memoria: 3.8 GiB (4Gb)
+
+	Procesador: Inter Core i3-2330M CPU @ 2.20GHz x 4
+
+	Gráficos: Intel Sandybridge Mobile
+
+	Tipo de SO: 64 bits
+
+	Disco: 487.9 GB	
+	\end{alertblock}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}

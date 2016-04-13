@@ -101,7 +101,7 @@ gnuplot> stats "fuerza_bruta_kvectores.dat" using 2:(f($1))
 \begin{figure}[htb] 
 \centering
 	\includegraphics[width=0.6\textwidth]{../Obligatorio/Graficas/fuerza_bruta_kvectores.png}
-	\caption{Fuerza bruta con 100 elementos cada vector} 
+	\caption{Fuerza bruta con 200 elementos cada vector} 
 	\label{fig:f_kvectores} 
 \end{figure}
 
@@ -112,9 +112,9 @@ $f(x) = ax$ ya 	que en $T(k, n) = nklog_2k, \ klog_2k$ es una constante, concret
 
 \begin{center}
 \fcolorbox{gray75}{gray97}{
-a               = 0.00031202}
+$a               = 0.00031202$}
 \fcolorbox{gray75}{gray97}{
-Correlation:  r = 0.9934}
+Correlation:  $r = 0.9934$}
 \end{center}
 
 Para obtener una funci\'on ajustada del tipo $g(x)=c\cdot knlog_2k$, calculamos $c=\frac{a}{100\cdot log_2(100)}, c \in \mathbb{R}$,
@@ -122,7 +122,7 @@ Para obtener una funci\'on ajustada del tipo $g(x)=c\cdot knlog_2k$, calculamos 
 \begin{figure}[htb] 
 \centering
 	\includegraphics[width=0.6\textwidth]{../Obligatorio/Graficas/fuerza_bruta_nelementos.png}
-	\caption{Fuerza bruta con 100 vectores} 
+	\caption{Fuerza bruta con 200 vectores} 
 	\label{fig:f_nelementos} 
 \end{figure}
 \newpage
@@ -141,7 +141,7 @@ Correlation:  $r = 0.9863$}
 \begin{figure}[htb] 
 \centering
 	\includegraphics[width=0.6\textwidth]{../Obligatorio/Graficas/dyv_kvectores.png}
-	\caption{Divide y venceras con 100 elementos cada vector} 
+	\caption{Divide y venceras con 200 elementos cada vector} 
 	\label{fig:d_kvectores} 
 \end{figure}
 
@@ -158,7 +158,7 @@ Correlation:  $r = 0.9933$}
 \begin{figure}[htb] 
 \centering
 	\includegraphics[width=0.6\textwidth]{../Obligatorio/Graficas/dyv_nelementos.png}
-	\caption{Divide y venceras con 100 vectores} 
+	\caption{Divide y venceras con 200 vectores} 
 	\label{fig:d_nelementos} 
 \end{figure}
 \newpage
@@ -169,18 +169,39 @@ Como podemos deducir del estudio te\'orico, las diferencias entre fuerza bruta y
 \begin{figure}[htb] 
 \centering
 	\includegraphics[width=0.6\textwidth]{../Obligatorio/Graficas/comparativa_kvectores.png}
-	\caption{Comparativa con 100 elementos cada vector} 
+	\caption{Comparativa con 200 elementos cada vector} 
 	\label{fig:comp_kvectores} 
 \end{figure}
 
 \begin{figure}[htb] 
 \centering
 	\includegraphics[width=0.6\textwidth]{../Obligatorio/Graficas/comparativa_nelementos.png}
-	\caption{Comparativa con 100 vectores} 
+	\caption{Comparativa con 200 vectores} 
 	\label{fig:comp_nelementos} 
 \end{figure}
 
 \newpage
+Si queremos combinar los resultados podemos variar simult\'aneamente el n\'umero de vectores y los elementos del vector tenemos que crear gr\'aficas en $3$ dimensiones.
+De esta forma podemos comprobar que el n\'umero de vectores es un factor m\'as influyente que el n\'umero de elementos de cada vector. Sin embargo este es un dato que se aprecia en el algoritmo por fuerza bruta, en el divide y vencer\'as apenas se nota diferencia.
+
+\begin{figure}[htb] 
+\centering
+	\includegraphics[width=0.6\textwidth]{../Obligatorio/Graficas/3d_fuerza_bruta.png}
+	\caption{3d fuerza bruta} 
+	\label{fig:3d_f} 
+\end{figure}
+
+\begin{figure}[htb] 
+\centering
+	\includegraphics[width=0.6\textwidth]{../Obligatorio/Graficas/3d_dyv.png}
+	\caption{3d divide y vencerás} 
+	\label{fig:3d_d} 
+\end{figure}
+
+\newpage
+
+{\ }
+
 \newpage
 
 
