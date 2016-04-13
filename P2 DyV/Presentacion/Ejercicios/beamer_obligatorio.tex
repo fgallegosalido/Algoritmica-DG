@@ -71,7 +71,8 @@
 
 \begin{frame}{Scripts de gnuplot}
 	\begin{block}{Gnuplot}		
-		Los datos están en "datos.dat". Ejecutamos		
+		Los datos están en "datos.dat". Ejecutamos	
+			
 		\hspace{1cm}\$ gnuplot algoritmo.gp
 	\end{block}
 	\pause
@@ -175,7 +176,7 @@
 	\begin{block}{Código} % errorl
 		\begin{figure}[h]
     		\centering
-    		%\includegraphics[width=0.9\textwidth]{../Imagenes/dyv.png}
+    		\includegraphics[width=0.9\textwidth]{./Imagenes/dyv.png}
     		\label{fig:mesh1}
 		\end{figure}
 	\end{block}
@@ -219,6 +220,7 @@
 \subsection{Estudio emp\'irico e h\'ibrido fuerza bruta}
 \begin{frame}{Ajuste fuerza bruta}
 	\begin{block}
+	
 	Vamos a variar el n\'umero de vectores, la funci\'on que debemos ajustar es 
 	$f(x) = ax^2$
 	$\centering$
@@ -226,13 +228,10 @@
 	%\fcolorbox{gray75}{gray97}{
 		$a               = 1.77962\cdot 10^{-6}$
 	%}
+	
+	Para calcular los coeficientes de correlaci\'on hemos usado la función stats de gnuplot:
 	\end{block}
 	
-	\begin{block}
-	Para calcular los coeficientes de correlaci\'on hemos usado la función stats de gnuplot:
-		%stats fuerza_bruta_kvectores\.dat using 2:(f(\$1))
-
-	\end{block}
 \end{frame}
 
 
@@ -240,7 +239,7 @@
 	\begin{exampleblock}{Imagen}
 	\begin{figure}[htb] 
 	\centering
-	\includegraphics[width=0.6\textwidth]														{../Obligatorio/Graficas/fuerza_bruta_kvectores.png}
+	\includegraphics[width=0.7\textwidth]														{../Obligatorio/Graficas/fuerza_bruta_kvectores.png}
 	\caption{Fuerza bruta con 200 elementos cada vector} 
 	\label{fig:f_kvectores} 
 	\end{figure}
@@ -249,6 +248,7 @@
 
 \begin{frame}
 	\begin{block}
+	
 	Para la parte en la que cambiamos el n\'umero de elementos ajustamos la funci\'on 
 	$f(x) = ax$ ya 	que en $T(k, n) = nklog_2k, \ klog_2k$ es una constante, concretamente 	$200$.
 
@@ -260,17 +260,19 @@
 	\end{block}
 \end{frame}
 
+
 \begin{frame}{Imagen}
 	\begin{exampleblock}
 	
 	\begin{figure}[h] 
-	\includegraphics[width=0.6\textwidth]
+	\includegraphics[width=0.7\textwidth]
 	{../Obligatorio/Graficas/fuerza_bruta_nelementos.png}
 	\caption{Fuerza bruta con 200 vectores} 
 	\end{figure}
 	
 	\end{exampleblock}
 \end{frame}
+
 
 \subsection{Mezcla con divide y vencer\'as}
 \begin{frame}[Divide y vencerás]
@@ -282,6 +284,7 @@
 	$a               = 4.52594\cdot 10^{-6}$
 	Correlation:  $r = 0.9863$
 	\end{center}
+	\end{block}
 \end{frame}
 
 \begin{frame}[Imagen]
@@ -289,7 +292,7 @@
 	
 	\begin{figure}[h] 
 	\centering
-	\includegraphics[width=0.6\textwidth]{../Obligatorio/Graficas/dyv_kvectores.png}
+	\includegraphics[width=0.7\textwidth]{../Obligatorio/Graficas/dyv_kvectores.png}
 	\caption{Divide y vencerás con 200 elementos cada vector} 
 	\end{figure}
 	
@@ -309,14 +312,76 @@
 \end{frame}
 
 \begin{frame}{Imagen}
-	\begin{block}
+	\begin{block}{ }
 	
 	\begin{figure}[h] 
 	\centering
-	\includegraphics[width=0.6\textwidth]{../Obligatorio/Graficas/dyv_nelementos.png}
+	\includegraphics[width=0.7\textwidth]{../Obligatorio/Graficas/dyv_nelementos.png}
 	\caption{Divide y venceras con 200 vectores} 
 	\label{fig:d_nelementos} 
 	\end{figure}
 	
 	\end{block}
 \end{frame}
+
+
+\subsection{Comparativa}
+\begin{frame}{Según el número de vectores}
+	\begin{block}
+	
+	\begin{figure}[htb] 
+	\centering
+	\includegraphics[width=0.7\textwidth]														{../Obligatorio/Graficas/comparativa_kvectores.png}
+	\caption{Comparativa con 200 elementos cada vector} 
+	\label{fig:comp_kvectores} 
+	\end{figure}
+	\end{block}
+\end{frame}
+
+
+
+
+\begin{frame}{Según el número de elementos de cada vector}
+	\begin{block}
+	
+	\begin{figure}[htb] 
+	\centering
+	\includegraphics[width=0.7\textwidth]														{../Obligatorio/Graficas/comparativa_nelementos.png}
+	\caption{Comparativa con 200 vectores} 
+	\label{fig:comp_nelementos} 
+\end{figure}
+	\end{block}
+\end{frame}
+
+
+\begin{frame}
+	\begin{block}
+	
+	Si queremos combinar los resultados podemos variar simult\'aneamente el n\'umero de 			vectores y los elementos del vector tenemos que crear gr\'aficas en $3$ dimensiones.
+	De esta forma podemos comprobar que el n\'umero de vectores es un factor m\'as 				influyente que el n\'umero de elementos de cada vector. Sin embargo este es un dato 			que se aprecia en el algoritmo por fuerza bruta, en el divide y vencer\'as apenas se 			nota diferencia.
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\begin{block}
+	
+	\begin{figure}[htb] 
+	\centering
+	\includegraphics[width=0.7\textwidth]{../Obligatorio/Graficas/3d_fuerza_bruta.png}
+	\caption{3d fuerza bruta} 
+	\label{fig:3d_f} 
+\end{figure}
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\begin{block}
+	
+	\begin{figure}[htb] 
+	\centering
+	\includegraphics[width=0.7\textwidth]{../Obligatorio/Graficas/3d_dyv.png}
+	\caption{3d divide y vencerás} 
+	\label{fig:3d_d} 
+\end{figure}
+	\end{block}
+\end{frame}	
