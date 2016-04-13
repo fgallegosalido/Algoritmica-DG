@@ -1,0 +1,23 @@
+\select@language {spanish}
+\contentsline {section}{\numberline {1}Introducci\'on}{2}{section.1}
+\contentsline {section}{\numberline {2}Mezclando k vectores ordenados}{3}{section.2}
+\contentsline {subsection}{\numberline {2.1}Estudio preliminar}{3}{subsection.2.1}
+\contentsline {subsubsection}{\numberline {2.1.1}Eficiencia te\'orica fuerza bruta}{3}{subsubsection.2.1.1}
+\contentsline {subsubsection}{\numberline {2.1.2}Eficiencia te\'orica divide y vencer\'as}{3}{subsubsection.2.1.2}
+\contentsline {subsection}{\numberline {2.2}Tiempos de ejecuci\'on}{4}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Estudio emp\'irico e h\'ibrido}{5}{subsection.2.3}
+\contentsline {subsubsection}{\numberline {2.3.1}Mezcla con fuerza bruta}{5}{subsubsection.2.3.1}
+\contentsline {subsubsection}{\numberline {2.3.2}Mezcla con divide y vencer\'as}{7}{subsubsection.2.3.2}
+\contentsline {subsubsection}{\numberline {2.3.3}Comparativa}{8}{subsubsection.2.3.3}
+\contentsline {section}{\numberline {3}Comparaci\'on de preferencias (opcional)}{11}{section.3}
+\contentsline {subsection}{\numberline {3.1}Fuerza bruta}{11}{subsection.3.1}
+\contentsline {subsubsection}{\numberline {3.1.1}Eficiencia te\IeC {\'o}rica}{11}{subsubsection.3.1.1}
+\contentsline {subsubsection}{\numberline {3.1.2}Eficiencia emp\IeC {\'\i }rica}{12}{subsubsection.3.1.2}
+\contentsline {subsection}{\numberline {3.2}Divide y vencer\IeC {\'a}s}{13}{subsection.3.2}
+\contentsline {subsubsection}{\numberline {3.2.1}Eficiencia te\IeC {\'o}rica}{13}{subsubsection.3.2.1}
+\contentsline {subsubsection}{\numberline {3.2.2}Eficiencia emp\IeC {\'\i }rica}{14}{subsubsection.3.2.2}
+\contentsline {subsection}{\numberline {3.3}Divide y vencer\IeC {\'a}s con mergesort}{14}{subsection.3.3}
+\contentsline {subsubsection}{\numberline {3.3.1}Eficiencia te\IeC {\'o}rica}{15}{subsubsection.3.3.1}
+\contentsline {subsubsection}{\numberline {3.3.2}Eficiencia emp\IeC {\'\i }rica}{15}{subsubsection.3.3.2}
+\contentsline {subsection}{\numberline {3.4}Comparaci\IeC {\'o}n}{16}{subsection.3.4}
+\contentsline {section}{\numberline {4}Bibliografia}{19}{section.4}
