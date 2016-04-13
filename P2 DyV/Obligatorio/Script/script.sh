@@ -71,6 +71,15 @@ while [ $nelementos -lt 1000 ]; do
 
    let nelementos=nelementos+100
 done
+gnuplot ./gnuplot/3d_fuerza_bruta.gp
+gnuplot ./gnuplot/3d_dyv.gp
+
+mv grafica_f.png ../Graficas/3d_fuerza_bruta.png
+mv grafica_d.png ../Graficas/3d_dyv.png
+
+mv fuerza_bruta.dat ../Datos/3d_fuerza_bruta.dat
+mv dyv.dat ../Datos/3d_dyv.dat
+
 
 rm -f ./a.out
 echo "Terminado"
