@@ -98,22 +98,8 @@ Donde el $2n$ de la segunda ecuación representa el cose de unir las dos partes 
 Desarrollando la recurrencia mediante cambio de variable tenemos que:\\
 
 $$n=2^k \Rightarrow k = \log_2n$$
-$$T(2^k) = 2T(2^{k-1}) + 2^{k+1}$$\\
-
-Cuyo polinomio característico es $p(\lambda) = (\lambda - 2)^2$\\
-La solución de la ecuación es:\\
-$$T(k)=c_12^k+c_2k2^k \Rightarrow T(n) = n^2(c_1+c_2\log_2n)$$
-
-Para obtener $c_1$ y $c_2$ utilizamos que:
-
-$$\left\lbrace
-	\begin{array}{l}
-	T(1) = c_1 = 0\\
-	T(2) = 4(c_1 + c_2) = 1\\
-	\end{array}
-	\right. \Rightarrow c_1 = 0, c_2 = \frac{1}{4}$$\\
-	
-Por tanto $T(n) = \frac{1}{4}n^2\log_2n \longrightarrow O(n^2\log_2n)$
+$$T(k) = 2^kT(1) + 2^kn$$
+$$T(n) = n \cdot 0 + n^2 \rightarrow O(n^2)$$
 	
 
 \subsubsection{Eficiencia empírica}
@@ -123,13 +109,15 @@ Al utilizar el algoritmo con vectores de distintos tamaños hemos obtenido \hype
 
 Visto en forma de gráfica se puede apreciar la relación cuadrática que habíamos deducido en el apartado anterior.\\
 
-La función utilizada en el ajuste es $f(n) = an^2 \cdot \log_2n)$
+La función utilizada en el ajuste es $f(n) = an^2+bn+c$
 
 Los resultados del ajuste son:\\
 
 \begin{center}
 \fcolorbox{gray75}{gray97}{
 	$a = 2.6999 \cdot 10^{-9}$
+	$b = -8.47849 \cdot 10^{-7}$
+	$c = 0.000424603$
 }
 \end{center}
 

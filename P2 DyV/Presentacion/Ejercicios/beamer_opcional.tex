@@ -122,13 +122,12 @@ $$\left\lbrace
 	\end{array}
 	\right.$$\\
 \end{block}
-\pause
 
 \begin{block}{Solución}
 $$n=2^k \Rightarrow k = \log_2n$$
-$$T(2^k) = 2T(2^{k-1}) + 2^{k+1}$$
-$$T(k)=c_12^k+c_2k2^k \Rightarrow T(n) = n^2(c_1+c_2\log_2n)$$
-$$O(n^2\log_2n)$$
+$$T(k) = 2^kT(1) + 2^kn$$
+$$T(n) = n \cdot 0 + n^2$$
+$$O(n^2)$$
 \end{block}
 \end{frame}
 
@@ -141,6 +140,8 @@ $$O(n^2\log_2n)$$
 \begin{block}{Ajuste}
 \begin{center}
 $a = 2.6999 \cdot 10^{-9}$
+$b = -8.47849 \cdot 10^{-7}$
+$c = 0.000424603$
 \end{center}
 \end{block}
 \end{frame}
