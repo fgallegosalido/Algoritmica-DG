@@ -99,289 +99,237 @@ plot "datos.dat", f(x)
 
 
 \subsection{Fuerza bruta}
-El programa usado para calcular los tiempos del algoritmo de fuerza bruta es:
-\begin{lstlisting}[language=c++]
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <ctime>
-#include <cstdlib>
-#include <chrono>
-using namespace std;
+La aproximación mas natural al problema sería comparar cada elemento del vector con todos los demás, aunque realmente solo es necesario hacer la comparación con los elementos que están por delante (tienen mayor índice) en el vector.\\
 
+\textbf{Ejemplo:}
 
-int inversiones(vector<int> v){
-  int count = 0;
-  int size = v.size();
-  for (int i=0; i < size; i++)
-    for (int j=i+1; j < size; j++)
-      if (v[i] > v[j])
-        count++;
-
-  return count;
+\begin{center}
+\fcolorbox{gray75}{gray97}{
+\begin{tabular}{|c|c|c|c|}
+\hline
+3 & 4 & 2 & 1\\
+\hline
+\end{tabular}
 }
+\end{center}
 
+\begin{itemize}
+\item 3 no está invertido con 4
+\item 3 está invertido con 2
+\item 3 está invertido con 1
+\item 4 está invertido con 2
+\item 4 está invertido con 1
+\item 2 está invertido con 1
+\end{itemize}
 
-int main(int argc, char** argv){
-  if (argc < 2){
-    cerr << "Formato " << argv[0] << " num_elem" << endl;
-    return -1;
-  }
+\subsubsection{Eficiencia teórica}
+La eficiencia del algoritmo viene dada por el número de comparaciones que realiza en relación al tamaño del vector.\\
 
-  int n = atoi(argv[1]);
-  vector<int> rankings(n);
-  srandom(time(0));
-  for (int i=0; i < n; i++)
-    rankings[i] = i;
+Tomando $n \equiv Tamaño\ del\ vector$ tenemos que:\\
 
-  random_shuffle(rankings.begin(), rankings.end());
+$$Num\ de\ comparaciones = \sum_{i=1}^{n-1}n-i = n(n-1) - \sum_{i=1}^{n-1}i = n(n-1) - \frac{n^2}{2} = \frac{n^2 - 2n}{2} \longrightarrow O(n^2)$$
 
-  chrono::high_resolution_clock::time_point tantes, tdespues;
-  chrono::duration<double> transcurrido;
-  int n_inv;
+Deducimos así que nuestro algoritmo es de orden cuadrático.\\
 
-  tantes = chrono::high_resolution_clock::now();
-  n_inv = inversiones(rankings);
-  tdespues = chrono::high_resolution_clock::now();
+\subsubsection{Eficiencia empírica}
+Para medir la eficiencia empírica hemos implementado el algoritmo en \textit{fuerza\_bruta.cpp}\\
 
-  transcurrido = chrono::duration_cast<chrono::duration<double>>(tdespues - tantes);
+Al utilizar el algoritmo con vectores de distintos tamaños hemos obtenido \hyperref[tabla_comp]{los siguientes tiempos}\\\
 
-  #ifndef GP_OUT
-    cout << "ranking: ";
-    for (int i=0; i<n; i++)
-      cout << rankings[i] << " ";
-    cout << endl;
-    cout << "Num inversiones: " << n_inv << endl;
-  #else
-    cout << n << " " << transcurrido.count() << endl;
-  #endif
+Visto en forma de gráfica se puede apreciar la relación cuadrática que habíamos deducido en el apartado anterior.\\
 
+La función utilizada en el ajuste es $f(n) = an^2 + bn + c$
+
+Los resultados del ajuste son:\\
+
+\begin{center}
+\fcolorbox{gray75}{gray97}{
+	$a = 4.62037 \cdot 10^{-9}$ , $b = 7.56764 \cdot 10^{-9}$ , $c = -3.85366 \cdot 10^{-5}$
 }
-\end{lstlisting}
-
-\begin{figure}[htb] 
-\centering
-	\includegraphics[width=0.6\textwidth]{../Opcional/Graficas/dyv_bruno.png}
-	\caption{Subproblemas} 
-	\label{fig:perros} 
-\end{figure}
+\end{center}
 
 
-\subsection{Divide y vencer\'as}
-El mismo problema usando un programa que utiliza divide y vencer\'as:
-
-\begin{lstlisting}[language=c++]
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <ctime>
-#include <climits>
-#include <cstdlib>
-#include <chrono>
-using namespace std;
-
-
-
-/* ************************************************************ */
-/*  M\'etodo de ordenaci\'on por mezcla  */
-
-/**
-   @brief Devuelve el numero de inversiones de un ranking.
-
-   @param T: vector de elementos. Debe tener num_elem elementos.
-             Es MODIFICADO.
-   @param num_elem: n\'umero de elementos. num_elem > 0.
-
-   @return el numero de inversiones
-
-   Calcula el numero de inversiones aplicando el algoritmo de mezcla.
-   Como consecuencia tambien ordena el vector T.
-*/
-inline static
-int inversiones(int T[], int num_elem);
-
-
-
-/**
-   @brief Devuelve el n\'umero de inversiones de un ranking.
-
-   @param T: vector de elementos. Tiene un n\'umero de elementos
-                   mayor o igual a final. Es MODIFICADO.
-   @param inicial: Posici\'on que marca el incio de la parte del
-                   vector a ordenar.
-   @param final: Posici\'on detr\'as de la \'ultima de la parte del
-                   vector a ordenar.
-		   inicial < final.
-
-  Calcula el n\'umero de inversiones aplicando el algoritmo de mezcla.
-  Como consecuencia tambien ordena el vector T.
-*/
-void inversiones_recursivo(int T[], int inicial, int final, int& num_inversiones);
-
-
-/**
-   @brief Ordena un vector por el m\'etodo de inserci\'on.
-
-   @param T: vector de elementos. Debe tener num_elem elementos.
-             Es MODIFICADO.
-   @param num_elem: n\'umero de elementos. num_elem > 0.
-
-   Cambia el orden de los elementos de T de forma que los dispone
-   en sentido creciente de menor a mayor.
-   Aplica el algoritmo de inserci\'on.
-*/
-inline static
-void insercion(int T[], int num_elem);
-
-
-/**
-   @brief Ordena parte de un vector por el m\'etodo de inserci\'on.
-
-   @param T: vector de elementos. Tiene un n\'umero de elementos
-                   mayor o igual a final. Es MODIFICADO.
-   @param inicial: Posici\'on que marca el incio de la parte del
-                   vector a ordenar.
-   @param final: Posici\'on detr\'as de la \'ultima de la parte del
-                   vector a ordenar.
-		   inicial < final.
-
-   Cambia el orden de los elementos de T entre las posiciones
-   inicial y final - 1 de forma que los dispone en sentido creciente
-   de menor a mayor.
-   Aplica el algoritmo de la inserci\'on.
-*/
-static void insercion_lims(int T[], int inicial, int final);
-
-
-/**
-   @brief Mezcla dos vectores ordenados sobre otro.
-
-   @param T: vector de elementos. Tiene un n\'umero de elementos
-                   mayor o igual a final. Es MODIFICADO.
-   @param inicial: Posici\'on que marca el incio de la parte del
-                   vector a escribir.
-   @param final: Posici\'on detr\'as de la \'ultima de la parte del
-                   vector a escribir
-		   inicial < final.
-   @param U: Vector con los elementos ordenados.
-   @param V: Vector con los elementos ordenados.
-             El n\'umero de elementos de U y V sumados debe coincidir
-             con final - inicial.
-
-   @return: El n\'umero de elementos que estaban desordenados
-
-   En los elementos de T entre las posiciones inicial y final - 1
-   pone ordenados en sentido creciente, de menor a mayor, los
-   elementos de los vectores U y V.
-*/
-int fusion(int T[], int inicial, int final, int U[], int V[]);
-
-
-
-/**
-   Implementaci\'on de las funciones
-**/
-
-
-int inversiones(int T[], int num_elem)
-{
-  int n = 0;
-  inversiones_recursivo(T, 0, num_elem, n);
-  return n;
-}
-
-void inversiones_recursivo(int T[], int inicial, int final, int& num_inversiones)
-{
-  if (final - inicial < 2)
-    {
-      return;
-    } else {
-      int k = (final - inicial)/2;
-
-      int * U = new int [k - inicial];
-      int l, l2;
-      for (l = 0, l2 = inicial; l < k; l++, l2++)
-	      U[l] = T[l2];
-
-      int * V = new int [final - k];
-      for (l = 0, l2 = k; l < final - k; l++, l2++)
-	     V[l] = T[l2];
-
-      inversiones_recursivo(U, 0, k, num_inversiones);
-      inversiones_recursivo(V, 0, final - k, num_inversiones);
-      num_inversiones += fusion(T, inicial, final, U, V);
-      delete [] U;
-      delete [] V;
-    };
-}
-
-
-int fusion(int T[], int inicial, int final, int U[], int V[])
-{
-  int n_desordenados = 0;
-  int k = (final-inicial)/2;
-  for (int i =0; i < k-inicial; i++)
-    for (int j=0; j < final-k; j++)
-      if (U[i] > V[j])
-        n_desordenados++;
-
-  int i, j;
-  for (i =0; i < k-inicial; i++)
-    T[i] = U[i];
-  for (i=0, j=k-inicial; j < final-k; i++, j++)
-    T[j] = V[i];
-
-  return n_desordenados;
-}
-
-
-int main(int argc, char** argv){
-  if (argc < 2){
-    cerr << "Formato " << argv[0] << " num_elem" << endl;
-    return -1;
-  }
-
-  int n = atoi(argv[1]);
-  int* rankings = new int[n];
-  srandom(time(0));
-  for (int i=0; i < n; i++){
-    rankings[i] = i;
-  }
-  random_shuffle(rankings, rankings+n);
-
-#ifndef GP_OUT
-  cout << "ranking: ";
-  for (int i=0; i<n; i++)
-    cout << rankings[i] << " ";
-  cout << endl;
-#endif
-
-  chrono::high_resolution_clock::time_point tantes, tdespues;
-  chrono::duration<double> transcurrido;
-  int n_inv;
-
-  tantes = chrono::high_resolution_clock::now();
-  n_inv = inversiones(rankings, n);
-  tdespues = chrono::high_resolution_clock::now();
-  transcurrido = chrono::duration_cast<chrono::duration<double>>(tdespues - tantes);
-
-#ifndef GP_OUT
-  cout << "Num inversiones: " << n_inv << endl;
-#else
-  cout << n << " " << transcurrido.count() << endl;
-#endif
-}
-\end{lstlisting}
-
-
-\begin{figure}[htb] 
+\begin{figure}[h]
 \centering
 	\includegraphics[width=0.6\textwidth]{../Opcional/Graficas/fuerza_bruta_bruno.png}
-	\caption{Subproblemas} 
+	\caption{Gráfica fuerza bruta} 
 	\label{fig:perros} 
 \end{figure}
 
-\subsection{Comparaci\'on}
+\newpage
+
+\subsection{Divide y vencerás}
+Para realizar la versión divide y vencerás del algoritmo hemos utilizado el método de mezcla.\\
+
+Primero dividimos el vector en trozos, los cuales comparamos unos con otros (de la misma forma que en el algoritmo anterior) al mezclarlos.\\
+
+
+\begin{figure}[h] 
+\centering
+	\fcolorbox{gray75}{gray97}{
+	\includegraphics[width=0.5\textwidth]{Imagenes/esquema.png}
+	}
+	\caption{Ejemplo} 
+\end{figure}
+
+
+\subsubsection{Eficiencia teórica}
+\subsubsection{Eficiencia empírica}
+Para medir la eficiencia empírica hemos implementado el algoritmo en \textit{dyv.cpp}\\
+
+Al utilizar el algoritmo con vectores de distintos tamaños hemos obtenido \hyperref[tabla_comp]{los siguientes tiempos}\\\\
+
+Visto en forma de gráfica se puede apreciar la relación cuadrática que habíamos deducido en el apartado anterior.\\
+
+La función utilizada en el ajuste es $f(n) = an^2 + bn + c$
+
+Los resultados del ajuste son:\\
+
+\begin{center}
+\fcolorbox{gray75}{gray97}{
+	$a = 2.6999 \cdot 10^{-9}$ , $b = -5.6158 \cdot 10^{-7}$ , $c = 0.000266003$
+}
+\end{center}
+
+Como se puede ver mejoramos el tiempo al reducir las constantes ocultas respecto al algoritmo de fuerza bruta, sin embargo no conseguimos disminuir el orden.
+
+\begin{figure}[h] 
+\centering
+	\includegraphics[width=0.6\textwidth]{../Opcional/Graficas/dyv_bruno.png}
+	\caption{Gráfica DyV} 
+	\label{fig:perros} 
+\end{figure}
+
+
+\subsection{Divide y vencerás con mergesort}
+Una mejor forma de implementar divide y vencerás es utilizar el algoritmo de ordenación mergesort. La ventaja respecto al anterior es que, estando el vector ordenado, sabemos que si un elemento esta invertido con otro de la sección izquierda del vector, también lo estarán todos los que le siguen (al ser mayores).
+
+\begin{figure}[h] 
+\centering
+	\fcolorbox{gray75}{gray97}{
+	\includegraphics[width=0.5\textwidth]{Imagenes/esquema_merge.png}
+	}
+	\caption{Ejemplo} 
+\end{figure}
+
+\subsubsection{Eficiencia teórica}
+Al utilizar mergesort la eficiencia es $nlog(n)$
+
+\subsection{Eficiencia empírica}
+Para medir la eficiencia empírica hemos implementado el algoritmo en \textit{dyv\_mergesort.cpp}\\
+
+Al utilizar el algoritmo con vectores de distintos tamaños hemos obtenido \hyperref[tabla_comp]{los siguientes tiempos}\\
+
+Visto en forma de gráfica se puede apreciar el orden n-logarítmico que habíamos deducido en el apartado anterior.\\
+
+La función utilizada en el ajuste es $f(n) = a \cdot n \cdot log_2(n)$
+
+Los resultados del ajuste son:\\
+
+\begin{center}
+\fcolorbox{gray75}{gray97}{
+	$a = 1.99872 \cdot 10^{-8}$
+}
+\end{center}
+
+De esta forma conseguimos reducir el orden del algoritmo con la aproximación divide y vencerás.
+
+\begin{figure}[h] 
+\centering
+	\includegraphics[width=0.6\textwidth]{../Opcional/Graficas/dyv_mergesort_bruno.png}
+	\caption{Gráfica DyV mergesort} 
+	\label{fig:perros} 
+\end{figure}
+\newpage
+
+\subsection{Comparación}
+Al comparar los datos se puede ver la diferencia de velocidad entre los algoritmos\\
+
+\label{tabla_comp}
+\begin{center}
+\begin{longtable}{l|l|l|l}
+\multicolumn{1}{c}{\textbf{N}} & \multicolumn{1}{c}{\textbf{FUERZA BRUTA}} & \multicolumn{1}{c}{\textbf{DyV}} & \multicolumn{1}{c}{\textbf{DyV MERGESORT}} \\
+\hline
+10                                                     & 5.372e-06                                                         & 5.01e-06                                                 & 4.475e-06                                                          \\
+20                                                     & 8.789e-06                                                         & 1.7346e-05                                               & 4.593e-06                                                          \\
+30                                                     & 7.569e-06                                                         & 8.699e-06                                                & 6.213e-06                                                          \\
+40                                                     & 1.0783e-05                                                        & 1.6202e-05                                               & 1.2129e-05                                                         \\
+50                                                     & 1.7045e-05                                                        & 1.9298e-05                                               & 1.3067e-05                                                         \\
+60                                                     & 2.1477e-05                                                        & 1.8845e-05                                               & 1.1179e-05                                                         \\
+70                                                     & 2.6556e-05                                                        & 2.3171e-05                                               & 1.2893e-05                                                         \\
+80                                                     & 3.3474e-05                                                        & 2.9005e-05                                               & 1.43e-05                                                           \\
+90                                                     & 3.8403e-05                                                        & 3.9902e-05                                               & 2.0181e-05                                                         \\
+100                                                    & 4.3868e-05                                                        & 4.5584e-05                                               & 1.7295e-05                                                         \\
+200                                                    & 0.00015195                                                        & 0.000116431                                              & 4.2853e-05                                                         \\
+300                                                    & 0.000391291                                                       & 0.000250526                                              & 6.4131e-05                                                         \\
+400                                                    & 0.000714253                                                       & 0.000445637                                              & 7.2085e-05                                                         \\
+500                                                    & 0.00113                                                           & 0.000778726                                              & 8.8503e-05                                                         \\
+600                                                    & 0.00142924                                                        & 0.000906855                                              & 0.000107201                                                        \\
+700                                                    & 0.00221095                                                        & 0.00110213                                               & 0.000199253                                                        \\
+800                                                    & 0.00262937                                                        & 0.00161615                                               & 0.000193888                                                        \\
+900                                                    & 0.00387402                                                        & 0.00210838                                               & 0.000166041                                                        \\
+1000                                                   & 0.0045925                                                         & 0.00247251                                               & 0.000218733                                                        \\
+1100                                                   & 0.00523664                                                        & 0.00272285                                               & 0.000227612                                                        \\
+1200                                                   & 0.00633619                                                        & 0.00325023                                               & 0.000248127                                                        \\
+1300                                                   & 0.00822444                                                        & 0.00386384                                               & 0.000293516                                                        \\
+1400                                                   & 0.0084485                                                         & 0.00491124                                               & 0.000267168                                                        \\
+1500                                                   & 0.0106898                                                         & 0.00567031                                               & 0.000289624                                                        \\
+1510                                                   & 0.0112891                                                         & 0.00631194                                               & 0.000305775                                                        \\
+1520                                                   & 0.00994033                                                        & 0.00588621                                               & 0.000338734                                                        \\
+1530                                                   & 0.0113389                                                         & 0.00579242                                               & 0.000347174                                                        \\
+1540                                                   & 0.0114926                                                         & 0.00614755                                               & 0.000312817                                                        \\
+1550                                                   & 0.0117212                                                         & 0.00610479                                               & 0.000371296                                                        \\
+1560                                                   & 0.0117122                                                         & 0.00631286                                               & 0.0002951                                                          \\
+1570                                                   & 0.0117041                                                         & 0.0061815                                                & 0.000308323                                                        \\
+1580                                                   & 0.0119425                                                         & 0.00649255                                               & 0.000348463                                                        \\
+1590                                                   & 0.0123087                                                         & 0.0057542                                                & 0.000373075                                                        \\
+1600                                                   & 0.0128338                                                         & 0.0057887                                                & 0.000438534                                                        \\
+1610                                                   & 0.0126464                                                         & 0.00586854                                               & 0.000406346                                                        \\
+1620                                                   & 0.0110832                                                         & 0.00672868                                               & 0.000427806                                                        \\
+1630                                                   & 0.0112595                                                         & 0.0059915                                                & 0.000464662                                                        \\
+1640                                                   & 0.0132207                                                         & 0.00669017                                               & 0.000426536                                                        \\
+1650                                                   & 0.0134134                                                         & 0.00620674                                               & 0.000415056                                                        \\
+1660                                                   & 0.0118528                                                         & 0.00679857                                               & 0.000362726                                                        \\
+1670                                                   & 0.0133645                                                         & 0.0071125                                                & 0.000417206                                                        \\
+1680                                                   & 0.0119112                                                         & 0.00713246                                               & 0.000416895                                                        \\
+1690                                                   & 0.0140801                                                         & 0.00645871                                               & 0.000460355                                                        \\
+1700                                                   & 0.0135852                                                         & 0.00652082                                               & 0.000327245                                                        \\
+1710                                                   & 0.0136754                                                         & 0.0065563                                                & 0.000439411                                                        \\
+1720                                                   & 0.0141592                                                         & 0.00742124                                               & 0.000334315                                                        \\
+1730                                                   & 0.0128551                                                         & 0.00677709                                               & 0.000358866                                                        \\
+1740                                                   & 0.0142377                                                         & 0.00682922                                               & 0.000334802                                                        \\
+1750                                                   & 0.013922                                                          & 0.00797216                                               & 0.000337074                                                        \\
+1760                                                   & 0.014754                                                          & 0.00809824                                               & 0.00042323                                                         \\
+1770                                                   & 0.0161                                                            & 0.0078131                                                & 0.00033976                                                         \\
+1780                                                   & 0.0147848                                                         & 0.00714157                                               & 0.000410181                                                        \\
+1790                                                   & 0.014834                                                          & 0.00802589                                               & 0.000340097                                                        \\
+1800                                                   & 0.013868                                                          & 0.00737101                                               & 0.000343209                                                        \\
+1810                                                   & 0.0140152                                                         & 0.00741122                                               & 0.000433399                                                        \\
+1820                                                   & 0.0158209                                                         & 0.00815904                                               & 0.000517336                                                        \\
+1830                                                   & 0.0157881                                                         & 0.00882712                                               & 0.000431286                                                        \\
+1840                                                   & 0.0168293                                                         & 0.00936662                                               & 0.000350271                                                        \\
+1850                                                   & 0.014642                                                          & 0.00844588                                               & 0.000365413                                                        \\
+1860                                                   & 0.0147593                                                         & 0.00906371                                               & 0.000499294                                                        \\
+1870                                                   & 0.0154717                                                         & 0.00888923                                               & 0.000455334                                                        \\
+1880                                                   & 0.0166121                                                         & 0.00818189                                               & 0.000362279                                                        \\
+1890                                                   & 0.0176424                                                         & 0.00809635                                               & 0.000362962                                                        \\
+1900                                                   & 0.0154725                                                         & 0.00911192                                               & 0.00036468                                                         \\
+1910                                                   & 0.0171286                                                         & 0.0097178                                                & 0.000374511                                                        \\
+1920                                                   & 0.0169232                                                         & 0.00866492                                               & 0.000368789                                                        \\
+1930                                                   & 0.017398                                                          & 0.00939331                                               & 0.000372006                                                        \\
+1940                                                   & 0.0161518                                                         & 0.00878083                                               & 0.000374779                                                        \\
+1950                                                   & 0.0179376                                                         & 0.00871368                                               & 0.000454573                                                        \\
+1960                                                   & 0.0192299                                                         & 0.00873748                                               & 0.000391931                                                        \\
+1970                                                   & 0.0206132                                                         & 0.00884545                                               & 0.0003782                                                          \\
+1980                                                   & 0.0207933                                                         & 0.00914015                                               & 0.000405355                                                        \\
+1990                                                   & 0.0175969                                                         & 0.0103771                                                & 0.000494997                                                        \\
+2000                                                   & 0.0171023                                                         & 0.0094678                                                & 0.000382864                                                        \\
+2010                                                   & 0.0172802                                                         & 0.00936607                                               & 0.000386406                                                       
+\end{longtable}
+\end{center}
+
+En la gráfica se ve como al simplemente usar divide y vencerás ya conseguimos una mejora respecto a la fuerza bruta, pero si encontramos el "truco" podemos sacarle mucho más partido.
+
 \begin{figure}[htb] 
 \centering
 	\includegraphics[width=0.6\textwidth]{../Opcional/Graficas/comparativa.png}

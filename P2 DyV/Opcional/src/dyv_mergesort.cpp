@@ -76,55 +76,55 @@ int fusion(int T[], int inicial, int final, int U[], int V[]);
 **/
 
 
-int inversiones(int T[], int num_elem)
-{
+int inversiones(int T[], int num_elem){
   int n = 0;
   inversiones_recursivo(T, 0, num_elem, n);
   return n;
 }
 
-void inversiones_recursivo(int T[], int inicial, int final, int& num_inversiones)
-{
-  if (final - inicial < 2)
-    {
-      return;
-    } else {
-      int k = (final - inicial)/2;
+void inversiones_recursivo(int T[], int inicial, int final, int& num_inversiones){
+  if (final - inicial < 2){
+    return;
+  } else {
+    int k = (final - inicial)/2;
 
-      int * U = new int [k - inicial];
-      int l, l2;
-      for (l = 0, l2 = inicial; l < k; l++, l2++)
-	      U[l] = T[l2];
+    int * U = new int [k - inicial + 1];
+    int l, l2;
+    for (l = 0, l2 = inicial; l < k; l++, l2++)
+	   U[l] = T[l2];
+    U[l] = INT_MAX;
 
-      int * V = new int [final - k];
-      for (l = 0, l2 = k; l < final - k; l++, l2++)
-	     V[l] = T[l2];
+    int * V = new int [final - k + 1];
+    for (l = 0, l2 = k; l < final - k; l++, l2++)
+	   V[l] = T[l2];
+    V[l] = INT_MAX;
 
-      inversiones_recursivo(U, 0, k, num_inversiones);
-      inversiones_recursivo(V, 0, final - k, num_inversiones);
-      num_inversiones += fusion(T, inicial, final, U, V);
-      delete [] U;
-      delete [] V;
-    };
+    inversiones_recursivo(U, 0, k, num_inversiones);
+    inversiones_recursivo(V, 0, final - k, num_inversiones);
+    num_inversiones += fusion(T, inicial, final, U, V);
+    delete [] U;
+    delete [] V;
+  }
 }
 
 
-int fusion(int T[], int inicial, int final, int U[], int V[])
-{
-  int n_desordenados = 0;
-  int k = (final-inicial)/2;
-  for (int i =0; i < k-inicial; i++)
-    for (int j=0; j < final-k; j++)
-      if (U[i] > V[j])
-        n_desordenados++;
+int fusion(int T[], int inicial, int final, int U[], int V[]){
+  int j = 0;
+  int k = 0;
+  int num_inversiones = 0;
+  for (int i = inicial; i < final; i++){
+    if (U[j] < V[k]){
+	     T[i] = U[j];
+	      j++;
+    } else{
+	     T[i] = V[k];
+	      k++;
+        if (U[j] < INT_MAX)
+          num_inversiones += (final - inicial)/2 - j;
+    }
+  }
 
-  int i, j;
-  for (i =0; i < k-inicial; i++)
-    T[i] = U[i];
-  for (i=0, j=k-inicial; j < final-k; i++, j++)
-    T[j] = V[i];
-
-  return n_desordenados;
+  return num_inversiones;
 }
 
 
