@@ -37,14 +37,14 @@ La eficiencia del algoritmo viene dada por el número de comparaciones que reali
 
 Tomando $n \equiv Tamaño\ del\ vector$ tenemos que:\\
 
-$$Num\ de\ comparaciones = \sum_{i=1}^{n-1}n-i = n(n-1) - \sum_{i=1}^{n-1}i = n(n-1) - \frac{n^2}{2} = \frac{n^2 - 2n}{2} \longrightarrow O(n^2)$$
+$$Num\ de\ comparaciones = \sum_{i=1}^{n-1}n-i = n(n-1) - \sum_{i=1}^{n-1}i = n(n-1) - \frac{n^2 - n}{2} = \frac{n^2 - n}{2} \longrightarrow O(n^2)$$
 
 Deducimos así que nuestro algoritmo es de orden cuadrático.\\
 
 \subsubsection{Eficiencia empírica}
 Para medir la eficiencia empírica hemos implementado el algoritmo en \textit{fuerza\_bruta.cpp}\\
 
-Al utilizar el algoritmo con vectores de distintos tamaños hemos obtenido \hyperref[tabla_comp]{los siguientes tiempos}\\\
+Al utilizar el algoritmo con vectores de distintos tamaños hemos obtenido \hyperref[tabla_comp]{{\color{blue} los siguientes tiempos}}\\
 
 Visto en forma de gráfica se puede apreciar la relación cuadrática que habíamos deducido en el apartado anterior.\\
 
@@ -84,24 +84,56 @@ Primero dividimos el vector en trozos, los cuales comparamos unos con otros (de 
 
 
 \subsubsection{Eficiencia teórica}
+La forma natural de plantear la eficiencia teórica es como una ecuación en recurrencia:\\
+
+$$\left\lbrace
+	\begin{array}{l}
+	T(n) = \frac{n^2 - n}{2}\  si\ n \leq 2\\
+	T(n) = 2T(\frac{n}{2}) + 2n\  si\ n > 2 \\
+	\end{array}
+	\right.$$\\
+	
+Donde el $2n$ de la segunda ecuación representa el cose de unir las dos partes del vector.\\
+
+Desarrollando la recurrencia mediante cambio de variable tenemos que:\\
+
+$$n=2^k \Rightarrow k = \log_2n$$
+$$T(2^k) = 2T(2^{k-1}) + 2^{k+1}$$\\
+
+Cuyo polinomio característico es $p(\lambda) = (\lambda - 2)^2$\\
+La solución de la ecuación es:\\
+$$T(k)=c_12^k+c_2k2^k \Rightarrow T(n) = n^2(c_1+c_2\log_2n)$$
+
+Para obtener $c_1$ y $c_2$ utilizamos que:
+
+$$\left\lbrace
+	\begin{array}{l}
+	T(1) = c_1 = 0\\
+	T(2) = 4(c_1 + c_2) = 1\\
+	\end{array}
+	\right. \Rightarrow c_1 = 0, c_2 = \frac{1}{4}$$\\
+	
+Por tanto $T(n) = \frac{1}{4}n^2\log_2n \longrightarrow O(n^2\log_2n)$
+	
+
 \subsubsection{Eficiencia empírica}
 Para medir la eficiencia empírica hemos implementado el algoritmo en \textit{dyv.cpp}\\
 
-Al utilizar el algoritmo con vectores de distintos tamaños hemos obtenido \hyperref[tabla_comp]{los siguientes tiempos}\\\\
+Al utilizar el algoritmo con vectores de distintos tamaños hemos obtenido \hyperref[tabla_comp]{{\color{blue} los siguientes tiempos}}\\
 
 Visto en forma de gráfica se puede apreciar la relación cuadrática que habíamos deducido en el apartado anterior.\\
 
-La función utilizada en el ajuste es $f(n) = an^2 + bn + c$
+La función utilizada en el ajuste es $f(n) = an^2 \cdot \log_2n)$
 
 Los resultados del ajuste son:\\
 
 \begin{center}
 \fcolorbox{gray75}{gray97}{
-	$a = 2.6999 \cdot 10^{-9}$ , $b = -5.6158 \cdot 10^{-7}$ , $c = 0.000266003$
+	$a = 2.6999 \cdot 10^{-9}$
 }
 \end{center}
 
-Como se puede ver mejoramos el tiempo al reducir las constantes ocultas respecto al algoritmo de fuerza bruta, sin embargo no conseguimos disminuir el orden.
+Como se puede ver mejoramos el tiempo respecto a la fuerza bruta.
 
 \begin{figure}[h] 
 \centering
@@ -128,7 +160,7 @@ Al utilizar mergesort la eficiencia es $nlog(n)$
 \subsubsection{Eficiencia empírica}
 Para medir la eficiencia empírica hemos implementado el algoritmo en \textit{dyv\_mergesort.cpp}\\
 
-Al utilizar el algoritmo con vectores de distintos tamaños hemos obtenido \hyperref[tabla_comp]{los siguientes tiempos}\\
+Al utilizar el algoritmo con vectores de distintos tamaños hemos obtenido \hyperref[tabla_comp]{{\color{blue} los siguientes tiempos}}\\
 
 Visto en forma de gráfica se puede apreciar el orden n-logarítmico que habíamos deducido en el apartado anterior.\\
 
