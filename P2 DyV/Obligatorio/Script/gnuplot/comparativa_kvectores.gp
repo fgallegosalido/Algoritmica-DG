@@ -1,5 +1,5 @@
 set terminal pngcairo
-set output "comparativa.png"
+set output "comparativa_k.png"
 
 set title "Comparativa mezcla"
 set xlabel "Número de vectores"

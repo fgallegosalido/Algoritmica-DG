@@ -8,96 +8,7 @@ De esta forma nuestra representaci\'on del problema ser\'a un vector de enteros 
 
 El objetivo es diseñar, analizar la eficiencia e implementar un algoritmo \"divide y vencer\'as\" para medir la similitud entre dos rankings. Compararlo con el algoritmo de \"fuerza bruta\" obvio. Realizar tambi\'en un estudio emp\'irico e h\'ibrido de la eficiencia de ambos algoritmos.
 
-\subsection{Automatizando el problema}
-A la hora de generar los ejecutables, los datos y las gráficas hemos usado los siguientes scripts:
-
-\begin{center}
-	script.sh
-\end{center}
-
-\begin{lstlisting}[language=bash]
-#!/bin/bash
-
-if [ $# -ne 1 ]
-then
-    echo "Uso: $0 <nombre>"
-    exit 1
-fi
-
-mkdir ../Graficas 2> /dev/null
-mkdir ../Datos 2> /dev/null
-
-# Fuerza bruta
-g++ -std=c++11 -D GP_OUT ../src/fuerza_bruta.cpp
-nelementos=10
-echo "" > datos.dat
-while [ $nelementos -lt 5000 ]; do
-    ./a.out $nelementos >> datos.dat
-    let nelementos=nelementos+10
-done
-gnuplot ./gnuplot/fuerza_bruta.gp
-
-mv grafica.png ../Graficas/fuerza_bruta_$1.png
-mv datos.dat ../Datos/fuerza_bruta_$1.dat
-mv fit.log ../Datos/fit_fuerza_bruta_$1.log
-echo "Fuerza bruta completado"
-
-# DyV
-g++ -std=c++11 -D GP_OUT ../src/dyv.cpp
-nelementos=10
-echo "" > datos.dat
-while [ $nelementos -lt 5000 ]; do
-    ./a.out $nelementos >> datos.dat
-    let nelementos=nelementos+10
-done
-gnuplot ./gnuplot/dyv.gp
-
-mv grafica.png ../Graficas/dyv_$1.png
-mv datos.dat ../Datos/dyv_$1.dat
-mv fit.log ../Datos/fit_dyv_$1.log
-echo "DyV completado"
-
-\end{lstlisting}
-
-Para conseguir los datos y gr\'aficas hemos usado:
-
-\begin{center}
-	$fuerza_bruta.gp$
-\end{center}
-
-\begin{lstlisting}[language=gnuplot]
-set terminal pngcairo
-set output "grafica.png"
-
-set title "Fuerza bruta"
-set xlabel "Tamanio del vector"
-set ylabel "Tiempo (s)"
-set fit quiet
-f(x) = a*x*x + b*x + c
-fit f(x) "datos.dat" via a, b, c
-plot "datos.dat", f(x)
-\end{lstlisting}
-
-
-\begin{center}
-	dyv.gp
-\end{center}
-
-\begin{lstlisting}[language=gnuplot]
-set terminal pngcairo
-set output "grafica.png"
-
-set title "Divide y vencer\'as"
-set xlabel "Tamanio del vector"
-set ylabel "Tiempo (s)"
-set fit quiet
-f(x) = a*x*x + b*x + c
-fit f(x) "datos.dat" via a, b, c
-plot "datos.dat", f(x)
-\end{lstlisting}
-
-
-
+\newpage
 \subsection{Fuerza bruta}
 La aproximación mas natural al problema sería comparar cada elemento del vector con todos los demás, aunque realmente solo es necesario hacer la comparación con los elementos que están por delante (tienen mayor índice) en el vector.\\
 
@@ -215,7 +126,7 @@ Una mejor forma de implementar divide y vencerás es utilizar el algoritmo de or
 \subsubsection{Eficiencia teórica}
 Al utilizar mergesort la eficiencia es $nlog(n)$
 
-\subsection{Eficiencia empírica}
+\subsubsection{Eficiencia empírica}
 Para medir la eficiencia empírica hemos implementado el algoritmo en \textit{dyv\_mergesort.cpp}\\
 
 Al utilizar el algoritmo con vectores de distintos tamaños hemos obtenido \hyperref[tabla_comp]{los siguientes tiempos}\\

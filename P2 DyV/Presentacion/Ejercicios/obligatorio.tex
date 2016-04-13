@@ -1,6 +1,6 @@
 
-Se tienen $k$ vectores ordenados (de menor a mayor), cada uno con $n$ elementos, y queremos
-combinarlos en un \'unico vector ordenado (con $kn$ elementos). Una posible alternativa consiste en, utilizando un algoritmo cl\'asico, mezclar los dos primeros vectores, posteriormente mezclar el resultado con el tercero, y as\'i sucesivamente.
+Se tienen $k$ vectores ordenados (de menor a mayor), cada uno con $n$ elementos, y queremos combinarlos en un \'unico vector ordenado (con $kn$ elementos). 
+Una posible alternativa consiste en, utilizando un algoritmo cl\'asico, mezclar los dos primeros vectores, posteriormente mezclar el resultado con el tercero, y as\'i sucesivamente.
 
 \begin{itemize}
     \item ¿Cu\'al ser\'ia el tiempo de ejecuci\'on de este algoritmo?
@@ -11,160 +11,113 @@ combinarlos en un \'unico vector ordenado (con $kn$ elementos). Una posible alte
 \subsection{Estudio preliminar}
 Plante\'ando el problema es posible imponer una cota superior te\'orica a la mezcla. Teniendo en cuenta que hay $kn$ elementos, si aplic\'asemos un algoritmo con eficiencia  $O(n)=nlog(n)$ deducimos que podemos encontrar un algoritmo de ordenaci\'on b\'asica con eficiencia $O(k,n)=nklog(nk)$. En este caso estar\'iamos representando los $k$ vectores de $n$ elementos como un \'unico vector, sin aprovechar a\'un el hecho de que parte del \"\ vector\ \" est\'a ordenado.
 
-\subsection{C\'odigo}
+Para obtener los datos, las gr\'aficas y los ajustes hemos usado un script 
+Obligatorio/Script/script.sh, que compila y ejecuta los programas usados, ubicados en la carpeta Obligatorio/src/ y los scripts de gnuplot.
 
-\subsubsection{Divide y vencer\'as}
+\subsubsection{Eficiencia te\'orica fuerza bruta}
+El algoritmo propuesto consideramos que hace demasiadas escrituras en memoria.
+Para la versi\'on a fuerza bruta en cada paso elegimos el m\'inimo de los primeros elementos de los $k$ vectores y lo ponemos en primer lugar, ser\'a el primer elemento del vector creciente resultante. Para el siguiente paso descartamos ese elemento y calculamos otra vez el m\'inimo, lo insertamos al final del vector resultante y as\'i sucesivamente.
 
-\begin{lstlisting}[language=c++]
-// Funcion que llama a todo el algoritmo
-int* MezclaDyV(int** vectors, int n_vec, int n_elem){
-  int * full_vector = GeneraVector(vectors, n_vec, n_elem); // Generamos el vector a devolver
-  MergeKPartitions(full_vector, n_elem, 0, n_vec*n_elem-1); // Aplicamos la particion y mezcla
+Realmente la forma que usamos para descartar los elementos que vamos insertando es un vector de $k$ elementos que almacena los \'indices de cada vector. Inicialmente el \'indice de un vector es $0$, si usamos ese elemento el \'indice aumentar	\'a a $1$, para que no se repita, hasta recorrer todos los \'indices del i-\'esimo vector, $i \in [0,k-1]\cap \mathbb{N}$.
 
-  return full_vector;
-}
-\end{lstlisting}
+Buscar el m\'inimo en cada iteraci\'on es $O(k)$ ya que el vector de \'indices tiene $k$ elementos. El c\'alculo lo tenemos que hacer para cada elemento, hay $k$ vectores de $n$ elementos cada uno, por tanto se repetir\'a $kn$ veces.
+\[\sum_{i=1}^{kn}k = nk^2 \implies \ O(k,n)=nk^2\]
 
-\begin{lstlisting}[language=c++]
-// Funcion que genera un vector a partir de una matriz, colocando cada vector
-// seguido de otro.
-int * GeneraVector(int** &matriz, int n_vec, int n_elem){
-  int* vector = new int[n_vec*n_elem];
+\subsubsection{Eficiencia te\'orica divide y vencer\'as}
+Para la versi\'on con divide y vencer\'as hemos usado una ver	si\'on del mergesort, pero con los mont\'iculos ya creados, por tanto ser\'a mucho m\'as r\'apido que para $kn$ datos arbitrarios. 
 
-  for (int i=0; i<n_vec; ++i){
-    for (int j=0; j<n_elem; ++j){
-      vector[i*n_elem+j] = matriz[i][j];
-    }
-  }
+El primer paso es pasar los vectores a un \'unico vector, con $O(k,n)=kn$
 
-  return vector;
-}
-\end{lstlisting}
+Posteriormente creamos las particiones para aprovechar el hecho de que hay partes del vector que ya est\'an ordenadas. En ese proceso lo que haremos es ir diviendo el vector y mezclar las partes de dos en dos. El algoritmo que mezcla dos vectores en un \'unico tiene eficiencia $O(n)=n$. La eficiencia de dicho algoritmo queda definida por:
 
-\begin{lstlisting}[language=c++]
-// Funcion que hace la particion del vector, teniendo en cuenta donde empieza,
-// donde termina y el numero de elementos de la particion, y devuelve ese trozo
-// ya ordenado
-void MergeKPartitions(int* &vector, int n_elem, int ini, int fin){
-  int size = fin - ini + 1;
-  int partitions = size/n_elem;
-  // Caso base: Si hay 2 particiones de igual tamanio, las mezcla
-  if(partitions == 2){
-    Merge(vector, ini, ini+n_elem, fin);
-  }
-  // Si hay mas de dos particiones:
-  else if(partitions > 2){
-    int division = ini + (partitions/2)*n_elem; // Calculo de la division
-    // Aqui es basicamente donde aplicamos divide y venceras, el cual nos acaba
-    // proporcionando la eficiencia deseada para esta situacion.
-    MergeKPartitions(vector, n_elem, ini, division-1);  // Llamada al primer conjunto de particiones
-    MergeKPartitions(vector, n_elem, division, fin);    // Llamada al segundo conjunto de particiones
-    Merge(vector, ini, division, fin);  // Mezclamos los dos conjuntos de particiones, ya ordenados
-  }
-}
-\end{lstlisting}
+\[T(k,n) = \left \{ 
+\begin{matrix} 
+		2n & 				\mbox{si } k=2
+	\\ 2T(k/2,n) + kn & 		\mbox{si } k>2
+\end{matrix}
+\right.\]
 
-\begin{lstlisting}[language=c++]
-// Funcion que mezcla dos vectores ordenados en uno ordenado
-void Merge(int* &vector, int ini, int pivot, int fin){
-  int size = fin-ini+1;
-  int f_count = 0, s_count = 0;// Contadores de cada vector
-  int selected;
-  int* aux = new int[size];
+Donde $k$ es el n\'umero de vectores y $n$ el n\'umero de elementos de cada vector.
+Sustituyendo $k=2^m \implies$ $T(2^m, n) = 2T(2^{m-1}, n) + 2^mn$
+\[T(2^m, n) = 2\left[ T(2^{m-2}, n) + 2^{m-1}n \right] + 2^mn\]
+\begin{center}
+	Para el caso gen\'erico, con $i \in \left[0,m-1\right] \cap\mathbb{N}$ y desarrollando:
+\end{center}
+\[T(2^m, n)	= 2^iT(2^{m-i}, n) + \sum_{i=1}^{m-1} 2^mn\]
+\[T(2^m, n) = 2^{m-1} T(2, n) + \sum_{i=1}^{m-1} 2^mn\]
+\[T(2^m, n) = 2^mn + (m-1) 2^mn = 2^mn[1+(m-1)] = 2^mnm\]
 
-  // Hasta que agotemos el tamanio del vector auxiliar
-  for (int i=0; i<size; ++i){
-    // Si hemos agotado el primer vector:
-    if(ini+f_count == pivot){
-      selected = vector[pivot+s_count];
-      s_count++;
-    }
-    // Si hemos agotado el segundo:
-    else if(s_count+pivot == fin+1){
-      selected = vector[ini+f_count];
-      f_count++;
-    }
-    // En cualquier otro caso:
-    else{
-      // Si el del primer vector es mayor que el del segundo:
-      if(vector[ini+f_count] <= vector[pivot+s_count]){
-        selected = vector[ini+f_count];
-        f_count++;
-      }
-      // Si es al reves:
-      else{
-        selected = vector[pivot+s_count];
-        s_count++;
-      }
-    }
-    // Asignamos valor a la posicion correspondiente del vector
-    aux[i] = selected;
-  }
-  // Asignamos el vector auxiliar al trozo del vector real
-  for (int i=0; i<size; ++i){
-    vector[ini+i] = aux[i];
-  }
-  delete[] aux;
-}
-\end{lstlisting}
+\begin{center}
+	Deshacemos el cambio de variable, $k=2^m \implies log_2(k)=m$:
+\end{center}
+\[T(k,n) = knlog_2k\]
 
-\subsubsection{Fuerza bruta}
 
-\begin{lstlisting}[language=c++]
-int* MezclaNoDyV(int** M, int num_vec, int num_elem){
-  int* vec_indices = new int[num_vec]; //Vector que almacena los indices
-  for (int i=0; i<num_vec; ++i)
-    vec_indices[i]=0;
+\subsection{Tiempos de ejecuci\'on}
+Los datos de todas las ejecuciones est\'an en Obligatorio/Datos/
 
-  int pos_escritas = 0; //Numero de posiciones escritas
-  const int MAX_POS_ESCRITAS = num_vec*num_elem; //Tope de las posiciones que se pueden escribir (n*k)
-  int* vec_ordenado = new int[MAX_POS_ESCRITAS]; //Variable donde se va almacenando el vector resultante ordenado.
-
-  while (pos_escritas < MAX_POS_ESCRITAS){
-    int pos_min = f_pos_min(vec_indices, M, num_vec);
-    vec_ordenado[pos_escritas] = M[pos_min][vec_indices[pos_min]];
-    if (vec_indices[pos_min] >= num_elem-1)
-      vec_indices[pos_min] = -1;
-    else
-      ++vec_indices[pos_min];
-    ++pos_escritas;
-  }
-
-  delete[] vec_indices;
-  return vec_ordenado;
-}
-\end{lstlisting}
-
-\begin{lstlisting}[language=c++]
-
-//Funcion que calcula el minimo de entre los elementos apuntados por los indices
-
-int f_pos_min(int* vec_indices, int** M, int num_vec){
-  int pos_min = 0;
-  while((vec_indices[pos_min] <0) && (pos_min < num_vec))
-    ++pos_min;
-  for (int i=pos_min+1; i<num_vec; ++i){
-    if (vec_indices[i] >= 0){
-      if (M[i][vec_indices[i]] < M[pos_min][vec_indices[pos_min]])
-        pos_min = i;
-    }
-  }
-  return pos_min;
-}
-\end{lstlisting}
-
-\subsection{Tiempo de ejecuci\'on}
-
+\newpage
 
 \subsection{Estudio emp\'irico e h\'ibrido}
-
 \subsubsection{Mezcla con furza bruta}
+La funci\'on que debemos ajustar es $f(x) = ax^2$
+
+\begin{center}
+\fcolorbox{gray75}{gray97}{
+	$a               = 1.77962\cdot 10^{-6}$
+}
+\end{center}
+
+Para calcular los coeficientes de correlaci\'on hemos usado la siguiente funci\'on de gnuplot:
+
+\begin{lstlisting}[language=gnuplot]
+gnuplot> stats "fuerza_bruta_kvectores.dat" using 2:(f($1))
+
+* FILE: 
+  Records:      100
+  Out of range:   0
+  Invalid:        0
+  Blank:          0
+  Data Blocks:    1
+
+* COLUMNS:
+  Mean:          3.6494              3.6963
+  Std Dev:       3.3890              3.3097
+  Sum:         364.9359            369.6344
+  Sum Sq.:    2480.3358           2461.7125
+
+  Minimum:       0.0006 [  0]        0.0002 [  0]
+  Maximum:      12.2595 [ 93]       10.9896 [ 99]
+  Quartile:      0.6697              0.6899
+  Median:        2.5084              2.7698
+  Quartile:      5.9007              6.2401
+
+  Linear Model: y = 0.9689 x + 0.1606
+  Correlation:  r = 0.9921
+  Sum xy:       2462
+
+\end{lstlisting}
+
 \begin{figure}[htb] 
 \centering
 	\includegraphics[width=0.6\textwidth]{../Obligatorio/Graficas/fuerza_bruta_kvectores.png}
 	\caption{Fuerza bruta con 100 elementos cada vector} 
 	\label{fig:f_kvectores} 
 \end{figure}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Para la parte en la que cambiamos el n\'umero de elementos ajustamos la funci\'on 
+$f(x) = ax$ ya 	que en $T(k, n) = nklog_2k, \ klog_2k$ es una constante, concretamente $100$.
+
+\begin{center}
+\fcolorbox{gray75}{gray97}{
+a               = 0.00031202}
+\fcolorbox{gray75}{gray97}{
+Correlation:  r = 0.9934}
+\end{center}
+
+Para obtener una funci\'on ajustada del tipo $g(x)=c\cdot knlog_2k$, calculamos $c=\frac{a}{100\cdot log_2(100)}, c \in \mathbb{R}$,
 
 \begin{figure}[htb] 
 \centering
@@ -176,22 +129,43 @@ int f_pos_min(int* vec_indices, int** M, int num_vec){
 
 
 \subsubsection{Mezcla con divide y vencer\'as}
+La funci\'on ajustada ha sido $f(x) = ax(log(x)/log(2))$
+
+\begin{center}
+\fcolorbox{gray75}{gray97}{
+$a               = 4.52594\cdot 10^{-6}$}
+\fcolorbox{gray75}{gray97}{
+Correlation:  $r = 0.9863$}
+\end{center}
+
 \begin{figure}[htb] 
 \centering
 	\includegraphics[width=0.6\textwidth]{../Obligatorio/Graficas/dyv_kvectores.png}
-	\caption{Divide y vencerás con 100 elementos cada vector} 
+	\caption{Divide y venceras con 100 elementos cada vector} 
 	\label{fig:d_kvectores} 
 \end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Si ahora fijamos $k=100$ y hacemos variable el n\'umero de elementos debemos ajustar la funci\'on $f(x) = ax(log(x)/log(2))$
+
+\begin{center}
+\fcolorbox{gray75}{gray97}{
+$a               = 3.03036\cdot 10^{-6}$}
+\fcolorbox{gray75}{gray97}{
+Correlation:  $r = 0.9933$}
+\end{center}
 
 \begin{figure}[htb] 
 \centering
 	\includegraphics[width=0.6\textwidth]{../Obligatorio/Graficas/dyv_nelementos.png}
-	\caption{Divide y vencerás con 100 vectores} 
+	\caption{Divide y venceras con 100 vectores} 
 	\label{fig:d_nelementos} 
 \end{figure}
 \newpage
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Comparativa}
+Como podemos deducir del estudio te\'orico, las diferencias entre fuerza bruta y divide y vencer\'as se aprecian mucho m\'as al variar los vectores, ya que tendr\'iamos 
 \begin{figure}[htb] 
 \centering
 	\includegraphics[width=0.6\textwidth]{../Obligatorio/Graficas/comparativa_kvectores.png}
@@ -205,7 +179,8 @@ int f_pos_min(int* vec_indices, int** M, int num_vec){
 	\caption{Comparativa con 100 vectores} 
 	\label{fig:comp_nelementos} 
 \end{figure}
-\newpage
 
+\newpage
+\newpage
 
 
