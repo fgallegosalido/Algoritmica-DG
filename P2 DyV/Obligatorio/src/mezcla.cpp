@@ -11,7 +11,7 @@
 //#include <vector>
 using namespace std;
 
-//generador de ejemplor para el problema de mezcla de k vectores ordenados.
+//generador de ejemplo para el problema de mezcla de k vectores ordenados.
 //Para obtener k vectores ordenados de forma creciente cada uno con n elementos,
 //genera un vector de tamaño k*n con todos los enteros entre 0 y kn-1 ordenados.
 //Se lanzan entonces k iteraciones de un algoritmo de muestreo aleatorio de

@@ -58,20 +58,15 @@ void Merge(int* &vector, int ini, int pivot, int fin){
 // donde termina y el número de elementos de la partición, y devuelve ese trozo
 // ya ordenado
 void MergeKPartitions(int* &vector, int n_elem, int ini, int fin){
-  int size = fin - ini + 1;
-  int partitions = size/n_elem;
-  // Caso base: Si hay 2 particiones de igual tamaño, las mezcla
-  if(partitions == 2){
+  int size = fin - ini + 1, partitions = size/n_elem;
+  // Caso base
+  if(partitions == 2) // Caso base
     Merge(vector, ini, ini+n_elem, fin);
-  }
-  // Si hay más de dos particiones:
   else if(partitions > 2){
     int division = ini + (partitions/2)*n_elem; // Cálculo de la división
-    // Aquí es basicamente donde aplicamos divide y vencerás, el cual nos acaba
-    // proporcionando la eficiencia deseada para esta situación.
-    MergeKPartitions(vector, n_elem, ini, division-1);  // Llamada al primer conjunto de particiones
-    MergeKPartitions(vector, n_elem, division, fin);    // Llamada al segundo conjunto de particiones
-    Merge(vector, ini, division, fin);  // Mezclamos los dos conjuntos de particiones, ya ordenados
+    MergeKPartitions(vector, n_elem, ini, division-1);  // Primer vector ordenado
+    MergeKPartitions(vector, n_elem, division, fin);    // Segundo vector ordenado
+    Merge(vector, ini, division, fin);  // Mezclamos los dos conjuntos
   }
 }
 

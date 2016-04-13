@@ -132,17 +132,16 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 
 \section{Presentación}
 \subsection{Introducción}
-\begin{frame}
+\begin{frame}{Introducción}
 	\begin{block}{Eficiencia}
 	Divide y vencerás es una técnica algorítmica que consiste en resolver un problema 			diviéndolo en problemas más pequeños y combinando las soluciones. 
 	El proceso de división continúa hasta que los subproblemas llegan a ser lo 					suficientemente sencillos como para una resolución directa.
 	El hecho de que el tamaño de los subproblemas sea estrictamente menor que el tamaño 			original del problema nos garantiza la convergencia hacia los casos elementales.				\end{block}
-	
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Automatización}
-\begin{frame}
+\begin{frame}{Scripts}
 	\begin{block}{Script}
 		Podemos obtener los datos fijando el n\'umero de vectores usados.
 	\end{block}
@@ -197,23 +196,9 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 	while [ \$nelementos -lt 1000 ]; do
    	
    		./a.out \$nelementos 10 1
-   
-   		./a.out \$nelementos 110 1
-   
-   		./a.out \$nelementos 210 1
-   
-   		./a.out \$nelementos 310 1
+      		
+   		...
    		
-   		./a.out \$nelementos 410 1
-   
-   		./a.out \$nelementos 510 1
-   
-   		./a.out \$nelementos 610 1
-   
-   		./a.out \$nelementos 710 1
-   
-   		./a.out \$nelementos 810 1
-   
    		./a.out \$nelementos 910 1
 
    		let nelementos=nelementos+100
@@ -223,13 +208,10 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}
-	\begin{block}{Scripts de gnuplot}
-		Podemos hacer que gnuplot automatice su trabajo.
-		
-		Suponemos que el fichero donde están los datos es "datos.dat", los scripts de 				gnuplot se ejecutan:
-		
-		\hspace{2cm}\$ gnuplot algoritmo.gp
+\begin{frame}{Scripts de gnuplot}
+	\begin{block}{Gnuplot}		
+		Los datos están en "datos.dat". Ejecutamos		
+		\hspace{1cm}\$ gnuplot algoritmo.gp
 	\end{block}
 	\pause
 	
@@ -243,7 +225,7 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 
 	set title "..."
 
-	set xlabel "Numero de vectores/elementos del vector"
+	set xlabel "Vectores/Elementos del vector"
 
 	set ylabel "Tiempo (s)"
 
@@ -270,7 +252,8 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
+\subsection{Ordenador usado}
+\begin{frame}{Ordenador usado}
 	\begin{alertblock}{Ordenador usado para la ejecuci\'on}
 	HP Pavilion g series (Pavilion g6)
 
@@ -291,8 +274,92 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\section{Mezclando k vectores ordenados}
+\begin{frame}{Problema}
+	\begin{block}{Mezclando k vectores ordenados}
+	Se tienen $k$ vectores ordenados (de menor a mayor), cada uno con $n$ elementos, y 				queremos combinarlos en un único vector ordenado (con $kn$ elementos)
+	\end{block}
+
+	\begin{block}{Cota superior}
+	Es posible imponer una cota superior teórica. Teniendo en cuenta que hay kn elementos, 	si aplicásemos un algoritmo 	de ordenación con eficiencia $O(n) = nlog(n)$ deducimos 			que podemos encontrar un algoritmo de ordenación básica con eficiencia $O(k, n) = 
+	nklog(nk)$. Tomar los $k$ vectores como uno solo no aprovecha aún el hecho de que 			partes del vector están ordenadas.
+	\end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Fuerza bruta}
+\begin{frame}{Fuerza bruta}
+	\begin{block}{Algoritmo}
+	En cada paso elegimos el mínimo de los primeros elementos de los $k$ vectores, será el 	primer elemento del vector creciente resultante.
+	Para el siguiente paso descartamos ese elemento y calculamos otra vez el mínimo, lo 			insertamos al final del vector resultante y así sucesivamente.
+
+	Buscar el mínimo es $O(k)=k$ ya que el vector de índices tiene $k$ 							elementos, y lo repetimos $kn$ veces.
+	\end{block}
+	
+	\begin{block}{Eficiencia}
+	\[\sum_{i=1}^{kn}k = nk^2 \implies \ O(k,n)=nk^2\]
+	\end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Divide y vencerás}
+\begin{frame}{Divide y vencerás}
+	\begin{block}{Algoritmo}
+	Usaremos mergesort, pero con los primeros montículos ya creados, por tanto tendrá una 		constante oculta menor que usar mergesort para $kn$ datos arbitrarios. 
+	
+	En el proceso lo que haremos es ir mezclando las partes de dos en dos. El algoritmo 			que mezcla dos vectores en un único tiene eficiencia $O(n) = n$.
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\begin{block}{Código} % errorl
+		\begin{figure}[h]
+    		\centering
+    		\includegraphics[width=0.9\textwidth]{./Imagenes/dyv.png}
+    		\label{fig:mesh1}
+		\end{figure}
+	\end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+	\begin{block}{Eficiencia}
+	Donde $k$ es el n\'umero de vectores y $n$ el n\'umero de elementos de cada vector:s
+
+	\[T(k,n) = \left \{ 
+	\begin{matrix} 
+		2n & 				\mbox{si } k=2
+	\\ 2T(k/2,n) + kn & 		\mbox{si } k>2
+	\end{matrix}
+	\right.\]
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\begin{block}{Desarrollo}
+	Sustituyendo $k=2^m \implies$ $T(2^m, n) = 2T(2^{m-1}, n) + 2^mn$
+	\[T(2^m, n) = 2\left[ T(2^{m-2}, n) + 2^{m-1}n \right] + 2^mn\]
+	\begin{center}
+	Para el caso gen\'erico, con $j \in \left[0,m-1\right] \cap\mathbb{N}$ y 						desarrollando:
+	\end{center}
+	\[T(2^m, n)	= 2^jT(2^{m-j}, n) + \sum_{i=1}^{m-1} 2^mn\]
+	\[T(2^m, n) = 2^{m-1} T(2, n) + \sum_{i=1}^{m-1} 2^mn\]
+	\[T(2^m, n) = 2^mn + (m-1) 2^mn = 2^mn[1+(m-1)] = 2^mnm\]
+	\end{block}
+\end{frame}
+
+\begin{frame}{Eficiencia final}
+	\begin{block}{Solución}
+	Deshacemos el cambio de variable, $k=2^m \implies log_2(k)=m$:
+	\[T(k,n) = knlog_2k\]
+	\end{block}
+\end{frame}
 
 
+
+\section{Eficiencie teórica fuerza bruta}
+\section{Eficiencie teórica divide y vencerás}
 
 
 

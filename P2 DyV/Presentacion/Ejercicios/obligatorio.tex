@@ -9,7 +9,7 @@ Una posible alternativa consiste en, utilizando un algoritmo cl\'asico, mezclar 
 \end{itemize}
 
 \subsection{Estudio preliminar}
-Plante\'ando el problema es posible imponer una cota superior te\'orica a la mezcla. Teniendo en cuenta que hay $kn$ elementos, si aplic\'asemos un algoritmo con eficiencia  $O(n)=nlog(n)$ deducimos que podemos encontrar un algoritmo de ordenaci\'on b\'asica con eficiencia $O(k,n)=nklog(nk)$. En este caso estar\'iamos representando los $k$ vectores de $n$ elementos como un \'unico vector, sin aprovechar a\'un el hecho de que parte del \"\ vector\ \" est\'a ordenado.
+Plante\'ando el problema es posible imponer una cota superior te\'orica a la mezcla. Teniendo en cuenta que hay $kn$ elementos, si aplic\'asemos un algoritmo con eficiencia  $O(n)=nlog(n)$ deducimos que podemos encontrar un algoritmo de ordenaci\'on b\'asica con eficiencia $O(k,n)=nklog(nk)$. En este caso estar\'iamos representando los $k$ vectores de $n$ elementos como un \'unico vector, sin aprovechar a\'un el hecho de que partes del \"\ vector\ \" est\'an ordenadas.
 
 Para obtener los datos, las gr\'aficas y los ajustes hemos usado un script 
 Obligatorio/Script/script.sh, que compila y ejecuta los programas usados, ubicados en la carpeta Obligatorio/src/ y los scripts de gnuplot.
@@ -20,11 +20,11 @@ Para la versi\'on a fuerza bruta en cada paso elegimos el m\'inimo de los primer
 
 Realmente la forma que usamos para descartar los elementos que vamos insertando es un vector de $k$ elementos que almacena los \'indices de cada vector. Inicialmente el \'indice de un vector es $0$, si usamos ese elemento el \'indice aumentar	\'a a $1$, para que no se repita, hasta recorrer todos los \'indices del i-\'esimo vector, $i \in [0,k-1]\cap \mathbb{N}$.
 
-Buscar el m\'inimo en cada iteraci\'on es $O(k)$ ya que el vector de \'indices tiene $k$ elementos. El c\'alculo lo tenemos que hacer para cada elemento, hay $k$ vectores de $n$ elementos cada uno, por tanto se repetir\'a $kn$ veces.
+Buscar el m\'inimo en cada iteraci\'on es $O(k)=k$ ya que el vector de \'indices tiene $k$ elementos. El c\'alculo lo tenemos que hacer para cada elemento, hay $k$ vectores de $n$ elementos cada uno, por tanto se repetir\'a $kn$ veces.
 \[\sum_{i=1}^{kn}k = nk^2 \implies \ O(k,n)=nk^2\]
-
+		
 \subsubsection{Eficiencia te\'orica divide y vencer\'as}
-Para la versi\'on con divide y vencer\'as hemos usado una ver	si\'on del mergesort, pero con los mont\'iculos ya creados, por tanto ser\'a mucho m\'as r\'apido que para $kn$ datos arbitrarios. 
+Para la versi\'on con divide y vencer\'as hemos usado una ver	si\'on del mergesort, pero con los primeros mont\'iculos ya creados, por tanto ser\'a mucho m\'as r\'apido que para $kn$ datos arbitrarios. 
 
 El primer paso es pasar los vectores a un \'unico vector, con $O(k,n)=kn$
 
@@ -41,9 +41,9 @@ Donde $k$ es el n\'umero de vectores y $n$ el n\'umero de elementos de cada vect
 Sustituyendo $k=2^m \implies$ $T(2^m, n) = 2T(2^{m-1}, n) + 2^mn$
 \[T(2^m, n) = 2\left[ T(2^{m-2}, n) + 2^{m-1}n \right] + 2^mn\]
 \begin{center}
-	Para el caso gen\'erico, con $i \in \left[0,m-1\right] \cap\mathbb{N}$ y desarrollando:
+	Para el caso gen\'erico, con $j \in \left[0,m-1\right] \cap\mathbb{N}$ y desarrollando:
 \end{center}
-\[T(2^m, n)	= 2^iT(2^{m-i}, n) + \sum_{i=1}^{m-1} 2^mn\]
+\[T(2^m, n)	= 2^jT(2^{m-j}, n) + \sum_{i=1}^{m-1} 2^mn\]
 \[T(2^m, n) = 2^{m-1} T(2, n) + \sum_{i=1}^{m-1} 2^mn\]
 \[T(2^m, n) = 2^mn + (m-1) 2^mn = 2^mn[1+(m-1)] = 2^mnm\]
 
