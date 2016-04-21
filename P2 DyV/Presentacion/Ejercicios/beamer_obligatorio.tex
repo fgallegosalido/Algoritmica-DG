@@ -1,6 +1,17 @@
 
 \section{Mezclando k vectores ordenados}
 
+\begin{frame}{Problema}
+	\begin{block}{Mezclando k vectores ordenados}
+	Se tienen $k$ vectores ordenados (de menor a mayor), cada uno con $n$ elementos, y 				queremos combinarlos en un único vector ordenado (con $kn$ elementos)
+	\end{block}
+
+	\begin{block}{Cota superior}
+	Es posible imponer una cota superior teórica. Teniendo en cuenta que hay kn elementos, 	si aplicásemos un algoritmo 	de ordenación con eficiencia $O(n) = nlog(n)$ deducimos 			que podemos encontrar un algoritmo de ordenación básica con eficiencia $O(k, n) = 
+	nklog(nk)$. Tomar los $k$ vectores como uno solo no aprovecha aún el hecho de que 			partes del vector están ordenadas.
+	\end{block}
+\end{frame}
+
 \subsection{Automatización}
 \begin{frame}{Scripts}
 	\begin{block}{Script}
@@ -85,8 +96,6 @@
 	
 	set output "grafica.png"
 
-	set title "..."
-
 	set xlabel "Vectores/Elementos del vector"
 
 	set ylabel "Tiempo (s)"
@@ -106,7 +115,7 @@
 	\begin{block}{Funciones ajustadas}
 		\[f(x) = a*x\]
 		\[g(x) = a*x*x\]
-		\[h(x) = a*x*(log(200)/log(2))\]
+		\[h(x) = a*x*(log(x)/log(2))\]
 	\end{block}
 	\end{column}
 	
@@ -134,19 +143,6 @@
 \end{frame}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}{Problema}
-	\begin{block}{Mezclando k vectores ordenados}
-	Se tienen $k$ vectores ordenados (de menor a mayor), cada uno con $n$ elementos, y 				queremos combinarlos en un único vector ordenado (con $kn$ elementos)
-	\end{block}
-
-	\begin{block}{Cota superior}
-	Es posible imponer una cota superior teórica. Teniendo en cuenta que hay kn elementos, 	si aplicásemos un algoritmo 	de ordenación con eficiencia $O(n) = nlog(n)$ deducimos 			que podemos encontrar un algoritmo de ordenación básica con eficiencia $O(k, n) = 
-	nklog(nk)$. Tomar los $k$ vectores como uno solo no aprovecha aún el hecho de que 			partes del vector están ordenadas.
-	\end{block}
-\end{frame}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Fuerza bruta}
 \begin{frame}{Fuerza bruta}
@@ -157,9 +153,9 @@
 	Buscar el mínimo es $O(k)=k$ ya que el vector de índices tiene $k$ 							elementos, y lo repetimos $kn$ veces.
 	\end{block}
 	
-	\begin{block}{Eficiencia}
+	\begin{exampleblock}{Eficiencia}
 	\[\sum_{i=1}^{kn}k = nk^2 \implies \ O(k,n)=nk^2\]
-	\end{block}
+	\end{exampleblock}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -186,7 +182,7 @@
 
 \begin{frame}
 	\begin{block}{Eficiencia}
-	Donde $k$ es el n\'umero de vectores y $n$ el n\'umero de elementos de cada vector:s
+	Donde $k$ es el n\'umero de vectores y $n$ el n\'umero de elementos de cada vector:
 
 	\[T(k,n) = \left \{ 
 	\begin{matrix} 
@@ -250,7 +246,7 @@
 	\begin{block}
 	
 	Para la parte en la que cambiamos el n\'umero de elementos ajustamos la funci\'on 
-	$f(x) = ax$ ya 	que en $T(k, n) = nklog_2k, \ klog_2k$ es una constante, concretamente 	$200$.
+	$f(x) = ax$ ya 	que en $T(k, n) = nklog_2k, \ klog_2k$ es una constante, concretamente 	$200\cdot log_2(200)$.
 
 	\begin{center}
 	$a               = 0.00031202$
@@ -277,7 +273,8 @@
 \subsection{Mezcla con divide y vencer\'as}
 \begin{frame}[Divide y vencerás]
 	\begin{block}
-
+	Ahora usaremos el algoritmo divide y vencerás.
+	Ahora el eje de abscisas serán los vectores usados.
 	La funci\'on ajustada ha sido $f(x) = ax(log(x)/log(2))$
 
 	\begin{center}	
