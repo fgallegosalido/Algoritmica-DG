@@ -108,7 +108,7 @@ gnuplot> stats "fuerza_bruta_kvectores.dat" using 2:(f($1))
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Para la parte en la que cambiamos el n\'umero de elementos ajustamos la funci\'on 
-$f(x) = ax$ ya 	que en $T(k, n) = nklog_2k, \ klog_2k$ es una constante, concretamente $200$.
+$f(x) = ax$ ya 	que en $T(k, n) = nk^2, k^2$ es una constante, concretamente $200^2$.
 
 \begin{center}
 \fcolorbox{gray75}{gray97}{
@@ -117,7 +117,6 @@ $a               = 0.00031202$}
 Correlation:  $r = 0.9934$}
 \end{center}
 
-Para obtener una funci\'on ajustada del tipo $g(x)=c\cdot knlog_2k$, calculamos $c=\frac{a}{100\cdot log_2(100)}, c \in \mathbb{R}$,
 
 \begin{figure}[htb] 
 \centering
