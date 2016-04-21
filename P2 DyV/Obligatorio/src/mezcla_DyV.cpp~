@@ -62,7 +62,7 @@ void MergeKPartitions(int* &vector, int n_elem, int ini, int fin){
   if(partitions == 2) // Caso base
     Merge(vector, ini, ini+n_elem, fin);
   else if(partitions > 2){
-    int division = ini + (partitions/2)*n_elem;
+    int division = ini + (partitions/2)*n_elem; // Cálculo de la división
     MergeKPartitions(vector, n_elem, ini, division-1);  // Primer vector ordenado
     MergeKPartitions(vector, n_elem, division, fin);    // Segundo vector ordenado
     Merge(vector, ini, division, fin);  // Mezclamos
