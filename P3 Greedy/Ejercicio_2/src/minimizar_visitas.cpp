@@ -19,13 +19,14 @@ void minimize_visits(bool* days_open, int P, int R, list<int>& visit_days){
 
 int main(int argc, char** argv){
   if (argc < 2){
-    cerr << "Formato: " << argv[0] << " <periodo_de_tiempo>";
+    cerr << "Formato: " << argv[0] << " periodo_de_tiempo [r]";
     return -1;
   }
 
   srandom(time(0));
   const int P = atoi(argv[1]);
-  const int R = rand() % (P-2) + 2;  // R entre 2 y P
+  int R = rand() % (P-2) + 2;
+  if (argc > 2) R = atoi(argv[2]);
   bool* days_open = new bool[P];
   int consecutive_falses = 0;
   for (int i=0; i < P; i++){
