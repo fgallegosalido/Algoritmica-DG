@@ -104,6 +104,10 @@ class Graph{
          return p;
       }
 
+      int getSize() const{
+         return size;
+      }
+
       // Funciones para los ciclos hamiltonianos
       int* nearestNeighbour(int &initial) const{
          int *neighbours = new int[size-1];
