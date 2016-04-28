@@ -9,7 +9,7 @@ using namespace std;
 
 
 void minimize_visits(bool* days_open, int P, int R, list<int>& visit_days){
-  for (int i=R-1; i <= P; i+=R){
+  for (int i=R-1; i < P; i+=R){
     while (!days_open[i])
       i--;
     visit_days.push_back(i+1);
@@ -19,7 +19,7 @@ void minimize_visits(bool* days_open, int P, int R, list<int>& visit_days){
 
 int main(int argc, char** argv){
   if (argc < 2){
-    cerr << "Formato: " << argv[0] << " periodo_de_tiempo [r]";
+    cerr << "Formato: " << argv[0] << " periodo_de_tiempo [r]" << endl;
     return -1;
   }
 
@@ -31,9 +31,9 @@ int main(int argc, char** argv){
   int consecutive_falses = 0;
   for (int i=0; i < P; i++){
     days_open[i] = rand() % 2;
-    if (days_open == false) consecutive_falses++;
+    if (days_open[i] == false) consecutive_falses++;
     else consecutive_falses = 0;
-    if (consecutive_falses > R){
+    if (consecutive_falses == R){
       days_open[i] = true;
       consecutive_falses = 0;
     }
