@@ -6,7 +6,7 @@ set title "Comparación de visitas (media)" font "Helvetica, 16"
 set style fill solid 1.0 border lt -1
 set style data histograms
 set xlabel "Tamaño del periodo (meses)" font "Helvetica, 12"
-set ylabel "Tiempo (s)" font "Helvetica, 12"
+set ylabel "Visitas" font "Helvetica, 12"
 set tics font "Helvetica, 10"
 set style line 1 lt 3 lw 0.5 lc rgb '#409f40'
 set style line 2 lt 3 lw 0.5 lc rgb '#fcbb06'
