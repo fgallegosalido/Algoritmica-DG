@@ -42,3 +42,77 @@ También hemos implementado otro algoritmo con el fin de hacer comparaciones, en
 
 
 \subsection{Demostración de la optimalidad}
+
+Sean:\\
+\begin{itemize}
+\item \textbf{p} la duración del periodo (ej: 30 días)
+\item \textbf{r} la duración de la reserva
+\item \textbf{a} vector de tamaño p que representa los días que abre la tienda\\
+La tienda abre el día $n$ si $a_n = 1$\\
+La tienda no abre el día $n$ si $a_n = 0$
+\item \textbf{d} el vector que almacena los días de visita\\
+$d_{i+1} = d_i + k_i\ /\ k_i \in \{x \in \mathbb{N} : 0<x<r\ y\ a_{d_i+x} = 1\}$\\
+\end{itemize}
+
+Formulamos dos ecuaciones:\\
+
+$d_{i+1}^h = d_i^h + h_i$ donde $h_i = max\{x \in \mathbb{N} : 0<x<r\ y\ a_{d_i+x} = 1\}$\\
+Podemos definir $n \in \mathbb{N}\ /\ d_n^h = min\{d_i^h: d_i^h + r > p\}$ como el índice del último día que necesitamos ir a comprar.\\
+
+$d_{i+1}^t = d_i^t + t_i$ donde $t_i \in \{x \in \mathbb{N} : 0<x<r\ y\ a_{d_i+x} = 1\}\ /\ t_i < h_i$ para algún $i<n$\\
+
+$d^{h}$ representa la aproximación greedy, mientras que $d^{t}$ representa cualquier otro algoritmo.\\
+
+Por las definiciones anteriores sabemos que $\exists m \in \mathbb{N}\ /\ d_i^{t} < d_i^{h}\ \forall i,\ m<i<n \Rightarrow d_n^{t} < d_n^{h}$\\
+Distinguimos dos casos:\\
+\begin{enumerate}
+\item Si $p-r < d_n^{t} < d_n^{h}$ las dos opciones son igual de buenas\\
+\item Si $d_n^{t} < p-r < d_n^{h}$ la opción greedy es mejor\\
+\end{enumerate}
+
+De aquí deducimos que utilizar el enfoque greedy en este caso siempre nos da el mejor resultado.\\
+
+
+
+\subsection{Resultados empíricos}
+\subsubsection{Eficiencia}
+
+Aunque en esta ocasión la eficiencia no es especialmente importante, está claro que el tiempo aumenta linealmente en relación al tamaño del periodo de tiempo O(p).\\
+
+Además también aumenta al disminuir la duración de la reserva, tardando más con un periodo grande y una reserva pequeña.\\
+
+\begin{center}
+\resizebox{6in}{!}{\input{../Ejercicio_2/graficas/tiempo}}
+\end{center}
+
+\subsubsection{Comparación}
+
+Es más interesante ver como se comporta el algoritmo respecto al número de visitas. Para esto lo compararemos con otro algoritmo que escoge los días de forma aleatoria.\\
+
+Primero fijaremos el periodo de tiempo en 30 días y veremos como se comporta al variar la duración de la reserva.\\
+
+\begin{center}
+\resizebox{5.3in}{!}{\input{../Ejercicio_2/graficas/visitas_p_fijo}}
+\end{center}
+
+Como ya hemos probado el algoritmo greedy obtiene la mejor solución, por lo que siempre se encuentra por debajo del otro algoritmo. Además genera una gráfica descendiente, mientras que el aleatorio presenta máximos y mínimos locales.\\
+
+Ahora fijamos la duración de la reserva en 5 días y variamos el tamaño del periodo. De esta manera obtenemos una gráfica creciente.\\
+
+\begin{center}
+\resizebox{5.3in}{!}{\input{../Ejercicio_2/graficas/visitas_r_fijo}}
+\end{center}
+
+Las conclusiones son parecidas a las de la gráfica anterior. Cabe mencionar que aunque parece que las visitas aumentan de forma lineal en el algoritmo greedy, no se puede asegurar, ya que la distribución de días en los que abre la tienda es aleatoria.\\
+
+También es interesante observar que ocurre de forma media. Para ello calculamos el número medio de visitas con una reserva aleatoria y en un periodo determinado.\\
+
+\begin{center}
+\resizebox{5.3in}{!}{\input{../Ejercicio_2/graficas/media}}
+\end{center}
+
+Podemos observar dos conclusiones muy interesantes.\\
+
+Primero, parece que hay una proporción entre el número de visitas medio del greedy y del aleatorio, aproximadamente $\frac{2}{3}$.\\
+
+Segundo, el tamaño del periodo no influye en el número de visitas, ya que lo realmente importante es la proporción entre el periodo y la reserva y al ser esta última la media entre 1 y p las visitas se estabilizan (salvo excepciones de la probabilidad).
