@@ -13,13 +13,11 @@ void random_visits(bool* days_open, int P, int R, list<int>& visit_days){
   for (int i=0; i+R < P; i=k+1){
     min_RP = i+R < P ? i+R : P;
     k = rand() % (min_RP-1-i) + i;  // Entre i e i+R-1
-    cout << k+1 << ":";
     while (!days_open[k] && k < P && k < i+R)
       k++;
     while (!days_open[k] && k >= i)
       k--;
     visit_days.push_back(k+1);
-    cout << k+1 << " ";
   }
 }
 
@@ -69,6 +67,6 @@ int main(int argc, char** argv){
     cout << endl;
     cout << "Num visitas: " << visit_days.size() << endl;
   #else
-    cout << P << " " << visit_days.size() << " " << duration.count() << endl;
+    cout << visit_days.size() << " " << duration.count() << endl;
   #endif
 }

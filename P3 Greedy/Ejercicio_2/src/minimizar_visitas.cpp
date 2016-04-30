@@ -62,6 +62,6 @@ int main(int argc, char** argv){
     cout << endl;
     cout << "Num visitas: " << visit_days.size() << endl;
   #else
-    cout << P << " " << visit_days.size() << " " << duration.count() << endl;
+    cout << visit_days.size() << " " << duration.count() << endl;
   #endif
 }
