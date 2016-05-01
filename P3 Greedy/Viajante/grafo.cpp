@@ -70,6 +70,41 @@ class Graph{
       int** matrix; // matrix nxn
       Point* points;
       int size;
+      
+      int* concretNearestNeighbour(int initial) const{
+         int *neighbours = new int[size-1];
+         int index_distance[2][size-1];
+         int index, distance;
+
+         for (int i=0; i<size; ++i){
+            if (i < initial){
+               index_distance[0][i] = i;
+               index_distance[1][i] = matrix[i][initial];
+               // Equivalente a matrix[initial][i], matrix simétrica
+            }
+            else if (i > initial){
+               index_distance[0][i-1] = i;
+               index_distance[1][i-1] = matrix[i][initial];
+            }
+         }
+
+         for (int i=0; i<size; ++i){
+            for (int j=i; j<size && (index_distance[1][j] < index_distance[1][j-1]) ; ++j){
+               index = j-1;
+               distance = index_distance[1][j-1];
+               index_distance[0][j-1] = index_distance[0][j];
+               index_distance[1][j-1] = index_distance[1][j];
+               index_distance[0][j] = index;
+               index_distance[1][j] = distance;
+            }
+         }
+
+         for (int i=0; i<(size-1); ++i)
+            neighbours[i] = index_distance[0][i];
+
+         return neighbours;
+      }
+
    public:
       Graph(Point* coordenadas, int n){
          if ( n > 0 ){
@@ -113,40 +148,34 @@ class Graph{
       }
 
       // Funciones para los ciclos hamiltonianos
-      int* nearestNeighbour(int &initial) const{
-         int *neighbours = new int[size-1];
-         int index_distance[2][size-1];
-         int index, distance;
-
-         for (int i=0; i<size; ++i){
-            if (i < initial){
-               index_distance[0][i] = i;
-               index_distance[1][i] = matrix[i][initial];
-               // Equivalente a matrix[initial][i], matrix simétrica
-            }
-            else if (i > initial){
-               index_distance[0][i-1] = i;
-               index_distance[1][i-1] = matrix[i][initial];
-            }
-         }
-
-         for (int i=0; i<size; ++i){
-            for (int j=i; j<size && (index_distance[1][j] < index_distance[1][j-1]) ; ++j){
-               index = j-1;
-               distance = index_distance[1][j-1];
-               index_distance[0][j-1] = index_distance[0][j];
-               index_distance[1][j-1] = index_distance[1][j];
-               index_distance[0][j] = index;
-               index_distance[1][j] = distance;
-            }
-         }
-
-         for (int i=0; i<(size-1); ++i)
-            neighbours[i] = index_distance[0][i];
-
-         return neighbours;
-      }
       
+      int* nearestNeighbour(){
+        int* order = new int[size];
+        int* near;
+        bool found = false, repeat;
+        order[0] = 0;
+        order[1] = concretNearestNeighbour(0);
+        
+        for (int i=2; i<size; ++i){
+            near = concretNearestNeighbour(i-1); // Devuelve un vector de size-1 elementos
+            for (int j=0; j<(size-1) && !found; ++j){
+                repeat = false;
+                for (int k=0; k<i && !repeat; ++k){
+                    if (near[j] == order[i])
+                        repeat = true;
+                } 
+                
+                if (!repeat){
+                    order[i] = near[j];    
+                    found = true;
+                }
+            }            
+        }
+        
+        return order;  
+      }      
+      
+
       int* minimizingEdges(){
           return NULL;
       }
