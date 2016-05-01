@@ -281,7 +281,7 @@ class Graph{
              
              for (j=0; j<abs(paths.size()) && !insert; ++j){ //Comprobamos que no forma ciclo con cada camino formado
              
-                for (k=0; k<paths[j].size(); ++k){
+                for (k=0; k<abs(paths[j].size()); ++k){
                     if ( paths[j][k].getFirst() == orderedEdges[i].getFirst() ||
                          paths[j][k].getSecond() == orderedEdges[i].getFirst() )
                         first = true;
