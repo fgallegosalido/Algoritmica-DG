@@ -12,7 +12,7 @@ void minimize_visits(bool* days_open, int P, int R, list<int>& visit_days){
   for (int i=R-1; i < P; i+=R){
     while (!days_open[i])
       i--;
-    visit_days.push_back(i+1);
+    visit_days.push_back(i+1); // Contamos los días a partir del 1
   }
 }
 

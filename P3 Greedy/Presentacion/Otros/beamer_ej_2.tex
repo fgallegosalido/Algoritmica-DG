@@ -1,0 +1,128 @@
+\begin{frame}{Minimizando el número de visitas al proveedor}
+\begin{alertblock}{Ordenador usado para la ejecuci\'on}
+	Asus N56VJ
+
+	Sistema operativo: Linux mint (Rosa)
+
+	Memoria: 8GB
+
+	Procesador: Inter Core i7-4710HQ x 8
+
+	Gráficos: Nvidia geforce 750M
+
+	Tipo de SO: 64 bits
+
+	Disco: 1TB
+	\end{alertblock}
+\end{frame}
+
+
+\subsection{Problema}
+\begin{frame}{Problema}
+\begin{block}{\small Enunciado}
+{\small Un granjero necesita disponer siempre de un determinado fertilizante. La cantidad máxima que puede almacenar la consume en r días, y antes de que eso ocurra necesita acudir a una tienda del pueblo para abastecerse. El problema es que dicha tienda tiene un horario de apertura muy irregular (solo abre determinados días). El granjero conoce los días en que abre la tienda, y desea minimizar el número de desplazamientos al pueblo para abastecerse.}\\
+\end{block}
+
+\begin{block}{\small Ejercicios}
+\begin{enumerate}
+\item {\small Diseñar un algoritmo greedy que determine en qué días debe acudir al pueblo a comprar fertilizante durante un periodo de tiempo determinado (por ejemplo durante el siguiente mes).}\\
+\item {\small Demostrar que el algoritmo encuentra siempre la solución  óptima.}\\
+\end{enumerate}
+\end{block}
+\end{frame}
+
+
+\subsection{Diseño del algoritmo}
+\begin{frame}{Diseño del algoritmo}
+\begin{columns}
+	\begin{column}{5.5cm}
+	\begin{block}{\small Algoritmo}
+	{\small Aplicamos greedy escogiendo en cada iteración el día más lejano que cumpla estas dos condiciones.}\\
+	\begin{itemize}
+	\item {\small Que diste menos de r días de la ultima reposición.}\\
+	\item {\small Que la tienda esté abierta.}\\
+	\end{itemize}
+	\end{block}	
+	\end{column}
+	
+	\begin{column}{5.5cm}
+	\begin{block}{\small Representación}
+	\begin{itemize}
+	\item Un vector de booleanos representa los días que abre la tienda.\\
+	Por ejemplo [1, 0, 0, 1, 0, 1] significa que la tienda abre los días 1, 4 y 6.\\
+	\item Una lista de enteros almacena los días que el granjero tiene que ir a comprar.
+	\end{itemize}
+	\end{block}	
+	\end{column}	
+\end{columns}
+\end{frame}
+
+\begin{frame}{Ejemplo}
+\begin{center}
+\resizebox{3.5in}{!}{\input{./Otros/calendario_beamer.tex}}
+\end{center}
+\end{frame}
+
+\begin{frame}{Implementación}
+\lstinputlisting[language=C++, firstline=9, lastline=19]{../Ejercicio_2/src/minimizar_visitas.cpp}
+\end{frame}
+
+
+\subsection{Demostración de la optimalidad}
+\begin{frame}{Elementos de la demostración}
+\begin{itemize}
+\item \textbf{p} la duración del periodo (ej: 30 días)
+\item \textbf{r} la duración de la reserva
+\item \textbf{a} vector de tamaño p que representa los días que abre la tienda\\
+La tienda abre el día $n$ si $a_n = 1$\\
+La tienda no abre el día $n$ si $a_n = 0$
+\item \textbf{d} el vector que almacena los días de visita\\
+$d_{i+1} = d_i + k_i\ /\ k_i \in \{x \in \mathbb{N} : 0<x<r\ y\ a_{d_i+x} = 1\}$\\
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Demostración}
+\small {
+Formulamos dos ecuaciones:\\
+
+${\color{verde}d_{i+1}^h} = d_i^h + h_i$ donde $h_i = max\{x \in \mathbb{N} : 0<x<r\ y\ a_{d_i+x} = 1\}$\\
+Podemos definir $n \in \mathbb{N}\ /\ d_n^h = min\{d_i^h: d_i^h + r > p\}$ como el índice del último día que necesitamos ir a comprar.\\
+
+${\color{naranja}d_{i+1}^t} = d_i^t + t_i$ donde $t_i \in \{x \in \mathbb{N} : 0<x<r\ y\ a_{d_i+x} = 1\}\ /\ t_i < h_i$ para algún $i<n$\\
+
+Por las definiciones anteriores sabemos que $\exists m \in \mathbb{N}\ /\ d_i^{t} < d_i^{h}\ \forall i,\ m<i<n \Rightarrow d_n^{t} < d_n^{h}$\\
+Distinguimos dos casos:\\
+\begin{enumerate}
+\item Si $p-r < {\color{naranja}d_n^{t}} < {\color{verde}d_n^{h}}$ las dos opciones son igual de buenas\\
+\item Si ${\color{naranja}d_n^{t}} < p-r < {\color{verde}d_n^{h}}$ la opción greedy es mejor\\
+\end{enumerate}
+
+De aquí deducimos que utilizar el enfoque {\color{verde}greedy} en este caso siempre nos da el mejor resultado.\\}
+\end{frame}
+
+\subsection{Resultados empíricos}
+\begin{frame}{Eficiencia}
+\begin{center}
+\resizebox{3.5in}{!}{\input{../Ejercicio_2/graficas/tiempo}}
+\end{center}
+
+{\small{La eficiencia es $O(p)$.\\ En el caso de que el día abierto se encuentre en $\frac{r}{2}$ es $p-\frac{r}{2}$}}
+\end{frame}
+
+\begin{frame}{Visitas fijando el periodo}
+\begin{center}
+\resizebox{4in}{!}{\input{../Ejercicio_2/graficas/visitas_p_fijo}}
+\end{center}
+\end{frame}
+
+\begin{frame}{Visitas fijando la reserva}
+\begin{center}
+\resizebox{4in}{!}{\input{../Ejercicio_2/graficas/visitas_r_fijo}}
+\end{center}
+\end{frame}
+
+\begin{frame}{Media de visitas (r aleatorio)}
+\begin{center}
+\resizebox{4in}{!}{\input{../Ejercicio_2/graficas/media}}
+\end{center}
+\end{frame}

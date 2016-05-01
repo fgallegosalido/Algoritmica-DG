@@ -69,6 +69,7 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
     visible on/.style={alt={#1{}{invisible}}},
     alt/.code args={<#1>#2#3}{\alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}}},
 }
+\usepackage{gnuplot-lua-tikz}
 
 %% Comandos %%
 \newcommand{\ejemplo}[1]{\lstinputlisting{./examples/#1}} % Mostrar código de ejemplos
@@ -103,6 +104,8 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 \vfuzz=20pt
 % Evita wranings itemize
 \renewcommand\textbullet{\ensuremath{\bullet}}
+\definecolor{naranja}{RGB}{252,187,6}
+\definecolor{verde}{RGB}{64,159,64}
 
 % tikz
 \usepackage{tikz}
@@ -133,6 +136,9 @@ literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1
 \end{frame}
 
 
+
+\section{Minimizando el número de visitas al proveedor}
+\input{./Otros/beamer_ej_2.tex}
 
 
 \end{document}
