@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <chrono>
 #include <ctime>
-
+#include <vector>
 using namespace std;
 
 class Point{
@@ -50,18 +50,18 @@ class Point{
          return sqrt( (x-p.x)*(x-p.x) + (y-p.y)*(y-p.y) );
       }
 
-      Point& operator=(const Point &otro){
-         if (this != &otro){
-            x = otro.getX();
-            y = otro.getY();
+      Point& operator=(const Point &other){
+         if (this != &other){
+            x = other.getX();
+            y = other.getY();
          }
          return *this;
       }
-      bool operator==(const Point &otro) const{
-         return (x == otro.getX() && y == otro.getY());
+      bool operator==(const Point &other) const{
+         return (x == other.getX() && y == other.getY());
       }
-      bool operator!=(const Point &otro) const{
-         return (! (*this == otro) );
+      bool operator!=(const Point &other) const{
+         return (! (*this == other) );
       }
 };
 
@@ -105,6 +105,51 @@ class Graph{
          return neighbours;
       }
 
+   class Edge{
+      private:
+         int first, second;
+         double length;
+      public:
+         Edge(int a, int b, double ab):first(a), second(b), length(ab){}
+         Edge():first(0), second(0), length(0){}
+         
+         void setEdge(int a, int b, double ab){
+            first = a;
+            second = b;
+            length = ab;
+         }
+         
+         int getFirst() const{
+            return first;    
+         }
+         
+         int getSecond() const{
+            return second;    
+         }
+         
+         int getLength() const{
+            return length;    
+         }
+         
+         
+         Edge& operator=(const Edge &other){
+            if (this != &other){
+               first = other.getFirst();
+               second = other.getSecond();
+               length = other.getLength();               
+            }
+            return *this;
+         }
+                  
+         bool operator<(const Edge &other){
+            return (length < other.getLength());
+         }
+         bool operator>=(const Edge &other){
+            return ( !(length < other.getLength()) );
+         }
+         
+   };
+   
    public:
       Graph(Point* coordenadas, int n){
          if ( n > 0 ){
@@ -154,7 +199,7 @@ class Graph{
         int* near;
         bool found = false, repeat;
         order[0] = 0;
-        order[1] = concretNearestNeighbour(0);
+        order[1] = concretNearestNeighbour(0)[0];
         
         for (int i=2; i<size; ++i){
             near = concretNearestNeighbour(i-1); // Devuelve un vector de size-1 elementos
@@ -177,7 +222,146 @@ class Graph{
       
 
       int* minimizingEdges(){
-          return NULL;
+          vector< vector<Edge> > paths;
+          vector<Edge> orderedEdges, aux;
+          vector<Edge>::iterator it;
+          Edge item, temp;
+          int i, j, k;
+          
+          for (i=0; i<size; ++i){
+             for (j=0; j<size; ++j){
+                item.setEdge(i, j, matrix[i][j]);
+                orderedEdges.push_back(item); // size*size elementos
+             }    
+          }
+          
+          // Heapsort
+          for(k=size*size; k>0; --k){
+             for(i=1; i<=k; ++i){
+                item = orderedEdges[i];
+                j = i/2;
+                while(j>0 && orderedEdges[j]<item){
+                    orderedEdges[i] = orderedEdges[j];
+                    i = j;
+                    j = j/2;
+                }
+                orderedEdges[i] = item;
+             }
+             temp = orderedEdges[1];
+             orderedEdges[1] = orderedEdges[k];
+             orderedEdges[k] = temp;
+          }   
+          // Comprobar que ordena
+          
+
+          int length = 0, end = size*size;
+          bool finish = false, first, second, insert;
+          
+          
+          paths.push_back(aux);
+          paths[0].push_back(orderedEdges[0]);
+
+          
+         /* Caso 1(bien): Ninguno está       #-----------#  *--*
+         
+            Caso 2(mal): Están los dos       +------*
+                    Ciclo                    |      |
+                                             +------*
+                                             
+            Caso 3(bien): Está uno           #-----------*--*
+            
+            Caso 4(mal): Está uno en mitad   #------*----#
+                                                    |
+                                                    *
+                                                    
+            Caso 5(mal): Están los dos       #---*--*----# IMPOSIBLE
+         */
+          for (i=1; i<end && !finish; ++i){ 
+             first = second = insert = false; // Comprobamos si los vertices ya están en los caminos
+             
+             for (j=0; j<abs(paths.size()) && !insert; ++j){ //Comprobamos que no forma ciclo con cada camino formado
+             
+                for (k=0; k<paths[j].size(); ++k){
+                    if ( paths[j][k].getFirst() == orderedEdges[i].getFirst() ||
+                         paths[j][k].getSecond() == orderedEdges[i].getFirst() )
+                        first = true;
+                    if ( paths[j][k].getFirst() == orderedEdges[i].getSecond() ||
+                         paths[j][k].getSecond() == orderedEdges[i].getSecond() )
+                        second = true;
+                }     
+                // Caso 2 (first && second) 
+                
+                if ( !first && !second ){ // Caso 1
+                    vector<Edge> newPath;
+                    newPath.push_back(orderedEdges[i]);
+                    paths.push_back(newPath);
+                    insert = true;                
+                }
+                // Permutamos para que nos salgan las aristas en orden
+                else if ( first && !second ){
+                    if ( paths[j][0].getFirst()  == orderedEdges[i].getFirst() ){
+                        paths[j].insert(paths[j].begin(), 
+                                 Edge(orderedEdges[i].getSecond(), orderedEdges[i].getFirst(), orderedEdges[i].getLength()) );
+                        insert = true;
+                    }                
+                    else if ( paths[j][0].getSecond() == orderedEdges[i].getFirst() ){
+                        paths[j][0].setEdge(paths[j][0].getSecond(), paths[j][0].getFirst(), paths[j][0].getLength());
+                        paths[j].insert(paths[j].begin(), 
+                                 Edge(orderedEdges[i].getSecond(), orderedEdges[i].getFirst(), orderedEdges[i].getLength()) );
+                        insert = true;
+                    }
+                    
+                }
+                else if ( !first && second){
+                    if ( paths[j][0].getFirst()  == orderedEdges[i].getSecond() ){
+                        paths[j].insert(paths[j].begin(), orderedEdges[i] );
+                        insert = true;                
+                    }
+                    else if ( paths[j][0].getSecond() == orderedEdges[i].getSecond() ){
+                        // Permutamos para que nos salga en orden
+                        paths[j][0].setEdge(paths[j][0].getSecond(), paths[j][0].getFirst(), paths[j][0].getLength());
+                        paths[j].insert(paths[j].begin(), orderedEdges[i] );
+                        insert = true;
+                    }                    
+                }
+                
+             }
+             
+             if (length == size)// Habrá size aristas
+                finish = true;
+          }
+          
+          int* ret = new int[size]; // Índices ordenados
+          int duration = paths[0].size();
+          bool index[paths.size()]; // Almacena si hemos metido ya el camino i-esimo en ret
+          for (i=0; i<abs(paths.size()); ++i)
+            index[i] = false;
+          index[0] = true;
+          
+          for (i=0; i<duration; ++i)
+            ret[i] = paths[0][i].getSecond();
+            
+          while (duration < size){
+              for (i=0; i<abs(paths.size()); ++i){
+                 if (index[i] == false){ // Aún no se ha incluido paths[i]
+                    if (paths[i][0].getFirst() == ret[duration-1]){
+                        for (j=0; j<abs(paths[i].size()); ++j){
+                            ret[duration] = paths[i][j].getSecond();
+                            ++duration;
+                        }
+                        index[i] = true;
+                    }
+                    else if (paths[i][ paths[i].size()-1 ].getSecond() == ret[duration-1]){
+                        for (j=paths[i].size()-1; j>=0; --j){
+                            ret[duration] = paths[i][j].getFirst();
+                            ++duration;
+                        }
+                        index[i] = true;
+                    }    
+                 }
+              }
+          }
+          return ret;
       }
 };
 
@@ -230,18 +414,17 @@ int main(int argc, char* argv[]){
     return -1;
 
   srandom(time(0));
-  int size, node;
+  int size;
   int* order;
   Point* points = readPoints(in, size);
   Graph graph(points, size);
-  node = 0;
 
   chrono::high_resolution_clock::time_point tbefore, tafter;
   chrono::duration<double> duration;
   
   tbefore = chrono::high_resolution_clock::now();
   if (mode == 1)
-    order = graph.nearestNeighbour(node);
+    order = graph.nearestNeighbour();
   else if (mode == 2)
     order = NULL;
     //order = graph.insertion_____();
