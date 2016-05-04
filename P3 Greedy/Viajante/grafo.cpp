@@ -68,40 +68,6 @@ class Graph{
       Point* points;
       int size;
 
-      int* concretNearestNeighbour(int initial) const{
-         int *neighbours = new int[size-1];
-         int index_distance[2][size-1];
-         int index, distance;
-
-         for (int i=0; i<size; ++i){
-            if (i < initial){
-               index_distance[0][i] = i;
-               index_distance[1][i] = matrix[i][initial];
-               // Equivalente a matrix[initial][i], matrix simétrica
-            }
-            else if (i > initial){
-               index_distance[0][i-1] = i;
-               index_distance[1][i-1] = matrix[i][initial];
-            }
-         }
-
-         for (int i=0; i<size; ++i){
-            for (int j=i; j<size && (index_distance[1][j] < index_distance[1][j-1]) ; ++j){
-               index = j-1;
-               distance = index_distance[1][j-1];
-               index_distance[0][j-1] = index_distance[0][j];
-               index_distance[1][j-1] = index_distance[1][j];
-               index_distance[0][j] = index;
-               index_distance[1][j] = distance;
-            }
-         }
-
-         for (int i=0; i<(size-1); ++i)
-            neighbours[i] = index_distance[0][i];
-
-         return neighbours;
-      }
-
       // Calcula la longitud del recorrido definido por la lista
       double calcular_longitud(list<int> &lista){
         double ret = 0;
@@ -271,26 +237,41 @@ class Graph{
 
       int* nearestNeighbour(){
         int* order = new int[size];
-        int* near;
-        bool found = false, repeat;
-        order[0] = 0;
-        order[1] = concretNearestNeighbour(0)[0];
+        bool* usados = new bool[size];    // Vector de bits que controla los puntos que ya he usado.
 
-        for (int i=2; i<size; ++i){
-            near = concretNearestNeighbour(i-1); // Devuelve un vector de size-1 elementos
-            for (int j=0; j<(size-1) && !found; ++j){
-                repeat = false;
-                for (int k=0; k<i && !repeat; ++k){
-                    if (near[j] == order[i])
-                        repeat = true;
-                }
+        // Inicializamos el vector de booleanos
+        for (int i=0; i<size; ++i)
+          usados[i] = false;
 
-                if (!repeat){
-                    order[i] = near[j];
-                    found = true;
+        int current = 0, count = 0;
+        double aux, minimo = points[0].Distance(points[1]);
+        bool can_compare;
+
+        while (count<size-1){
+          order[count] = current;
+          usados[current] = true;
+          can_compare = false;
+
+          for (int i=0; i<size; ++i){
+            if (!usados[i]){
+              if (!can_compare){
+                can_compare = true;
+                minimo = points[current].Distance(points[i]);
+                current = i;
+              }
+              else{
+                aux = points[current].Distance(points[i]);
+                if (minimo>aux){
+                  minimo = aux;
+                  current = i;
                 }
+              }
             }
+          }
+          count++;
         }
+
+        order[count] = current;
 
         return order;
       }
@@ -326,8 +307,6 @@ class Graph{
              orderedEdges[k] = temp;
           }
           // Comprobar que ordena
-<<<<<<< HEAD
-
 
           /*
            Lo que haremos será tener un vector de vectores de aristas
@@ -677,7 +656,7 @@ int main(int argc, char* argv[]){
 
   ofstream solution("order.dat");
   for (int i=0; i<size; ++i)
-    solution << order[i] << " " << graph.getPoint(order[i]).getX() << " " << graph.getPoint(order[i]).getY() << endl;
+    solution << graph.getPoint(order[i]).getX() << " " << graph.getPoint(order[i]).getY() << endl;
 
 
 }
