@@ -11,12 +11,12 @@ using namespace std;
 
 class Point{
    private:
-      int x,y;
+      double x,y;
    public:
       Point(){
-         x = y = -1;
+         x = y = 0;
       }
-      Point(int abscisa, int ordenada){
+      Point(double abscisa, double ordenada){
          x = abscisa;
          y = ordenada;
       }
@@ -25,26 +25,22 @@ class Point{
          y = p.getY();
       }
 
-      int getX() const{
+      double getX() const{
          return x;
       }
-      int getY() const{
+      double getY() const{
          return y;
       }
 
-      void setX(const int &c){
-         if ( c >= 0 )
-            x = c;
+      void setX(const double &c){
+        x = c;
       }
-      void setY(const int &c){
-         if ( c >= 0 )
-            y = c;
+      void setY(const double &c){
+        y = c;
       }
-      void setXY(const int &c1, const int &c2){
-         if ( c1 >= 0 && c2 >= 0 ){
-            x = c1;
-            y = c2;
-         }
+      void setXY(const double &c1, const double &c2){
+        x = c1;
+        y = c2;
       }
 
       double Distance(const Point &p) const{
@@ -235,10 +231,11 @@ class Graph{
                points[i] = coordenadas[i];
 
             matrix = new int*[n];
+            for (int i=0; i<n; ++i)
+              matrix[i] = new int[n];
             for (int i=0; i<n; ++i){
-               matrix[i] = new int[n];
-               for (int j=i; j<n; ++j)
-                  matrix[i][j] = matrix[j][i] = coordenadas[i].Distance(coordenadas[j]);
+              for (int j=i; j<n; ++j)
+                matrix[i][j] = matrix[j][i] = coordenadas[i].Distance(coordenadas[j]);
             }
             size = n;
          }
@@ -494,24 +491,34 @@ class Graph{
       }
 };
 
-Point * readPoints(std::ifstream &in, int &size){
-  char aux;
-  int dim, x, y;
-  Point* points = NULL;
-  while( in.peek() < '0' || in.peek() > '9' ) // Buscar dimensión
-    in >> aux;
-  in >> dim;
+Point* readPoints(char* nombre, int &size){
+  ifstream datos;
+  string s;
+  Point p;
+  int n,act;
+  double x,y;
 
-  if (dim > 0){
-      size = dim;
-      points = new Point[size];
-      for (int i=0; i<size; ++i){
-        in >> dim >> x >> y;
-        points[i].setXY(x, y);
-      }
+  datos.open(nombre);
+  if (datos.is_open()) {
+    datos >> s; // Leo "dimension:"
+    datos >> n;
+    size = n;
+    Point* points = new Point[n];
+    int i=0;
+
+    while (i<n){
+      datos >> act >> x >> y;
+      p.setXY(x, y);
+	    points[act-1] = p;
+	    i++;
+    }
+
+    datos.close();
+    return points;
   }
-
-  return points;
+  else {
+    cout << "Error de Lectura en " << nombre << endl;
+  }
 }
 
 int main(int argc, char* argv[]){
@@ -522,13 +529,8 @@ int main(int argc, char* argv[]){
     return -1;
   }
 
-  ifstream in(argv[1]);
   int mode = atoi(argv[2]);
 
-  if (!in){
-    cerr << "No se puede abri el fichero " << argv[1] << " para lectura." << endl;
-    exit = true;
-  }
   if ( mode > 3 || mode < 1 ){
     cerr << "Modo incorrecto" << endl;
     cerr << "Modo:\n\t1 --> Vecino más cercano\n\t 2 --> Inserción\n\t3 --> Minimizando aristas" << endl;
@@ -541,7 +543,9 @@ int main(int argc, char* argv[]){
   srandom(time(0));
   int size;
   int* order;
-  Point* points = readPoints(in, size);
+
+  Point* points = readPoints(argv[1], size);
+
   Graph graph(points, size);
 
   chrono::high_resolution_clock::time_point tbefore, tafter;
