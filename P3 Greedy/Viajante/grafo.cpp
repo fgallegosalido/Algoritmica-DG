@@ -6,6 +6,7 @@
 #include <chrono>
 #include <ctime>
 #include <vector>
+#include <list>
 using namespace std;
 
 class Point{
@@ -70,7 +71,7 @@ class Graph{
       int** matrix; // matrix nxn
       Point* points;
       int size;
-      
+
       int* concretNearestNeighbour(int initial) const{
          int *neighbours = new int[size-1];
          int index_distance[2][size-1];
@@ -105,6 +106,76 @@ class Graph{
          return neighbours;
       }
 
+      int calcular_longitud(list<int> &lista){
+        int ret = 0;
+        list<int>::iterator next;
+
+        for (auto it=lista.begin(); it!=lista.end(); ++it){
+          next = it;
+          ++next;
+          if (next==lista.end()) next=lista.begin();
+
+          ret += matrix[*it][*next];
+        }
+
+        return ret;
+      }
+
+      pair<int, list<int>::iterator> buscar_posicion(list<int> &lista, int nuevo){
+        pair<int, list<int>::iterator> ret;
+        int length;
+
+        for (auto it = lista.begin(); it != lista.end(); ++it){
+          if (it==lista.begin()){
+            ret.second = it;
+            lista.insert(it, nuevo);
+            ret.first = calcular_longitud(lista);
+            --it;
+            lista.erase(it);
+          }
+          else{
+            lista.insert(it, nuevo);
+            length = calcular_longitud(lista);
+            if (length < ret.first){
+              ret.first = length;
+              ret.second = it;
+            }
+            --it;
+            lista.erase(it);
+          }
+        }
+
+        return ret;
+      }
+
+      pair<int, list<int>::iterator> buscar_punto(list<int> &lista, bool* usados){
+        pair<int, list<int>::iterator> ret, aux;
+        bool can_compare = false;
+        int minimo;
+
+        for (int i=0; i<size; ++i){
+          if (!usados[i]){
+            if (!can_compare){
+              can_compare = true;
+              aux = buscar_posicion(lista, i);
+              ret.first = i;
+              ret.second = aux.second;
+              minimo = aux.first;
+            }
+            else{
+              aux = buscar_posicion(lista, i);
+              if (aux.first < minimo){
+                ret.first = i;
+                ret.second = aux.second;
+                minimo = aux.first;
+              }
+            }
+          }
+        }
+
+        return ret;
+      }
+
    class Edge{
       private:
          int first, second;
@@ -112,44 +183,44 @@ class Graph{
       public:
          Edge(int a, int b, double ab):first(a), second(b), length(ab){}
          Edge():first(0), second(0), length(0){}
-         
+
          void setEdge(int a, int b, double ab){
             first = a;
             second = b;
             length = ab;
          }
-         
+
          int getFirst() const{
-            return first;    
+            return first;
          }
-         
+
          int getSecond() const{
-            return second;    
+            return second;
          }
-         
+
          int getLength() const{
-            return length;    
+            return length;
          }
-         
-         
+
+
          Edge& operator=(const Edge &other){
             if (this != &other){
                first = other.getFirst();
                second = other.getSecond();
-               length = other.getLength();               
+               length = other.getLength();
             }
             return *this;
          }
-                  
+
          bool operator<(const Edge &other){
             return (length < other.getLength());
          }
          bool operator>=(const Edge &other){
             return ( !(length < other.getLength()) );
          }
-         
+
    };
-   
+
    public:
       Graph(Point* coordenadas, int n){
          if ( n > 0 ){
@@ -193,14 +264,14 @@ class Graph{
       }
 
       // Funciones para los ciclos hamiltonianos
-      
+
       int* nearestNeighbour(){
         int* order = new int[size];
         int* near;
         bool found = false, repeat;
         order[0] = 0;
         order[1] = concretNearestNeighbour(0)[0];
-        
+
         for (int i=2; i<size; ++i){
             near = concretNearestNeighbour(i-1); // Devuelve un vector de size-1 elementos
             for (int j=0; j<(size-1) && !found; ++j){
@@ -208,18 +279,18 @@ class Graph{
                 for (int k=0; k<i && !repeat; ++k){
                     if (near[j] == order[i])
                         repeat = true;
-                } 
-                
+                }
+
                 if (!repeat){
-                    order[i] = near[j];    
+                    order[i] = near[j];
                     found = true;
                 }
-            }            
+            }
         }
-        
-        return order;  
-      }      
-      
+
+        return order;
+      }
+
 
       int* minimizingEdges(){
           vector< vector<Edge> > paths;
@@ -227,14 +298,14 @@ class Graph{
           vector<Edge>::iterator it;
           Edge item, temp;
           int i, j, k;
-          
+
           for (i=0; i<size; ++i){
              for (j=0; j<size; ++j){
                 item.setEdge(i, j, matrix[i][j]);
                 orderedEdges.push_back(item); // size*size elementos
-             }    
+             }
           }
-          
+
           // Heapsort
           for(k=size*size; k>0; --k){
              for(i=1; i<=k; ++i){
@@ -250,37 +321,37 @@ class Graph{
              temp = orderedEdges[1];
              orderedEdges[1] = orderedEdges[k];
              orderedEdges[k] = temp;
-          }   
+          }
           // Comprobar que ordena
-          
+
 
           int length = 0, end = size*size;
           bool finish = false, first, second, insert;
-          
-          
+
+
           paths.push_back(aux);
           paths[0].push_back(orderedEdges[0]);
 
-          
+
          /* Caso 1(bien): Ninguno está       #-----------#  *--*
-         
+
             Caso 2(mal): Están los dos       +------*
                     Ciclo                    |      |
                                              +------*
-                                             
+
             Caso 3(bien): Está uno           #-----------*--*
-            
+
             Caso 4(mal): Está uno en mitad   #------*----#
                                                     |
                                                     *
-                                                    
+
             Caso 5(mal): Están los dos       #---*--*----# IMPOSIBLE
          */
-          for (i=1; i<end && !finish; ++i){ 
+          for (i=1; i<end && !finish; ++i){
              first = second = insert = false; // Comprobamos si los vertices ya están en los caminos
-             
+
              for (j=0; j<abs(paths.size()) && !insert; ++j){ //Comprobamos que no forma ciclo con cada camino formado
-             
+
                 for (k=0; k<abs(paths[j].size()); ++k){
                     if ( paths[j][k].getFirst() == orderedEdges[i].getFirst() ||
                          paths[j][k].getSecond() == orderedEdges[i].getFirst() )
@@ -288,59 +359,59 @@ class Graph{
                     if ( paths[j][k].getFirst() == orderedEdges[i].getSecond() ||
                          paths[j][k].getSecond() == orderedEdges[i].getSecond() )
                         second = true;
-                }     
-                // Caso 2 (first && second) 
-                
+                }
+                // Caso 2 (first && second)
+
                 if ( !first && !second ){ // Caso 1
                     vector<Edge> newPath;
                     newPath.push_back(orderedEdges[i]);
                     paths.push_back(newPath);
-                    insert = true;                
+                    insert = true;
                 }
                 // Permutamos para que nos salgan las aristas en orden
                 else if ( first && !second ){
                     if ( paths[j][0].getFirst()  == orderedEdges[i].getFirst() ){
-                        paths[j].insert(paths[j].begin(), 
-                                 Edge(orderedEdges[i].getSecond(), orderedEdges[i].getFirst(), orderedEdges[i].getLength()) );
-                        insert = true;
-                    }                
-                    else if ( paths[j][0].getSecond() == orderedEdges[i].getFirst() ){
-                        paths[j][0].setEdge(paths[j][0].getSecond(), paths[j][0].getFirst(), paths[j][0].getLength());
-                        paths[j].insert(paths[j].begin(), 
+                        paths[j].insert(paths[j].begin(),
                                  Edge(orderedEdges[i].getSecond(), orderedEdges[i].getFirst(), orderedEdges[i].getLength()) );
                         insert = true;
                     }
-                    
+                    else if ( paths[j][0].getSecond() == orderedEdges[i].getFirst() ){
+                        paths[j][0].setEdge(paths[j][0].getSecond(), paths[j][0].getFirst(), paths[j][0].getLength());
+                        paths[j].insert(paths[j].begin(),
+                                 Edge(orderedEdges[i].getSecond(), orderedEdges[i].getFirst(), orderedEdges[i].getLength()) );
+                        insert = true;
+                    }
+
                 }
                 else if ( !first && second){
                     if ( paths[j][0].getFirst()  == orderedEdges[i].getSecond() ){
                         paths[j].insert(paths[j].begin(), orderedEdges[i] );
-                        insert = true;                
+                        insert = true;
                     }
                     else if ( paths[j][0].getSecond() == orderedEdges[i].getSecond() ){
                         // Permutamos para que nos salga en orden
                         paths[j][0].setEdge(paths[j][0].getSecond(), paths[j][0].getFirst(), paths[j][0].getLength());
                         paths[j].insert(paths[j].begin(), orderedEdges[i] );
                         insert = true;
-                    }                    
+                    }
                 }
-                
+
              }
-             
+
              if (length == size)// Habrá size aristas
                 finish = true;
           }
-          
+
           int* ret = new int[size]; // Índices ordenados
           int duration = paths[0].size();
           bool index[paths.size()]; // Almacena si hemos metido ya el camino i-esimo en ret
           for (i=0; i<abs(paths.size()); ++i)
             index[i] = false;
           index[0] = true;
-          
+
           for (i=0; i<duration; ++i)
             ret[i] = paths[0][i].getSecond();
-            
+
           while (duration < size){
               for (i=0; i<abs(paths.size()); ++i){
                  if (index[i] == false){ // Aún no se ha incluido paths[i]
@@ -357,11 +428,63 @@ class Graph{
                             ++duration;
                         }
                         index[i] = true;
-                    }    
+                    }
                  }
               }
           }
           return ret;
+      }
+
+      int* insertion(){
+        int* permutation = new int[size];
+        list<int> recorrido;      // Lista que controla el recorrido parcial
+        bool* usados = new bool[size];    // Vector de bits que controla los puntos que ya he usado.
+        int este = 0, oeste, norte;   // Inicializamos el este al índice 0
+
+        // Inicializamos el vector de booleanos
+        for (int i=0; i<size; ++i)
+          usados[i] = false;
+
+        // Buscamos el que está más al este
+        for (int i=1; i<size; ++i)
+          if (points[este].getX()<points[i].getX()) este = i;
+        usados[este] = true;
+        recorrido.push_back(este);
+
+        oeste = (este==0)?1:0;    // Inicializamos el oeste al menor índice posible
+
+        // Buscamos el que está más al oeste
+        for (int i=0; i<size; ++i)
+          if (points[oeste].getX()>points[i].getX() && i!=este) oeste = i;
+        usados[oeste] = true;
+        recorrido.push_back(oeste);
+
+        // Inicializamos el norte al menor índice posible
+        if (este>0 && oeste>0) norte = 0;
+        else if ((este==0 && oeste>1) || (oeste==0 && este>1)) norte = 1;
+        else norte = 2;
+
+        // Buscamos el que está más al norte
+        for (int i=0; i<size; ++i)
+          if (points[norte].getY()<points[i].getY() && i!=este && i!=oeste) norte = i;
+        usados[norte] = true;
+        recorrido.push_back(norte);
+
+        pair<int, list<int>::iterator> insertor;
+
+        // Vamos creando la lista del recorrido
+        while (recorrido.size() < size){
+          insertor = buscar_punto(recorrido, usados);
+          recorrido.insert(insertor.second, insertor.first);
+          usados[insertor.first] = true;
+        }
+
+        for (int i=0; i<size; ++i){
+          permutation[i] = recorrido.front();
+          recorrido.pop_front();
+        }
+
+        return permutation;
       }
 };
 
@@ -372,19 +495,19 @@ Point * readPoints(std::ifstream &in, int &size){
   while( in.peek() < '0' || in.peek() > '9' ) // Buscar dimensión
     in >> aux;
   in >> dim;
-  
+
   if (dim > 0){
       size = dim;
       points = new Point[size];
       for (int i=0; i<size; ++i){
         in >> dim >> x >> y;
-        points[i].setXY(x, y);      
+        points[i].setXY(x, y);
       }
   }
-  
+
   return points;
 }
-    
+
 int main(int argc, char* argv[]){
   bool exit = false;
   if (argc != 4){
@@ -392,16 +515,16 @@ int main(int argc, char* argv[]){
     cerr << "Modo:\n\t1 --> Vecino más cercano\n\t 2 --> Inserción\n\t3 --> Minimizando aristas" << endl;
     return -1;
   }
-  
+
   ifstream in(argv[1]);
   int mode = atoi(argv[2]);
   int cities = atoi(argv[3]);
   if (!in){
-    cerr << "No se puede abri el fichero " << argv[1] << " para lectura." << endl;  
+    cerr << "No se puede abri el fichero " << argv[1] << " para lectura." << endl;
     exit = true;
   }
   if ( mode > 3 || mode < 1 ){
-    cerr << "Modo incorrecto" << endl;    
+    cerr << "Modo incorrecto" << endl;
     cerr << "Modo:\n\t1 --> Vecino más cercano\n\t 2 --> Inserción\n\t3 --> Minimizando aristas" << endl;
     exit = true;
   }
@@ -409,7 +532,7 @@ int main(int argc, char* argv[]){
     cerr << "El número de ciudades debe estar entre 3 y 300 inclusive." << endl;
     exit = true;
   }
-  
+
   if (exit)
     return -1;
 
@@ -421,7 +544,7 @@ int main(int argc, char* argv[]){
 
   chrono::high_resolution_clock::time_point tbefore, tafter;
   chrono::duration<double> duration;
-  
+
   tbefore = chrono::high_resolution_clock::now();
   if (mode == 1)
     order = graph.nearestNeighbour();
@@ -432,13 +555,10 @@ int main(int argc, char* argv[]){
     order = graph.minimizingEdges();
   tafter = chrono::high_resolution_clock::now();
   duration = chrono::duration_cast<chrono::duration<double>>(tafter - tbefore);
-  
+
   ofstream solution("order.dat");
   for (int i=0; i<size; ++i)
-    solution << order[i] << graph.getPoint(order[i]).getX() << graph.getPoint(order[i]).getY() << endl;    
+    solution << order[i] << graph.getPoint(order[i]).getX() << graph.getPoint(order[i]).getY() << endl;
 
 
 }
-  
-
-  
