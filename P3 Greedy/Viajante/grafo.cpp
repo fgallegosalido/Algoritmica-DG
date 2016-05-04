@@ -555,6 +555,7 @@ int main(int argc, char* argv[]){
     order = graph.minimizingEdges();
   tafter = chrono::high_resolution_clock::now();
   duration = chrono::duration_cast<chrono::duration<double>>(tafter - tbefore);
+  cout << duration.count() << endl;
 
   ofstream solution("order.dat");
   for (int i=0; i<size; ++i)
