@@ -106,6 +106,7 @@ class Graph{
          return neighbours;
       }
 
+      // Calcula la longitud del recorrido definido por la lista
       int calcular_longitud(list<int> &lista){
         int ret = 0;
         list<int>::iterator next;
@@ -121,6 +122,8 @@ class Graph{
         return ret;
       }
 
+      // Función que para un punto dado busca la posición que minimiza el recorrido,
+      // y devuelve la longitud mínima para dicho punto y el iterador que la genera
       pair<int, list<int>::iterator> buscar_posicion(list<int> &lista, int nuevo){
         pair<int, list<int>::iterator> ret;
         int length;
@@ -148,11 +151,14 @@ class Graph{
         return ret;
       }
 
+      // Función que busca el punto que genera el recorrido menor para el recorrido que se le pasa
+      // y devuelve el índice del punto y el iterador que apunta a donde se inserta
       pair<int, list<int>::iterator> buscar_punto(list<int> &lista, bool* usados){
         pair<int, list<int>::iterator> ret, aux;
         bool can_compare = false;
         int minimo;
 
+        // Vamos comprobando cada punto y nos quedamos al final con el mejor
         for (int i=0; i<size; ++i){
           if (!usados[i]){
             if (!can_compare){
@@ -510,15 +516,15 @@ Point * readPoints(std::ifstream &in, int &size){
 
 int main(int argc, char* argv[]){
   bool exit = false;
-  if (argc != 4){
-    cerr << "Formato: " << argv[0] << " <fichero.dat>" << " <modo>" << " <num_ciudades>" << endl;
+  if (argc != 3){
+    cerr << "Formato: " << argv[0] << " <fichero.dat>" << " <modo>" << endl;
     cerr << "Modo:\n\t1 --> Vecino más cercano\n\t 2 --> Inserción\n\t3 --> Minimizando aristas" << endl;
     return -1;
   }
 
   ifstream in(argv[1]);
   int mode = atoi(argv[2]);
-  int cities = atoi(argv[3]);
+
   if (!in){
     cerr << "No se puede abri el fichero " << argv[1] << " para lectura." << endl;
     exit = true;
@@ -526,10 +532,6 @@ int main(int argc, char* argv[]){
   if ( mode > 3 || mode < 1 ){
     cerr << "Modo incorrecto" << endl;
     cerr << "Modo:\n\t1 --> Vecino más cercano\n\t 2 --> Inserción\n\t3 --> Minimizando aristas" << endl;
-    exit = true;
-  }
-  if (cities < 3 || cities > 300){
-    cerr << "El número de ciudades debe estar entre 3 y 300 inclusive." << endl;
     exit = true;
   }
 
@@ -549,8 +551,7 @@ int main(int argc, char* argv[]){
   if (mode == 1)
     order = graph.nearestNeighbour();
   else if (mode == 2)
-    order = NULL;
-    //order = graph.insertion_____();
+    order = graph.insertion();
   else // mode == 3
     order = graph.minimizingEdges();
   tafter = chrono::high_resolution_clock::now();
