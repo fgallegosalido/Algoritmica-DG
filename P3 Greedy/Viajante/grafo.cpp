@@ -654,7 +654,7 @@ int main(int argc, char* argv[]){
 
   cout << size << "\t" << duration.count() << endl;
 
-  ofstream solution("order.dat");
+  ofstream solution("rd100_insertion.dat");
   for (int i=0; i<size; ++i)
     solution << graph.getPoint(order[i]).getX() << " " << graph.getPoint(order[i]).getY() << endl;
 
