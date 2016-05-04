@@ -63,10 +63,10 @@ $d_{i+1}^t = d_i^t + t_i$ donde $t_i \in \{x \in \mathbb{N} : 0<x<r\ y\ a_{d_i+x
 
 $d^{h}$ representa la aproximación greedy, mientras que $d^{t}$ representa cualquier otro algoritmo.\\
 
-Por las definiciones anteriores sabemos que $\exists m \in \mathbb{N}\ /\ d_i^{t} < d_i^{h}\ \forall i,\ m<i<n \Rightarrow d_n^{t} < d_n^{h}$\\
+Por las definiciones anteriores sabemos que $\exists m \in \mathbb{N}\ /\ d_i^{t} \leq d_i^{h}\ \forall i,\ m \leq i<n \Rightarrow d_n^{t} \leq d_n^{h}$\\
 Distinguimos dos casos:\\
 \begin{enumerate}
-\item Si $p-r < d_n^{t} < d_n^{h}$ las dos opciones son igual de buenas\\
+\item Si $p-r < d_n^{t} \leq d_n^{h}$ las dos opciones son igual de buenas\\
 \item Si $d_n^{t} < p-r < d_n^{h}$ la opción greedy es mejor\\
 \end{enumerate}
 

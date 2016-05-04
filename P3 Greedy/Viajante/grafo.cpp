@@ -106,6 +106,82 @@ class Graph{
          return neighbours;
       }
 
+      // Calcula la longitud del recorrido definido por la lista
+      int calcular_longitud(list<int> &lista){
+        int ret = 0;
+        list<int>::iterator next;
+
+        for (auto it=lista.begin(); it!=lista.end(); ++it){
+          next = it;
+          ++next;
+          if (next==lista.end()) next=lista.begin();
+
+          ret += matrix[*it][*next];
+        }
+
+        return ret;
+      }
+
+      // Función que para un punto dado busca la posición que minimiza el recorrido,
+      // y devuelve la longitud mínima para dicho punto y el iterador que la genera
+      pair<int, list<int>::iterator> buscar_posicion(list<int> &lista, int nuevo){
+        pair<int, list<int>::iterator> ret;
+        int length;
+
+        for (auto it = lista.begin(); it != lista.end(); ++it){
+          if (it==lista.begin()){
+            ret.second = it;
+            lista.insert(it, nuevo);
+            ret.first = calcular_longitud(lista);
+            --it;
+            lista.erase(it);
+          }
+          else{
+            lista.insert(it, nuevo);
+            length = calcular_longitud(lista);
+            if (length < ret.first){
+              ret.first = length;
+              ret.second = it;
+            }
+            --it;
+            lista.erase(it);
+          }
+        }
+
+        return ret;
+      }
+
+      // Función que busca el punto que genera el recorrido menor para el recorrido que se le pasa
+      // y devuelve el índice del punto y el iterador que apunta a donde se inserta
+      pair<int, list<int>::iterator> buscar_punto(list<int> &lista, bool* usados){
+        pair<int, list<int>::iterator> ret, aux;
+        bool can_compare = false;
+        int minimo;
+
+        // Vamos comprobando cada punto y nos quedamos al final con el mejor
+        for (int i=0; i<size; ++i){
+          if (!usados[i]){
+            if (!can_compare){
+              can_compare = true;
+              aux = buscar_posicion(lista, i);
+              ret.first = i;
+              ret.second = aux.second;
+              minimo = aux.first;
+            }
+            else{
+              aux = buscar_posicion(lista, i);
+              if (aux.first < minimo){
+                ret.first = i;
+                ret.second = aux.second;
+                minimo = aux.first;
+              }
+            }
+          }
+        }
+
+        return ret;
+      }
+
    class Edge{
       private:
          int first, second;
@@ -221,8 +297,6 @@ class Graph{
         return order;
       }
 
-
-
       int* minimizingEdges(){
           vector< list<Edge> > paths;
           vector<Edge> orderedEdges;
@@ -254,6 +328,7 @@ class Graph{
              orderedEdges[k] = temp;
           }
           // Comprobar que ordena
+<<<<<<< HEAD
 
 
           /*
@@ -273,7 +348,7 @@ class Graph{
             Inicialmente los vértices tienen estado -1, significa que no han sido usados aún por el algoritmo
             Si se inserta una nueva arista, su primer vértice (inicio del camino) pasará al estado
                1+10*posicion
-            siendo posicion el lugar que ocupa dentro del vector de vectores (es una forma de diferenciar
+            siendo posicion el lugar que ocupa dentro del vector de listas (es una forma de diferenciar
             los diferentes caminos, necesaria).
             De esta forma si (estado1/10 == estado2/10) sabemos que los vértices están en el mismo camino.
             El segundo vértice (último elemento) tendrá el estado
@@ -295,11 +370,12 @@ class Graph{
 
             - Caso 1(bien): Ninguno está. En este caso se añadiría un nuevo vector de vectores
                            con una sola arista que nos indicaría que se ha creado un nuevo camino,
-                           en lugar de extender one anterior.
+                           en lugar de extender uno anterior.
             #-----------#  *--*
             Código: ((one == -1) && (two == -1))
 
-            - Caso 2(bien): Está uno           #-----------*--*
+            - Caso 2(bien): Está uno y el otro está libre
+              #-----------*--*
             Código: ((one%10 == 1) && (two == -1) || (one%10 == 2) && (two == -1)
                      (two%10 == 1) && (one == -1) || (two%10 == 2) && (one == -1) )
 
@@ -471,7 +547,60 @@ class Graph{
             ret[i] = paths[lista].front().getFirst();
             paths[lista].pop_front();
          }
+
          return ret;
+      }
+
+      int* insertion(){
+        int* permutation = new int[size];
+        list<int> recorrido;      // Lista que controla el recorrido parcial
+        bool* usados = new bool[size];    // Vector de bits que controla los puntos que ya he usado.
+        int este = 0, oeste, norte;   // Inicializamos el este al índice 0
+
+        // Inicializamos el vector de booleanos
+        for (int i=0; i<size; ++i)
+          usados[i] = false;
+
+        // Buscamos el que está más al este
+        for (int i=1; i<size; ++i)
+          if (points[este].getX()<points[i].getX()) este = i;
+        usados[este] = true;
+        recorrido.push_back(este);
+
+        oeste = (este==0)?1:0;    // Inicializamos el oeste al menor índice posible
+
+        // Buscamos el que está más al oeste
+        for (int i=0; i<size; ++i)
+          if (points[oeste].getX()>points[i].getX() && i!=este) oeste = i;
+        usados[oeste] = true;
+        recorrido.push_back(oeste);
+
+        // Inicializamos el norte al menor índice posible
+        if (este>0 && oeste>0) norte = 0;
+        else if ((este==0 && oeste>1) || (oeste==0 && este>1)) norte = 1;
+        else norte = 2;
+
+        // Buscamos el que está más al norte
+        for (int i=0; i<size; ++i)
+          if (points[norte].getY()<points[i].getY() && i!=este && i!=oeste) norte = i;
+        usados[norte] = true;
+        recorrido.push_back(norte);
+
+        pair<int, list<int>::iterator> insertor;
+
+        // Vamos creando la lista del recorrido
+        while (recorrido.size() < size){
+          insertor = buscar_punto(recorrido, usados);
+          recorrido.insert(insertor.second, insertor.first);
+          usados[insertor.first] = true;
+        }
+
+        for (int i=0; i<size; ++i){
+          permutation[i] = recorrido.front();
+          recorrido.pop_front();
+        }
+
+        return permutation;
       }
 };
 
@@ -497,15 +626,15 @@ Point * readPoints(std::ifstream &in, int &size){
 
 int main(int argc, char* argv[]){
   bool exit = false;
-  if (argc != 4){
-    cerr << "Formato: " << argv[0] << " <fichero.dat>" << " <modo>" << " <num_ciudades>" << endl;
+  if (argc != 3){
+    cerr << "Formato: " << argv[0] << " <fichero.tsp>" << " <modo>" << endl;
     cerr << "Modo:\n\t1 --> Vecino más cercano\n\t 2 --> Inserción\n\t3 --> Minimizando aristas" << endl;
     return -1;
   }
 
   ifstream in(argv[1]);
   int mode = atoi(argv[2]);
-  int cities = atoi(argv[3]);
+
   if (!in){
     cerr << "No se puede abri el fichero " << argv[1] << " para lectura." << endl;
     exit = true;
@@ -513,10 +642,6 @@ int main(int argc, char* argv[]){
   if ( mode > 3 || mode < 1 ){
     cerr << "Modo incorrecto" << endl;
     cerr << "Modo:\n\t1 --> Vecino más cercano\n\t 2 --> Inserción\n\t3 --> Minimizando aristas" << endl;
-    exit = true;
-  }
-  if (cities < 3 || cities > 300){
-    cerr << "El número de ciudades debe estar entre 3 y 300 inclusive." << endl;
     exit = true;
   }
 
@@ -536,12 +661,13 @@ int main(int argc, char* argv[]){
   if (mode == 1)
     order = graph.nearestNeighbour();
   else if (mode == 2)
-    order = NULL;
-    //order = graph.insertion_____();
+    order = graph.insertion();
   else // mode == 3
     order = graph.minimizingEdges();
   tafter = chrono::high_resolution_clock::now();
   duration = chrono::duration_cast<chrono::duration<double>>(tafter - tbefore);
+
+  cout << size << "\t" << duration.count() << endl;
 
   ofstream solution("order.dat");
   for (int i=0; i<size; ++i)

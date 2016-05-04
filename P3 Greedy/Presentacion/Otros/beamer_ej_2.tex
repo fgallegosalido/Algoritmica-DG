@@ -90,10 +90,10 @@ Podemos definir $n \in \mathbb{N}\ /\ d_n^h = min\{d_i^h: d_i^h + r > p\}$ como 
 
 ${\color{naranja}d_{i+1}^t} = d_i^t + t_i$ donde $t_i \in \{x \in \mathbb{N} : 0<x<r\ y\ a_{d_i+x} = 1\}\ /\ t_i < h_i$ para algún $i<n$\\
 
-Por las definiciones anteriores sabemos que $\exists m \in \mathbb{N}\ /\ d_i^{t} < d_i^{h}\ \forall i,\ m<i<n \Rightarrow d_n^{t} < d_n^{h}$\\
+Por las definiciones anteriores sabemos que $\exists m \in \mathbb{N}\ /\ d_i^{t} \leq d_i^{h}\ \forall i,\ m \leq i<n \Rightarrow d_n^{t} \leq d_n^{h}$\\
 Distinguimos dos casos:\\
 \begin{enumerate}
-\item Si $p-r < {\color{naranja}d_n^{t}} < {\color{verde}d_n^{h}}$ las dos opciones son igual de buenas\\
+\item Si $p-r < {\color{naranja}d_n^{t}} \leq {\color{verde}d_n^{h}}$ las dos opciones son igual de buenas\\
 \item Si ${\color{naranja}d_n^{t}} < p-r < {\color{verde}d_n^{h}}$ la opción greedy es mejor\\
 \end{enumerate}
 
