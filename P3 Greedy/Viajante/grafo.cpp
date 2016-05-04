@@ -64,7 +64,7 @@ class Point{
 
 class Graph{
    private:
-      int** matrix; // matrix nxn
+      double** matrix; // matrix nxn
       Point* points;
       int size;
 
@@ -103,8 +103,8 @@ class Graph{
       }
 
       // Calcula la longitud del recorrido definido por la lista
-      int calcular_longitud(list<int> &lista){
-        int ret = 0;
+      double calcular_longitud(list<int> &lista){
+        double ret = 0;
         list<int>::iterator next;
 
         for (auto it=lista.begin(); it!=lista.end(); ++it){
@@ -120,9 +120,9 @@ class Graph{
 
       // Función que para un punto dado busca la posición que minimiza el recorrido,
       // y devuelve la longitud mínima para dicho punto y el iterador que la genera
-      pair<int, list<int>::iterator> buscar_posicion(list<int> &lista, int nuevo){
-        pair<int, list<int>::iterator> ret;
-        int length;
+      pair<double, list<int>::iterator> buscar_posicion(list<int> &lista, int nuevo){
+        pair<double, list<int>::iterator> ret;
+        double length;
 
         for (auto it = lista.begin(); it != lista.end(); ++it){
           if (it==lista.begin()){
@@ -130,7 +130,7 @@ class Graph{
             lista.insert(it, nuevo);
             ret.first = calcular_longitud(lista);
             --it;
-            lista.erase(it);
+            it = lista.erase(it);
           }
           else{
             lista.insert(it, nuevo);
@@ -140,7 +140,7 @@ class Graph{
               ret.second = it;
             }
             --it;
-            lista.erase(it);
+            it = lista.erase(it);
           }
         }
 
@@ -150,9 +150,10 @@ class Graph{
       // Función que busca el punto que genera el recorrido menor para el recorrido que se le pasa
       // y devuelve el índice del punto y el iterador que apunta a donde se inserta
       pair<int, list<int>::iterator> buscar_punto(list<int> &lista, bool* usados){
-        pair<int, list<int>::iterator> ret, aux;
+        pair<int, list<int>::iterator> ret;
+        pair<double, list<int>::iterator> aux;
         bool can_compare = false;
-        int minimo;
+        double minimo;
 
         // Vamos comprobando cada punto y nos quedamos al final con el mejor
         for (int i=0; i<size; ++i){
@@ -160,6 +161,7 @@ class Graph{
             if (!can_compare){
               can_compare = true;
               aux = buscar_posicion(lista, i);
+
               ret.first = i;
               ret.second = aux.second;
               minimo = aux.first;
@@ -174,7 +176,6 @@ class Graph{
             }
           }
         }
-
         return ret;
       }
 
@@ -230,9 +231,9 @@ class Graph{
             for (int i=0; i<n; ++i)
                points[i] = coordenadas[i];
 
-            matrix = new int*[n];
+            matrix = new double*[n];
             for (int i=0; i<n; ++i)
-              matrix[i] = new int[n];
+              matrix[i] = new double[n];
             for (int i=0; i<n; ++i){
               for (int j=i; j<n; ++j)
                 matrix[i][j] = matrix[j][i] = coordenadas[i].Distance(coordenadas[j]);
@@ -522,6 +523,7 @@ Point* readPoints(char* nombre, int &size){
 }
 
 int main(int argc, char* argv[]){
+  cout.precision(15);
   bool exit = false;
   if (argc != 3){
     cerr << "Formato: " << argv[0] << " <fichero.dat>" << " <modo>" << endl;
@@ -564,7 +566,7 @@ int main(int argc, char* argv[]){
 
   ofstream solution("order.dat");
   for (int i=0; i<size; ++i)
-    solution << order[i] << graph.getPoint(order[i]).getX() << graph.getPoint(order[i]).getY() << endl;
+    solution << order[i] << " " << graph.getPoint(order[i]).getX() << " " << graph.getPoint(order[i]).getY() << endl;
 
 
 }
