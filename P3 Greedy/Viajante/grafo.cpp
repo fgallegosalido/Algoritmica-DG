@@ -11,12 +11,12 @@ using namespace std;
 
 class Point{
    private:
-      int x,y;
+      double x,y;
    public:
       Point(){
-         x = y = -1;
+         x = y = 0;
       }
-      Point(int abscisa, int ordenada){
+      Point(double abscisa, double ordenada){
          x = abscisa;
          y = ordenada;
       }
@@ -25,26 +25,22 @@ class Point{
          y = p.getY();
       }
 
-      int getX() const{
+      double getX() const{
          return x;
       }
-      int getY() const{
+      double getY() const{
          return y;
       }
 
-      void setX(const int &c){
-         if ( c >= 0 )
-            x = c;
+      void setX(const double &c){
+        x = c;
       }
-      void setY(const int &c){
-         if ( c >= 0 )
-            y = c;
+      void setY(const double &c){
+        y = c;
       }
-      void setXY(const int &c1, const int &c2){
-         if ( c1 >= 0 && c2 >= 0 ){
-            x = c1;
-            y = c2;
-         }
+      void setXY(const double &c1, const double &c2){
+        x = c1;
+        y = c2;
       }
 
       double Distance(const Point &p) const{
@@ -68,7 +64,7 @@ class Point{
 
 class Graph{
    private:
-      int** matrix; // matrix nxn
+      double** matrix; // matrix nxn
       Point* points;
       int size;
 
@@ -107,8 +103,8 @@ class Graph{
       }
 
       // Calcula la longitud del recorrido definido por la lista
-      int calcular_longitud(list<int> &lista){
-        int ret = 0;
+      double calcular_longitud(list<int> &lista){
+        double ret = 0;
         list<int>::iterator next;
 
         for (auto it=lista.begin(); it!=lista.end(); ++it){
@@ -124,9 +120,9 @@ class Graph{
 
       // Función que para un punto dado busca la posición que minimiza el recorrido,
       // y devuelve la longitud mínima para dicho punto y el iterador que la genera
-      pair<int, list<int>::iterator> buscar_posicion(list<int> &lista, int nuevo){
-        pair<int, list<int>::iterator> ret;
-        int length;
+      pair<double, list<int>::iterator> buscar_posicion(list<int> &lista, int nuevo){
+        pair<double, list<int>::iterator> ret;
+        double length;
 
         for (auto it = lista.begin(); it != lista.end(); ++it){
           if (it==lista.begin()){
@@ -134,7 +130,7 @@ class Graph{
             lista.insert(it, nuevo);
             ret.first = calcular_longitud(lista);
             --it;
-            lista.erase(it);
+            it = lista.erase(it);
           }
           else{
             lista.insert(it, nuevo);
@@ -144,7 +140,7 @@ class Graph{
               ret.second = it;
             }
             --it;
-            lista.erase(it);
+            it = lista.erase(it);
           }
         }
 
@@ -154,9 +150,10 @@ class Graph{
       // Función que busca el punto que genera el recorrido menor para el recorrido que se le pasa
       // y devuelve el índice del punto y el iterador que apunta a donde se inserta
       pair<int, list<int>::iterator> buscar_punto(list<int> &lista, bool* usados){
-        pair<int, list<int>::iterator> ret, aux;
+        pair<int, list<int>::iterator> ret;
+        pair<double, list<int>::iterator> aux;
         bool can_compare = false;
-        int minimo;
+        double minimo;
 
         // Vamos comprobando cada punto y nos quedamos al final con el mejor
         for (int i=0; i<size; ++i){
@@ -164,6 +161,7 @@ class Graph{
             if (!can_compare){
               can_compare = true;
               aux = buscar_posicion(lista, i);
+
               ret.first = i;
               ret.second = aux.second;
               minimo = aux.first;
@@ -178,7 +176,6 @@ class Graph{
             }
           }
         }
-
         return ret;
       }
 
@@ -234,11 +231,12 @@ class Graph{
             for (int i=0; i<n; ++i)
                points[i] = coordenadas[i];
 
-            matrix = new int*[n];
+            matrix = new double*[n];
+            for (int i=0; i<n; ++i)
+              matrix[i] = new double[n];
             for (int i=0; i<n; ++i){
-               matrix[i] = new int[n];
-               for (int j=i; j<n; ++j)
-                  matrix[i][j] = matrix[j][i] = coordenadas[i].Distance(coordenadas[j]);
+              for (int j=i; j<n; ++j)
+                matrix[i][j] = matrix[j][i] = coordenadas[i].Distance(coordenadas[j]);
             }
             size = n;
          }
@@ -604,27 +602,38 @@ class Graph{
       }
 };
 
-Point * readPoints(std::ifstream &in, int &size){
-  char aux;
-  int dim, x, y;
-  Point* points = NULL;
-  while( in.peek() < '0' || in.peek() > '9' ) // Buscar dimensión
-    in >> aux;
-  in >> dim;
+Point* readPoints(char* nombre, int &size){
+  ifstream datos;
+  string s;
+  Point p;
+  int n,act;
+  double x,y;
 
-  if (dim > 0){
-      size = dim;
-      points = new Point[size];
-      for (int i=0; i<size; ++i){
-        in >> dim >> x >> y;
-        points[i].setXY(x, y);
-      }
+  datos.open(nombre);
+  if (datos.is_open()) {
+    datos >> s; // Leo "dimension:"
+    datos >> n;
+    size = n;
+    Point* points = new Point[n];
+    int i=0;
+
+    while (i<n){
+      datos >> act >> x >> y;
+      p.setXY(x, y);
+	    points[act-1] = p;
+	    i++;
+    }
+
+    datos.close();
+    return points;
   }
-
-  return points;
+  else {
+    cout << "Error de Lectura en " << nombre << endl;
+  }
 }
 
 int main(int argc, char* argv[]){
+  cout.precision(15);
   bool exit = false;
   if (argc != 3){
     cerr << "Formato: " << argv[0] << " <fichero.tsp>" << " <modo>" << endl;
@@ -632,13 +641,8 @@ int main(int argc, char* argv[]){
     return -1;
   }
 
-  ifstream in(argv[1]);
   int mode = atoi(argv[2]);
 
-  if (!in){
-    cerr << "No se puede abri el fichero " << argv[1] << " para lectura." << endl;
-    exit = true;
-  }
   if ( mode > 3 || mode < 1 ){
     cerr << "Modo incorrecto" << endl;
     cerr << "Modo:\n\t1 --> Vecino más cercano\n\t 2 --> Inserción\n\t3 --> Minimizando aristas" << endl;
@@ -651,7 +655,9 @@ int main(int argc, char* argv[]){
   srandom(time(0));
   int size;
   int* order;
-  Point* points = readPoints(in, size);
+
+  Point* points = readPoints(argv[1], size);
+
   Graph graph(points, size);
 
   chrono::high_resolution_clock::time_point tbefore, tafter;
@@ -671,7 +677,7 @@ int main(int argc, char* argv[]){
 
   ofstream solution("order.dat");
   for (int i=0; i<size; ++i)
-    solution << order[i] << graph.getPoint(order[i]).getX() << graph.getPoint(order[i]).getY() << endl;
+    solution << order[i] << " " << graph.getPoint(order[i]).getX() << " " << graph.getPoint(order[i]).getY() << endl;
 
 
 }
