@@ -1,7 +1,7 @@
 \documentclass[11pt,spanish]{article} % Idioma
 \usepackage{babel}
 \usepackage[T1]{fontenc}
-\usepackage{textcomp}
+\usepackage{textcomp, verbatim}
 \usepackage[utf8]{inputenc} % Puede depender del instrucción, sistema o editor
 \usepackage{wrapfig} % Imagenes
 % \graphicspath{ {./imagenes/} }
@@ -15,7 +15,7 @@
 \usepackage{multirow} % Tablas
 \usepackage{multicol}
 
-\usepackage{graphicx} % Inserción de imágenes
+\usepackage{graphicx, float} % Inserción de imágenes
 \usepackage{gnuplot-lua-tikz}
 \usepackage{xcolor} % Colores
 \usepackage{color}
@@ -81,16 +81,16 @@ breaklines=true,
 
 \section{Viajante de comercio}
 \subsection{Enunciado}
-%\input{./Otros/enunciado_viajante}
+\input{./Otros/enunciado_viajante.tex}
 
 \subsection{Vecino más cercano}
-%input{./Otros/vecino_mas_cercano.tex}
+\input{./Otros/memoria_vecino_mas_cercano.tex}
 
 \subsection{Inserción}
 %input{./Otros/....tex}
 
 \subsection{Arista más corta}
-%\input{./Otros/arista_corta.tex}
+\input{./Otros/memoria_arista_corta.tex}
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 %					 Bibliografia

@@ -3,7 +3,7 @@ Salesman Problem) se define como sigue: dado un conjunto de ciudades y una matri
 las distancias entre todas ellas, un viajante debe recorrer todas las ciudades exactamente una
 vez, regresando al punto de partida, de forma tal que la distancia recorrida sea mínima. 
 Mas formalmente, dado un grafo $G$, conexo y ponderado, se trata de hallar el ciclo hamiltoniano de
-mnimo peso de ese grafo.
+mínimo peso de ese grafo.
 
 Una solución para TSP es una permutación del conjunto de ciudades que indica el orden
 en que se deben recorrer. Para el cálculo de la longitud del ciclo no debemos olvidar sumar la
@@ -14,7 +14,7 @@ la solución del TSP y sus variantes (siendo un problema NP-Completo, el diseño
 de algoritmos exactos para su resolución no es factible en problemas de cierto tamaño). Nos
 centraremos en una serie de algoritmos aproximados de tipo greedy y evaluaremos su rendimiento
 en un conjunto de instancias del TSP. Para el diseño de estos algoritmos, utilizaremos
-dos enfoques diferentes: a) estrategias basadas en alguna noción de cercana, y b) estrategias
+dos enfoques diferentes: a) estrategias basadas en alguna noción de cercanía, y b) estrategias
 de inserción.
 
 En el primer caso emplearemos la heurística del vecino más cercano, cuyo funcionamiento
@@ -34,7 +34,7 @@ definirse tres elementos:
 3. Dónde se inserta el nodo seleccionado.
 
 El recorrido inicial se puede construir a partir de las tres ciudades que formen un triángulo
-lo mas grande posible: por ejemplo, eligiendo la ciudad que está más al Este, la que está más al
+lo más grande posible: por ejemplo, eligiendo la ciudad que está más al Este, la que está más al
 Oeste, y la que está más al norte.
 
 Cuando se haya seleccionado una ciudad, esta se ubicará en el punto del circuito que provoque

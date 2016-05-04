@@ -277,11 +277,10 @@ class Graph{
         return order;
       }
 
-
       int* minimizingEdges(){
-          vector< vector<Edge> > paths;
-          vector<Edge> orderedEdges, aux;
-          vector<Edge>::iterator it;
+          vector< list<Edge> > paths;
+          vector<Edge> orderedEdges;
+          list<Edge> aux;
           Edge item, temp;
           int i, j, k;
 
@@ -309,116 +308,227 @@ class Graph{
              orderedEdges[k] = temp;
           }
           // Comprobar que ordena
+<<<<<<< HEAD
 
 
-          int length = 0, end = size*size;
-          bool finish = false, first, second, insert;
-
-
+          /*
+           Lo que haremos será tener un vector de vectores de aristas
+           En cada vector de aristas se meterán las aristas ordenadas, de forma que
+           el primer elemento indique el principio (principio y final equivalentes salvo
+           permutaciones) y el último indique el final del camino. Esto nos ayudará a
+           obtener una función que compruebe si se forman ciclos con una eficiencia constante.
+           */
           paths.push_back(aux);
-          paths[0].push_back(orderedEdges[0]);
+          paths[0].push_back(orderedEdges[0]); // Insertamos la arista más corta como el primer camino
 
+         /*
+            Este vector de códigos nos informará del estado de cada vértice.
+            Definimos estado como el lugar que ocupa el vértice en nuestro algoritmo.
+            Vease:
+            Inicialmente los vértices tienen estado -1, significa que no han sido usados aún por el algoritmo
+            Si se inserta una nueva arista, su primer vértice (inicio del camino) pasará al estado
+               1+10*posicion
+            siendo posicion el lugar que ocupa dentro del vector de listas (es una forma de diferenciar
+            los diferentes caminos, necesaria).
+            De esta forma si (estado1/10 == estado2/10) sabemos que los vértices están en el mismo camino.
+            El segundo vértice (último elemento) tendrá el estado
+               2+10*posicion
+            Si hubiese vértices entre el principio y el final (cuando tenemos más de una arista)
+            los vértices intermedios tendrían estado
+               3+10*posicion
+            Estos casos nos permiten saber directamente al insertar una arista si forma ciclo.
+          */
 
-         /* Caso 1(bien): Ninguno está       #-----------#  *--*
+         int *codes = new int[size];
+         for (int i=0; i<size; ++i)
+            codes[i] = -1;
+         codes[ orderedEdges[0].getFirst()  ] = 01; // 0 por que está en paths[0]
+         codes[ orderedEdges[0].getSecond() ] = 02;
 
-            Caso 2(mal): Están los dos       +------*
-                    Ciclo                    |      |
-                                             +------*
+         /*
+            Denotando como "one" y "two" los códigos de los vértices de la arista que queremos insertar.
 
-            Caso 3(bien): Está uno           #-----------*--*
+            - Caso 1(bien): Ninguno está. En este caso se añadiría un nuevo vector de vectores
+                           con una sola arista que nos indicaría que se ha creado un nuevo camino,
+                           en lugar de extender uno anterior.
+            #-----------#  *--*
+            Código: ((one == -1) && (two == -1))
 
-            Caso 4(mal): Está uno en mitad   #------*----#
-                                                    |
-                                                    *
+            - Caso 2(bien): Está uno y el otro está libre
+              #-----------*--*
+            Código: ((one%10 == 1) && (two == -1) || (one%10 == 2) && (two == -1)
+                     (two%10 == 1) && (one == -1) || (two%10 == 2) && (one == -1) )
 
-            Caso 5(mal): Están los dos       #---*--*----# IMPOSIBLE
+            - Caso 3(bien): La arista une caminos, están los dos
+               #-----------*--*----------------------#
+            Meteremos los elementos de la segunda lista de aristas en la primera
+            Código:( ((one%10 == 1) && (two%10 == 1) && (one/10 != two/10)) ||
+                     ((one%10 == 2) && (two%10 == 2) && (one/10 != two/10)) ||
+                     ((one%10 == 1) && (two%10 == 2) && (one/10 != two/10)) ||
+                     ((one%10 == 2) && (two%10 == 1) && (one/10 != two/10)) )
+
+            - Caso 4(mal): Está uno en mitad
+            #-----*----#
+                  |
+                  *
+            Código: ((one == -1 && two%10 == 3) || (two == -1 && one%10 == 3))
+
+            - Caso 5(mal): Están los dos y forma ciclo
+            +------*
+            |      |
+            +------*
+            Código: (((one%10 == 1) || (one%10 == 2)) && ((two%10 == 1) || (two%10 == 2)) && (one/10 == two/10))
+
+            Al conocer todos los posibles casos solamente nos interesan los 3 que hacen
+            que tengamos en cuenta dicha arista en nuestro algoritmo. Cuando insertemos una arista
+            tendremos que modificar el estado de los vértices pertinentes
          */
-          for (i=1; i<end && !finish; ++i){
-             first = second = insert = false; // Comprobamos si los vertices ya están en los caminos
 
-             for (j=0; j<abs(paths.size()) && !insert; ++j){ //Comprobamos que no forma ciclo con cada camino formado
+         int count, index, one, two, end;
+         int codeone, codetwo;
+         Edge edge;
+         end = size*size;
+         count = index = 1; // Hemos insertado ya una arista.
 
-                for (k=0; k<abs(paths[j].size()); ++k){
-                    if ( paths[j][k].getFirst() == orderedEdges[i].getFirst() ||
-                         paths[j][k].getSecond() == orderedEdges[i].getFirst() )
-                        first = true;
-                    if ( paths[j][k].getFirst() == orderedEdges[i].getSecond() ||
-                         paths[j][k].getSecond() == orderedEdges[i].getSecond() )
-                        second = true;
-                }
-                // Caso 2 (first && second)
+         while (count < end && index < size){
+            // orderedEdges[count], index es la cantidad de aristas que hemos insertado.
+            one = orderedEdges[count].getFirst();
+            two = orderedEdges[count].getSecond();
+            codeone = codes[ one ];
+            codetwo = codes[ two ];
 
-                if ( !first && !second ){ // Caso 1
-                    vector<Edge> newPath;
-                    newPath.push_back(orderedEdges[i]);
-                    paths.push_back(newPath);
-                    insert = true;
-                }
-                // Permutamos para que nos salgan las aristas en orden
-                else if ( first && !second ){
-                    if ( paths[j][0].getFirst()  == orderedEdges[i].getFirst() ){
-                        paths[j].insert(paths[j].begin(),
-                                 Edge(orderedEdges[i].getSecond(), orderedEdges[i].getFirst(), orderedEdges[i].getLength()) );
-                        insert = true;
-                    }
-                    else if ( paths[j][0].getSecond() == orderedEdges[i].getFirst() ){
-                        paths[j][0].setEdge(paths[j][0].getSecond(), paths[j][0].getFirst(), paths[j][0].getLength());
-                        paths[j].insert(paths[j].begin(),
-                                 Edge(orderedEdges[i].getSecond(), orderedEdges[i].getFirst(), orderedEdges[i].getLength()) );
-                        insert = true;
-                    }
+            if ( (codeone == -1) && (codetwo == -1) ){
+               // Caso 1 #-----------#  *--*
+               paths.push_back(aux); // Insertamos un vector vacío y lo modificamos
+               paths[ paths.size()-1 ].push_back( orderedEdges[count] );
+               codes[ one ] = 10*(paths.size()-1) + 1;
+               codes[ two ] = 10*(paths.size()-1) + 2;
+               ++index;
+            }
+            else if ( (codeone%10 == 1) && (codetwo == -1) ){
+               // Caso 2 #-----------*--*
+               edge.setEdge( two, one, matrix[one][two]);
+               paths[ codeone/10 ].push_front( edge );
+               codes[ one ] = codeone/10 + 3;
+               codes[ two ] = codeone/10 + 1;
+               ++index;
+            }
+            else if ( (codeone%10 == 2) && (codetwo == -1) ){
+               // Caso 2 #-----------*--*
+               paths[ codeone/10 ].push_back( orderedEdges[count] );
+               codes[ one ] = codeone/10 + 3;
+               codes[ two ] = codeone/10 + 2;
+               ++index;
+            }
+            else if ( (codetwo%10 == 1) && (codeone == -1) ){
+               // Caso 2 #-----------*--*
+               paths[ codetwo/10 ].push_front( orderedEdges[count] );
+               codes[ one ] = codetwo/10 + 1;;
+               codes[ two ] = codetwo/10 + 3;
+               ++index;
+            }
+            else if ( (codetwo%10 == 2) && (codeone == -1) ){
+               // Caso 2 #-----------*--*
+               edge.setEdge( two, one, matrix[one][two]);
+               paths[ codetwo/10 ].push_back( edge );
+               codes[ one ] = codetwo/10 + 2;
+               codes[ two ] = codetwo/10 + 3;
+               ++index;
+            }
+            else if ( (codeone%10 == 1) && (codetwo%10 == 1) && (codeone/10 != codetwo/10) ){
+               // Caso 3 #-----------*--*----------------------#
+               if ( one == paths[ codeone/10 ].front().getFirst() ){
+                  edge.setEdge( two, one, matrix[one][two]);
+                  paths[ codeone/10 ].push_front( edge );
+                  codes[ one ] = codes[ two ] = codeone/10 + 3;
+               }
+               else{ // ( two == paths[ codeone/10 ].front().getFirst() )
+                  paths[ codeone/10 ].push_front( orderedEdges[count] );
+                  codes[ one ] = codes[ two ] = codeone/10 + 3;
+               }
 
-                }
-                else if ( !first && second){
-                    if ( paths[j][0].getFirst()  == orderedEdges[i].getSecond() ){
-                        paths[j].insert(paths[j].begin(), orderedEdges[i] );
-                        insert = true;
-                    }
-                    else if ( paths[j][0].getSecond() == orderedEdges[i].getSecond() ){
-                        // Permutamos para que nos salga en orden
-                        paths[j][0].setEdge(paths[j][0].getSecond(), paths[j][0].getFirst(), paths[j][0].getLength());
-                        paths[j].insert(paths[j].begin(), orderedEdges[i] );
-                        insert = true;
-                    }
-                }
+               while(!paths[ codetwo/10 ].empty()){
+                  int first = paths[codetwo/10].front().getSecond();
+                  int second = paths[codetwo/10].front().getFirst();
+                  edge.setEdge( first, second, matrix[first][second] );
+                  paths[ codeone/10 ].push_front( edge );
+                  paths[ codetwo/10 ].pop_front();
+                  // Cambiamos la decena, ya que ha cambiado de camino
+                  codes[ paths[ codeone/10 ].front().getSecond() ] = codeone/10 + 3;
+               }
+               codes[ paths[ codeone/10 ].front().getFirst() ] = codeone/10 + 1;
 
-             }
+               ++index;
+            }
+            else if ( (codeone%10 == 2) && (codetwo%10 == 2) && (codeone/10 != codetwo/10) ){
+               // Caso 3 #-----------*--*----------------------#
+               if ( one == paths[ codeone/10 ].back().getSecond() ){
+                  paths[ codeone/10 ].push_back( orderedEdges[count] );
+                  codes[ one ] = codes[ two ] = codeone/10 + 3;
+               }
+               else{ // ( two == paths[ codeone/10 ].back().getSecond() )
+                  int first = orderedEdges[count].getSecond();
+                  int second = orderedEdges[count].getFirst();
 
-             if (length == size)// Habrá size aristas
-                finish = true;
-          }
+                  edge.setEdge( first, second, matrix[first][second] );
+                  paths[ codeone/10 ].push_back( edge );
+                  codes[ one ] = codes[ two ] = codeone/10 + 3;
+               }
 
-          int* ret = new int[size]; // Índices ordenados
-          int duration = paths[0].size();
-          bool index[paths.size()]; // Almacena si hemos metido ya el camino i-esimo en ret
-          for (i=0; i<abs(paths.size()); ++i)
-            index[i] = false;
-          index[0] = true;
+               while(!paths[ codetwo/10 ].empty()){
+                  int first = paths[codetwo/10].back().getSecond();
+                  int second = paths[codetwo/10].back().getFirst();
+                  edge.setEdge( first, second, matrix[first][second]);
+                  paths[ codeone/10 ].push_back( edge );
+                  paths[ codetwo/10 ].pop_front();
+                  // Cambiamos la decena, ya que ha cambiado de camino
+                  codes[ paths[ codeone/10 ].back().getFirst() ] = codeone/10 + 3;
+               }
+               codes[ paths[ codeone/10 ].back().getSecond() ] = codeone/10 + 2;
 
-          for (i=0; i<duration; ++i)
-            ret[i] = paths[0][i].getSecond();
+               ++index;
+            }
+            else if ( (codeone%10 == 1) && (codetwo%10 == 2) && (codeone/10 != codetwo/10) ){
+               // Caso 3 #-----------*--*----------------------#
+               paths[ codeone/10 ].push_front( orderedEdges[count] );
+               codes[ one ] = codes[ two ] = codeone/10 + 3;
 
-          while (duration < size){
-              for (i=0; i<abs(paths.size()); ++i){
-                 if (index[i] == false){ // Aún no se ha incluido paths[i]
-                    if (paths[i][0].getFirst() == ret[duration-1]){
-                        for (j=0; j<abs(paths[i].size()); ++j){
-                            ret[duration] = paths[i][j].getSecond();
-                            ++duration;
-                        }
-                        index[i] = true;
-                    }
-                    else if (paths[i][ paths[i].size()-1 ].getSecond() == ret[duration-1]){
-                        for (j=paths[i].size()-1; j>=0; --j){
-                            ret[duration] = paths[i][j].getFirst();
-                            ++duration;
-                        }
-                        index[i] = true;
-                    }
-                 }
-              }
-          }
-          return ret;
+               while(!paths[ codetwo/10 ].empty()){
+                  paths[ codeone/10 ].push_front( paths[codetwo/10].back() );
+                  paths[ codetwo/10 ].pop_back();
+                  // Cambiamos la decena, ya que ha cambiado de camino
+                  codes[ paths[ codeone/10 ].front().getSecond() ] = codeone/10 + 3;
+               }
+               codes[ paths[ codeone/10 ].front().getFirst() ] = codeone/10 + 1;
+               ++index;
+            }
+            else if ( (codeone%10 == 2) && (codetwo%10 == 1) && (codeone/10 != codetwo/10) ){
+               // Caso 3 #-----------*--*----------------------#
+               paths[ codeone/10 ].push_back( orderedEdges[count] );
+               codes[ one ] = codes[ two ] = codeone/10 + 3;
+
+               while(!paths[ codetwo/10 ].empty()){
+                  paths[ codeone/10 ].push_back( paths[codetwo/10].front() );
+                  paths[ codetwo/10 ].pop_front();
+                  // Cambiamos la decena, ya que ha cambiado de camino
+                  codes[ paths[ codeone/10 ].back().getFirst() ] =  codeone/10 + 3;
+               }
+               codes[ paths[ codeone/10 ].back().getSecond() ] =  codeone/10 + 2;
+               ++index;
+            }
+
+            ++count;
+         }
+
+         int *ret = new int[size];
+         int lista = codes[0]/10;
+
+         for (int i=0; i<size; ++i){
+            ret[i] = paths[lista].front().getFirst();
+            paths[lista].pop_front();
+         }
+
+         return ret;
       }
 
       int* insertion(){
@@ -508,7 +618,7 @@ int main(int argc, char* argv[]){
   cout.precision(15);
   bool exit = false;
   if (argc != 3){
-    cerr << "Formato: " << argv[0] << " <fichero.dat>" << " <modo>" << endl;
+    cerr << "Formato: " << argv[0] << " <fichero.tsp>" << " <modo>" << endl;
     cerr << "Modo:\n\t1 --> Vecino más cercano\n\t 2 --> Inserción\n\t3 --> Minimizando aristas" << endl;
     return -1;
   }
@@ -544,6 +654,7 @@ int main(int argc, char* argv[]){
     order = graph.minimizingEdges();
   tafter = chrono::high_resolution_clock::now();
   duration = chrono::duration_cast<chrono::duration<double>>(tafter - tbefore);
+
   cout << size << "\t" << duration.count() << endl;
 
   ofstream solution("order.dat");
