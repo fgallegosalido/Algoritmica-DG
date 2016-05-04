@@ -245,7 +245,6 @@ class Graph{
 
         int current = 0, count = 0;
         double aux, minimo = points[0].Distance(points[1]);
-        order[0] = current;
         bool can_compare;
 
         while (count<size-1){
@@ -308,8 +307,6 @@ class Graph{
              orderedEdges[k] = temp;
           }
           // Comprobar que ordena
-<<<<<<< HEAD
-
 
           /*
            Lo que haremos será tener un vector de vectores de aristas
@@ -659,7 +656,7 @@ int main(int argc, char* argv[]){
 
   ofstream solution("order.dat");
   for (int i=0; i<size; ++i)
-    solution << order[i] << " " << graph.getPoint(order[i]).getX() << " " << graph.getPoint(order[i]).getY() << endl;
+    solution << graph.getPoint(order[i]).getX() << " " << graph.getPoint(order[i]).getY() << endl;
 
 
 }
