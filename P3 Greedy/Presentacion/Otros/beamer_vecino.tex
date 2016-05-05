@@ -138,16 +138,17 @@
 	ciclo (pasar\'iamos dos veces por la misma ciudad)
 	
 	Definimos 
-	$\phi (x_i) = \{ j \in A : min\{ dist(x_i,x_j)\} \ y \ no \ forme \ ciclos \}$
+	$A_i$ como $\{ 0,1,..., n-1\}-\{ i \}$.
+	$\phi (x_i) = \{ j \in A_i : dist(x_i, x_j) \leq dist(x_i,x_k) \forall k \in A_i \ y \ no \ forme \ ciclos \}$
 	\end{block}
 \end{frame}
 
 \begin{frame}
 	\begin{block}{ }
-	Comprobar si una ciudad forma ciclos es lineal, por lo que tenemos que $\phi (x_i)$
-	es cuadrático.
+	Comprobar si una ciudad forma ciclos es constante, por lo que tenemos que $\phi (x_i)$
+	es lineal.
 	Debemos pasar por las $n$ ciudades, por lo que su eficiencia es:
-	\[\sum_{k=0}^{n-1}\phi (x_k) \implies O(n) = n^3\]
+	\[O(n) = \sum_{k=0}^{n-1} O(n) = O(n^2) \]
 	\end{block}
 \end{frame}
 
@@ -179,7 +180,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Inserción
 \subsection{Inserción de vértices}
 \begin{frame}
-	\begin{block}{ }
+	\begin{block}{Inserción}
 El recorrido parcial inicial lo determinan los 3 puntos que estén más al Este, Oeste y Norte respectivamente. Los 3 no deben ser los mismos, algo que nunca pasa, pues 2 de ellos pueden ser iguales (un punto puede ser a la vez el punto más al Norte y al Este), pero 3 a la vez no.
 	\end{block}
 
@@ -196,15 +197,15 @@ El recorrido parcial inicial lo determinan los 3 puntos que estén más al Este,
 
 \subsubsection{Eficiencia}
 \begin{frame}
-	\begin{block}
+	\begin{block}{ }
 	Tenemos que recorrer $n$ vértices, y sobre cada uno de ellos aplicaremos una función 		
 	$\phi(x)$ para cada vértice.
 
 	\[ \sum_{i=1}^{n} \phi(x_i)\]
 	\end{block}
-	\begin{block}
+	\begin{block}{ }
 	Dicha función $\phi(x)$ llama a "buscar punto" que es lineal, cada vez que buscas un 
-	punto llama $n$ veces a "buscar posicion", que a su vez llama $n$ veces a calcular 
+	punto llama $n$ veces a "buscar posición", que a su vez llama $n$ veces a calcular 
 	longitud.
 
 	Por tanto $\phi(x)$ es cúbica, y la eficiencia que nos queda para el algoritmo de 
@@ -234,9 +235,6 @@ El recorrido parcial inicial lo determinan los 3 puntos que estén más al Este,
 	\end{figure}
 	\end{exampleblock}
 \end{frame}
-
-
-
 
 
 

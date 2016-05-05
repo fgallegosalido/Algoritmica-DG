@@ -88,10 +88,10 @@ del mínimo tiene que comprobar que la nueva ciudad no forme ciclo (pasaríamos 
 Por tanto definimos $A$ como el conjunto de los índices de las ciudades que no han sido visitadas aún.
 \[\phi '(x_i) = \{j \in A : min\{dist(x_i, x_j)\} \ y \ no \ forme \ ciclos \}\]
 
-Comprobar si una ciudad forma ciclos es lineal, por lo que tenemos que $\phi '(x_i)$ es cuadrático.
+Comprobar si una ciudad forma ciclos es constante, por lo que tenemos que $\phi '(x_i)$ es lineal.
 La eficiencia del vecino más cercano queda definida como sigue:
 
-\[ \sum_{k=0}^{n-1}\phi ' (x_k) \implies O(n) = n^3\]
+\[ O(n) = \sum_{k=0}^{n-1} O(\phi ' (x_k)) = n^2\]
 
 \newpage
 \subsubsection{Ejemplos}
