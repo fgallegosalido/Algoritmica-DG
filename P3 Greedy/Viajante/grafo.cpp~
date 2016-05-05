@@ -235,7 +235,7 @@ class Graph{
 
       // Funciones para los ciclos hamiltonianos
 
-      int* nearestNeighbour(double &tam){
+      int* nearestNeighbour(int &tam){
         int* order = new int[size];
         bool* usados = new bool[size];    // Vector de bits que controla los puntos que ya he usado.
 
@@ -533,7 +533,7 @@ class Graph{
          return ret;
       }
 
-      int* insertion(double &tam){
+      int* insertion(){
         int* permutation = new int[size];
         list<int> recorrido;      // Lista que controla el recorrido parcial
         bool* usados = new bool[size];    // Vector de bits que controla los puntos que ya he usado.
@@ -581,11 +581,6 @@ class Graph{
           permutation[i] = recorrido.front();
           recorrido.pop_front();
         }
-
-        list<int> l;
-        for(int i=0; i<size; ++i)
-           l.push_back(permutation[i]);
-        tam = calcular_longitud(l);
 
         return permutation;
       }
@@ -642,9 +637,8 @@ int main(int argc, char* argv[]){
     return -1;
 
   srandom(time(0));
-  int size;
+  int size, distance;
   int* order;
-  double distance;
 
   Point* points = readPoints(argv[1], size);
 
@@ -657,7 +651,7 @@ int main(int argc, char* argv[]){
   if (mode == 1)
     order = graph.nearestNeighbour(distance);
   else if (mode == 2)
-    order = graph.insertion(distance);
+    order = graph.insertion();
   else // mode == 3
     order = graph.minimizingEdges();
   tafter = chrono::high_resolution_clock::now();
@@ -668,6 +662,7 @@ int main(int argc, char* argv[]){
   //ofstream solution("rd100_insertion.dat");
   //for (int i=0; i<size; ++i)
    // solution << graph.getPoint(order[i]).getX() << " " << graph.getPoint(order[i]).getY() << endl;
-   cout << distance << endl;
+   ofstream solution("vecino.dat");
+      solution << distance << endl;
 
 }
