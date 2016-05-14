@@ -1,0 +1,16 @@
+#!/bin/bash
+	pdflatex -shell-escape -interaction=nonstopmode -file-line-error ./beamerB_BB.tex
+	pdflatex -shell-escape -interaction=nonstopmode -file-line-error ./beamerB_BB.tex
+	pdflatex -shell-escape -interaction=nonstopmode -file-line-error ./memoriaB_BB.tex
+	pdflatex -shell-escape -interaction=nonstopmode -file-line-error ./memoriaB_BB.tex
+	echo "Limpieza"
+	find . -regex ".*~" -exec rm -r {} \;
+
+	rm -f ./*.aux
+	rm -f ./*.log
+	rm -f ./*.nav
+	rm -f ./*.out
+	rm -f ./*.vrb
+	rm -f ./*.snm
+	rm -f ./*.toc
+	rm -f ./*.gz
