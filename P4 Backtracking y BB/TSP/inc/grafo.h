@@ -22,6 +22,7 @@ class Graph{
     Point getPoint(const int &i) const;
     int getSize() const{return size;}
     int* insertion(double &tam);
+    int* TSPConBB(double &tam);
 };
 
 #endif

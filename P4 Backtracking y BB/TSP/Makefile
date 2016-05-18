@@ -12,7 +12,7 @@ CXXFLAGS = -std=c++11 -g -I$(INC)
 all : dirs $(BIN)/main
 
 # ************ Compilación de Programa Principal ************
-$(BIN)/main : $(OBJ)/main.o $(OBJ)/grafo.o $(OBJ)/insercion.o
+$(BIN)/main : $(OBJ)/main.o $(OBJ)/grafo.o $(OBJ)/insercion.o $(OBJ)/tsp_BB.o
 	$(CXX) -o $(BIN)/main $(OBJ)/main.o $(OBJ)/grafo.o $(OBJ)/insercion.o
 
 # *********** Compilación de Módulos **************
@@ -22,11 +22,11 @@ $(OBJ)/main.o : $(SRC)/main.cpp $(INC)/grafo.h
 $(OBJ)/grafo.o : $(SRC)/grafo.cpp $(INC)/grafo.h
 	$(CXX) -c $(CXXFLAGS) $(SRC)/grafo.cpp -o $(OBJ)/grafo.o
 
-$(OBJ)/insercion.o : $(SRC)/grafo.cpp $(INC)/grafo.h
+$(OBJ)/insercion.o : $(SRC)/insercion.cpp $(INC)/grafo.h
 	$(CXX) -c $(CXXFLAGS) $(SRC)/insercion.cpp -o $(OBJ)/insercion.o
 
-$(OBJ)/point.o : $(SRC)/point.cpp
-	$(CXX) -c $(CXXFLAGS) $(SRC)/point.cpp -o $(OBJ)/point.o
+$(OBJ)/tsp_BB.o : $(SRC)/tsp_BB.cpp $(INC)/grafo.h
+	$(CXX) -c $(CXXFLAGS) $(SRC)/tsp_BB.cpp -o $(OBJ)/tsp_BB.o
 
 #************* Directorios ************
 
