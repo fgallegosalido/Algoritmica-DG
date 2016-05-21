@@ -1,44 +1,106 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <cmath>
 #include <chrono>
+#include <vector>
+using namespace std;
 
-// Función que divide en dos equipos, haciendo que la suma de los niveles sea
-// lo más parecida posible.
-// Se le pasan como parámetros un vector de enteros que se corresponden con el
-// nivel de cada persona; y el tamaño del vector.
-// Devuelve un vector de enteros de tamaño n/2, correspondiente a uno de los
-// dos equipos (el otro se puede sacar a partir de este).
-int* DivideEnDosEquipos(int* array, int size){
-  int *ret = new int[size/2];
-  return ret;
+
+// Algoritmo equivalente a sumar 1 a un número en binario
+void siguiente(vector<bool>& comb){
+   bool acarreo = true;
+   for (int i=(comb.size()-1); i>= 0; --i){
+      if (acarreo){
+         if (comb[i] == false){
+            comb[i] = true;
+            acarreo = false;
+         }
+         else
+            comb[i] = false;
+      }
+   }
+}
+
+// Función que divide en dos equipos, minimizando la diferencia de niveles.
+// Parámetros: vector de enteros, los niveles de cada persona.
+// Devuelve: vector de bool que indica los equipos
+vector<unsigned int> DivideEnDosEquipos(vector<unsigned int> players){
+   vector<unsigned int> ret;
+   vector<bool> teams, bestTeam;
+   bool ultimaEjecucion = false;
+   unsigned int puntuacion1, puntuacion2; // Valor de cada equipo
+   unsigned int distance = 0; // Futura cota cota global del backtracking
+
+   for (int i=0; i<players.size(); ++i){
+      distance += players[i];
+      teams.push_back(false);
+      bestTeam.push_back(false);
+   }
+
+   // Backtracking, "distance" ahora mismo es cota superior
+   while(ultimaEjecucion == false){
+
+      for(int i=0;i<teams.size(); ++i)
+         cout << teams[i] ;
+      cout << endl;
+
+      ultimaEjecucion = true;
+      // Comprobamos que no es la última iteración
+      for (int i=0; i<teams.size() && ultimaEjecucion; ++i){
+         if (teams[i] == false)
+            ultimaEjecucion = false;
+      }
+
+      if (!ultimaEjecucion){
+         puntuacion1 = puntuacion2 = 0;
+         siguiente(teams);
+
+         for (int i=0; i<teams.size(); ++i){
+            if( teams[i] )
+               puntuacion1 += players[i];
+            else
+               puntuacion2 += players[i];
+         }
+
+         if (abs(puntuacion1-puntuacion2) < distance){
+            distance = abs(puntuacion1-puntuacion2);
+            bestTeam = teams;
+         }
+      }
+   }
+
+   for (int i=0; i<bestTeam.size(); ++i){
+      if (bestTeam[i])
+         ret.push_back( players[i] );
+   }
+
+   return ret;
 }
 
 int main(int argc, char* argv[]){
-  if (argc != 2){
-    std::cerr << "Sintáxis: " << argv[0] << " <número_personas>" << std::endl;
-    return -1;
-  }
+   if (argc != 2){
+      std::cerr << "Sintáxis: " << argv[0] << " <número_personas>" << std::endl;
+      return -1;
+   }
 
-  int n = atoi(argv[1]);
-  int *aux = new int[n];
-  int *team;
+   int n = atoi(argv[1]);
+   vector<unsigned int> players, teams;
 
-  srand(time(0));
+   srand(time(0));
 
-  for (int i=0; i<n; ++i)
-    aux[i] = rand()%n;
+   for (int i=0; i<n; ++i)
+      players.push_back( (int) (rand()%100 +1) );
 
-  std::chrono::high_resolution_clock::time_point tantes, tdespues;
-  std::chrono::duration<double> transcurrido, transcurrido2;
-  tantes = std::chrono::high_resolution_clock::now();
 
-  team = DivideEnDosEquipos(aux, n);
+   std::chrono::high_resolution_clock::time_point tantes, tdespues;
+   std::chrono::duration<double> transcurrido, transcurrido2;
+   tantes = std::chrono::high_resolution_clock::now();
 
-  tdespues = std::chrono::high_resolution_clock::now();
-  transcurrido = std::chrono::duration_cast<std::chrono::duration<double>>(tdespues - tantes);
+   teams = DivideEnDosEquipos(players);
 
-  std::cout << n << " " << transcurrido.count() << std::endl;
+   tdespues = std::chrono::high_resolution_clock::now();
+   transcurrido = std::chrono::duration_cast<std::chrono::duration<double>>(tdespues - tantes);
 
-  delete[] aux;
+   std::cout << n << " " << transcurrido.count() << std::endl;
 }

@@ -1,0 +1,25 @@
+\subsection{Enunciado}
+Se desea dividir un conjunto de $n$ personas para formar dos equipos que competirán entre sí.
+Cada persona tiene un cierto nivel de competición, que viene representado por una puntuaciónn
+(un valor numérico entero). Con el objeto de que los dos equipos tengan un nivel similar,
+se pretende construir los equipos de forma que la suma de las puntuaciones de sus miembros
+sea lo m ás similar posible. Diseña e implementa un algoritmo vuelta atrás para resolver este
+problema. Realizar un estudio empírico de la eficiencia de los algoritmos.
+
+\subsection{Explicación}
+Para simplificar el problema y darle mayor flexibilidad identificamos a cada jugador única y exlusivamente por su puntuación, aunque puede haber un jugador con la misma puntuación. Esto permite que si hay dos jugadores con nivel de competición $x$ e $y$ con $x=y$ y cada uno está en un equipo podrían intercambiar sus posiciones sin descompensar los equipos.
+
+Tenemos $n$ jugadores con puntuación respectiva $x_i\ \forall i\in I=[1, 100]\cap \mathbb{N}$. Si inicialmente tuviésemos los niveles de los jugadores en otro rango $J=[a, b]\ a,b\in\mathbb{N}: a<b$ podemos dejarlo así, ya que el rango de los niveles no afecta al problema, salvo que apliquemos una transformación que reduzca el rango, ya que podríamos perder información por el truncamiento de los números enteros.
+
+En cualquier caso la transformación al dominio del problema del intervalo $J$ es $\forall j\in J$ aplicaríamos una función $F:[a,b] \rightarrow [1,100]\cap\mathbb{N}$, teniendo en cuenta que $E(x)$ es la función parte entera:
+\[F(x) = \left\{
+	\begin{matrix}
+		E( x/(b-a) + a )+1  & \mbox{si } x/(b-a) + a < E( x/(b-a) + a ) + 1/2
+	 \\	E( x/(b-a) + a )    & \mbox{si }  x/(b-a) + a \geq E( x/(b-a) + a ) + 1/2
+	\end{matrix}
+	\right.
+\]
+
+
+
+%Hemos supuesto que ambos equipos tendrán el mismo número de jugadores, y si el número de jugadores es impar un equipo tendrá un jugador más que el otro.
