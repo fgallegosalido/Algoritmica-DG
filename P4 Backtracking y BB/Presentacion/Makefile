@@ -1,4 +1,6 @@
-#!/bin/bash
+
+
+memoriaB_BB.pdf: ./Ejercicios/division.tex ./Ejercicios/tsp.tex	
 	pdflatex -shell-escape -interaction=nonstopmode -file-line-error ./beamerB_BB.tex
 	pdflatex -shell-escape -interaction=nonstopmode -file-line-error ./beamerB_BB.tex
 	pdflatex -shell-escape -interaction=nonstopmode -file-line-error ./memoriaB_BB.tex
