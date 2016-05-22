@@ -121,7 +121,7 @@ int* Graph::insertion(double &tam){
    pair<int, list<int>::iterator> insertor;
 
    // Vamos creando la lista del recorrido
-   while (abs(recorrido.size()) < abs(size)){
+   while (recorrido.size() < abs(size)){
       insertor = buscar_punto(recorrido, usados);
       recorrido.insert(insertor.second, insertor.first);
       usados[insertor.first] = true;

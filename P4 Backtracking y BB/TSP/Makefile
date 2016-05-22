@@ -16,22 +16,22 @@ all : dirs $(BIN)/main
 
 
 # ************ Compilación de Programa Principal ************
-$(BIN)/main: $(OBJ)/main.o $(OBJ)/grafo.o $(OBJ)/point.o
+$(BIN)/main: $(OBJ)/main.o $$(DIR_LIBS)/libgrafo.a
 	$(CXX) -o $(BIN)/main $< $(LIBS)
 
 
 # *********** Compilación de Módulos **************
-$(OBJ)/main.o: $(SRC)/main.cpp $(INC)/grafo.h
+$(OBJ)/main.o: $(SRC)/main.cpp $(DIR_LIBS)/libgrafo.a
 	$(CXX) -c $(CXXFLAGS) $< -o $(OBJ)/main.o $(LIBS)
 
 
 $(OBJ)/grafo.o: $(SRC)/grafo.cpp $(INC)/grafo.h $(OBJ)/node.o $(OBJ)/insercion.o
-	$(CXX) -c $(CXXFLAGS) $< $(OBJ)/insercion.o $(OBJ)/node.o -o $(OBJ)/grafo.o
+	$(CXX) -c $(CXXFLAGS) $< $(OBJ)/insercion.o $(OBJ)/node.o  -o $(OBJ)/grafo.o
 
 
 
 $(OBJ)/insercion.o: $(SRC)/insercion.cpp
-	$(CXX) -c $(CXXFLAGS) $< -o $(OBJ)/insercion.o
+	$(CXX) -c $(CXXFLAGS) $< -o $@
 
 $(OBJ)/BBtools.o: $(SRC)/BBtools.cpp $(INC)/BBtools.h
 	$(CXX) -c $(CXXFLAGS) $< -o $(OBJ)/BBtools.o
@@ -44,7 +44,7 @@ $(OBJ)/point.o: $(SRC)/point.cpp $(INC)/point.h
 
 
 #************* Bibliotecas ************
-$(DIR_LIBS)/libgrafo.a: $(OBJ)/grafo.o $(OBJ)/point.o $(OBJ)/BBtools.o $(OBJ)/node.o $(OBJ)/insertion.o
+$(DIR_LIBS)/libgrafo.a: $(OBJ)/grafo.o $(OBJ)/point.o $(OBJ)/BBtools.o $(OBJ)/node.o $(OBJ)/insercion.o
 	$(AR) rvs $@ $^
 
 

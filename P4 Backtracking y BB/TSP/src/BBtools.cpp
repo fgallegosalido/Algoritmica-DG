@@ -11,23 +11,23 @@ Path::Path(const Path& p){
    path = p.getPath();
 }
 
-Path Path::getPath() const{
+vector<Point> Path::getPath() const{
    return path;
 }
 
 double Path::getLength() const{
    double length = 0;
-   for (int i = 1; i < path.size; ++i)
+   for (unsigned int i = 1; i < path.size(); ++i)
       length += path[i-1].distance(path[i]);
    return length;
 }
 
 void Path::addPoint(const Point& p){
-   path.add(p);
+   path.push_back(p);
 }
 
 Point Path::getLastPoint() const{
-   path[path.size-1];
+   return path[path.size()-1];
 }
 
 
@@ -54,7 +54,11 @@ DistanceMatrix::DistanceMatrix(double** m, const int& n){
 }
 
 DistanceMatrix DistanceMatrix::Submatrix(const int& m, const int& n){
-   DistanceMatrix newD = DistanceMatrix(dimension-1);
+   double** newD = new double*[dimension-1];
+
+   for (int i=0; i<(dimension-1); ++i)
+      newD[i] = new double[dimension-1];
+
    for (int i = 0; i < dimension; ++i){
       for (int j = 0; j < dimension; ++j){
          if (i < m)
@@ -69,18 +73,20 @@ DistanceMatrix DistanceMatrix::Submatrix(const int& m, const int& n){
                newD[i][j] = D[i+1][j+1];
       }
    }
-   return newD;
+   DistanceMatrix ret(newD, dimension-1);
+
+   return ret;
 }
 
 vector<double> DistanceMatrix::rowMinimums() const{
    vector<double> row_min;
-   row_min.add(D[0][1]);
+   row_min.push_back(D[0][1]);
    for (int j = 2; j < dimension; ++j){
       if (D[0][j] < row_min[0])
          row_min[0] = D[0][j];
    }
    for (int i = 1; i < dimension; ++i){
-      row_min.add(D[i][0]);
+      row_min.push_back(D[i][0]);
       for (int j = 1; j < i; ++j)
          if (D[i][j] < row_min[i])
             row_min[i] = D[i][j];
@@ -91,17 +97,28 @@ vector<double> DistanceMatrix::rowMinimums() const{
    return row_min;
 }
 
-   // Cota inferior parcial por defecto (mínimo de cada fila)
+double DistanceMatrix::get(const int& i, const int& j){
+   double ret = -1;
+   if (i<dimension && j<dimension)
+      ret = D[i][j];
+
+   return ret;
+}
+
+
+// Cota inferior parcial por defecto (mínimo de cada fila)
 double DistanceMatrix::PartialBound() const{
-   int row_min[dimension];
+   int* row_min = new int[dimension];
    double sum = 0;
    row_min[0] = D[0][1];
+
    for (int j = 2; j < dimension; ++j){
       if (D[0][j] < row_min[0])
          row_min[0] = D[0][j];
    }
+
    for (int i = 1; i < dimension; ++i){
-      row_min[i] = D[j][0];
+      row_min[i] = D[i][0];
       for (int j = 1; j < i; ++j)
          if (D[i][j] < row_min[i])
             row_min[i] = D[0][j];
@@ -109,8 +126,11 @@ double DistanceMatrix::PartialBound() const{
          if (D[i][j] < row_min[i])
             row_min[i] = D[i][j];
    }
+
    for (int i = 0; i < dimension; ++i)
       sum += row_min[i];
+
+   delete []row_min;
    return sum;
 }
 
