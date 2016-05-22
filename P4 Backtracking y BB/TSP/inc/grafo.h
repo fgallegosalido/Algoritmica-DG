@@ -2,8 +2,8 @@
 #define _GRAFO_H_
 
 #include <list>
-#include "../src/point.cpp"
-#include "../src/branch_and_bound_tools.cpp"
+#include "point.h"
+#include "BBtools.h"
 using namespace std;
 
 class Graph{

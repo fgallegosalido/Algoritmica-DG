@@ -59,3 +59,34 @@ bool Point::operator!=(const Point &other) const{
 }
 
 
+Point* readPoints(char* nombre, int& size){
+   ifstream datos;
+   string s;
+   Point p;
+   int n,act;
+   double x,y;
+   Point* points = NULL;
+
+   datos.open(nombre);
+   if (datos.is_open()) {
+      datos >> s; // Leo "dimension:"
+      datos >> n;
+      size = n;
+      points = new Point[n];
+      int i=0;
+
+      while (i<n){
+         datos >> act >> x >> y;
+         p.setXY(x, y);
+	      points[act-1] = p;
+	      i++;
+      }
+
+      datos.close();
+      return points;
+   }
+   else {
+      cout << "Error de Lectura en " << nombre << endl;
+   }
+   return points;
+}
