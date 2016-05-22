@@ -1,0 +1,7 @@
+\beamer@endinputifotherversion {3.24pt}
+\select@language {spanish}
+\beamer@sectionintoc {1}{Divisi\IeC {\'o}n en dos equipos}{3}{0}{1}
+\beamer@subsectionintoc {1}{1}{Enunciado}{3}{0}{1}
+\beamer@subsectionintoc {1}{2}{Eficiencia}{7}{0}{1}
+\beamer@subsectionintoc {1}{3}{Comparando ambos algoritmos}{10}{0}{1}
+\beamer@subsectionintoc {1}{4}{Conclusi\IeC {\'o}n}{17}{0}{1}
