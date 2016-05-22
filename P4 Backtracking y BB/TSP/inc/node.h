@@ -3,8 +3,8 @@
 
 #include <queue>
 #include <vector>
-#include "grafo.h"
 #include "BBtools.h"
+#include "point.h"
 using namespace std;
 
 class Node{

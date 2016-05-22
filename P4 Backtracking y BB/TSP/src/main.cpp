@@ -4,7 +4,6 @@
 #include <chrono>
 #include <ctime>
 #include "grafo.h"
-#include "point.h" //
 using namespace std;
 
 Point* readPoints(char* nombre, int& size){

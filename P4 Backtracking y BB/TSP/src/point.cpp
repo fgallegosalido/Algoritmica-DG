@@ -1,4 +1,3 @@
-#include <cmath>
 #include "point.h"
 using namespace std;
 
@@ -57,5 +56,3 @@ bool Point::operator==(const Point &other) const{
 bool Point::operator!=(const Point &other) const{
    return (! (*this == other) );
 }
-
-

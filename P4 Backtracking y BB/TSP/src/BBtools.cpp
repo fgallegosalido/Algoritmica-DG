@@ -1,6 +1,4 @@
-#include <vector>
 #include "BBtools.h"
-#include "point.h"
 using namespace std;
 
 Path::Path(){

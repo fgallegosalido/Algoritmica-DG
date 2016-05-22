@@ -4,6 +4,7 @@
 #include <list>
 #include "point.h"
 #include "BBtools.h"
+#include "node.h"
 using namespace std;
 
 class Graph{
