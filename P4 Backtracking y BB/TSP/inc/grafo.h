@@ -3,6 +3,7 @@
 
 #include <list>
 #include "../src/point.cpp"
+#include "../src/branch_and_bound_tools.cpp"
 using namespace std;
 
 class Graph{
@@ -22,7 +23,7 @@ class Graph{
     Point getPoint(const int &i) const;
     int getSize() const{return size;}
     int* insertion(double &tam);
-    int* TSPConBB(double &tam);
+    Path TSP_BB();
 };
 
 #endif
