@@ -49,7 +49,7 @@ int main(int argc, char* argv[]){
    srandom(time(0));
    int size;
    //int* order;
-   double distance;
+   // double distance;
 
    Point* points = readPoints(argv[1], size);
 
@@ -61,7 +61,7 @@ int main(int argc, char* argv[]){
    tbefore = chrono::high_resolution_clock::now();
 
    //order =
-   graph.insertion(distance);
+   graph.TSP_BB();
 
    tafter = chrono::high_resolution_clock::now();
    duration = chrono::duration_cast<chrono::duration<double>>(tafter - tbefore);
@@ -71,6 +71,6 @@ int main(int argc, char* argv[]){
    //ofstream solution("rd100_insertion.dat");
    //for (int i=0; i<size; ++i)
    // solution << graph.getPoint(order[i]).getX() << " " << graph.getPoint(order[i]).getY() << endl;
-   cout << distance << endl;
+   // cout << distance << endl;
 
 }
