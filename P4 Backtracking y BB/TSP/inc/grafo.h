@@ -23,7 +23,7 @@ class Graph{
     Point getPoint(const int &i) const;
     int getSize() const{return size;}
     int* insertion(double &tam);
-    Path TSP_BB();
+    Path TSP_BB(int& nodes, int& queueMaxSize, int& cuts, int& typeEstimate);
 };
 
 #endif

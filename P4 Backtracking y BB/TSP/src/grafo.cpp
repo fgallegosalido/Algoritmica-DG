@@ -48,14 +48,16 @@ Point Graph::getPoint(const int &i) const{
 
 
 
-Path Graph::TSP_BB(){
+Path Graph::TSP_BB(int& nodes, int& queueMaxSize, int& cuts, int& typeEstimate){
    DistanceMatrix dm(matrix, size);
    vector<double> rm = dm.rowMinimums();
    priority_queue<Node> queue;
    double optSolutionLength = 0;
-   Path optPath;
+   Path optPath, firstP;
    vector<Point> firstRemaining;
-   Path firstP;
+   
+   nodes = queueMaxSize = cuts = 0;
+
 
    for (int i = 0; i < size; ++i)
       firstRemaining.push_back(points[i]);
@@ -64,8 +66,13 @@ Path Graph::TSP_BB(){
    queue.push(firstNode);
 
    while (!queue.empty()){
-      if ((queue.top().lowerBound() > optSolutionLength) && (optSolutionLength != 0))
+      if (queueMaxSize < queue.size())
+         queueMaxSize = queue.size(); //
+
+      if ((queue.top().lowerBound() > optSolutionLength) && (optSolutionLength != 0)){
          queue.pop();
+         ++cuts; // 
+      }
       else{
          if (queue.top().numberOfBranches() == 0){
             double totalLength = queue.top().getPathLength() + queue.top().getPath().getLastPoint().distance(points[0]);
@@ -76,8 +83,10 @@ Path Graph::TSP_BB(){
             queue.pop();
          }
          else{
-            for (int i = 0; i < queue.top().numberOfBranches(); ++i)
+            for (int i = 0; i < queue.top().numberOfBranches(); ++i){
                queue.push(queue.top().getSubnode(i));
+               ++nodes; // 
+            }
          }
       }
    }

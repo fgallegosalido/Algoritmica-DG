@@ -1,0 +1,17 @@
+\subsection{Enunciado}
+\begin{frame}
+	\begin{block}{viajante de comercio con vuelta atrás y ramificación y poda.}
+	Cuando para un nivel no queden más ciudades válidas, el algoritmo hace una vuelta atrás 
+	proponiendo una nueva ciudad válida para el nivel anterior.
+
+	Para el algoritmo de ramificación y poda es necesario utilizar una cota inferior para cada nodo 
+	(solución parcial), un valor $c$ menor o igual que el verdadero coste de la mejor solución (la de 
+	menor coste) que se puede obtener a partir de la solución parcial en la que nos encontremos.
+
+	Para realizar la poda, guardamos en todo momento en una variable $C$ el costo de la mejor solución
+	obtenida hasta ahora, si para una solución parcial, $c>C$ entonces se puede podar.
+
+	Como criterio para seleccionar el siguiente nodo vivo se empleará el criterio LC o 
+	``más prometedor", aquel que presente el menor valor de cota inferior.
+	\end{block}
+\end{frame}

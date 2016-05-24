@@ -42,8 +42,8 @@ Point* readPoints(char* nombre, int& size){
 int main(int argc, char* argv[]){
    cout.precision(15);
 
-   if (argc != 2){
-      cerr << "Formato: " << argv[0] << " <fichero.tsp>" << endl;
+   if (argc != 3){
+      cerr << "Formato: " << argv[0] << " <fichero.tsp> <0/1/2 cota inferior>" << endl;
       return -1;
    }
 
@@ -51,9 +51,7 @@ int main(int argc, char* argv[]){
    int size;
    //int* order;
    double distance;
-
    Point* points = readPoints(argv[1], size);
-
    Graph graph(points, size);
 
    chrono::high_resolution_clock::time_point tbefore, tafter;
@@ -61,17 +59,19 @@ int main(int argc, char* argv[]){
 
    tbefore = chrono::high_resolution_clock::now();
 
-   //order =
-   graph.insertion(distance);
+   // order = graph.insertion(distance);
+   int nodes, queueMaxSize, cuts;
+   Path path;
+   path = graph.TSP_BB(nodes, queueMaxSize, cuts, atoi(argv[2]));
 
    tafter = chrono::high_resolution_clock::now();
    duration = chrono::duration_cast<chrono::duration<double>>(tafter - tbefore);
 
+
+
    cout << size << " " << duration.count() << endl;
 
-   //ofstream solution("rd100_insertion.dat");
-   //for (int i=0; i<size; ++i)
-   // solution << graph.getPoint(order[i]).getX() << " " << graph.getPoint(order[i]).getY() << endl;
-   cout << distance << endl;
 
+   ofstream data("data.dat");
+   data << path.getLength() << " " << nodes << " " << queueMaxSize << " " << cuts << " " << duration.count() << endl;
 }

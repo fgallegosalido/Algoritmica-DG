@@ -10,7 +10,8 @@ set ylabel "Diferencia de nivel entre los equipos" font ", 12"
 set tics font ", 10"
 set style line 1 lt 1 lw 0.5 lc rgb '#409f40'
 set style line 2 lt 1 lw 0.5 lc rgb '#fcbb06'
-plot "../Datos/distancias.dat" using 2:xticlabels(1) title 'Sin equillibrar' ls 1, "../Datos/distancias.dat" using 3:xticlabels(1) title 'Equilibrados' ls 2
+plot "../DatosGraficas/nodos0.dat" using 2:xticlabels(1) title 'Algoritmo x0' ls 1,
+"../DatosGraficas/nodos1.dat" using 3:xticlabels(1) title 'Equilibrados' ls 2
 
 set terminal tikz
 set output "../Graficas/comparativa.tex"
