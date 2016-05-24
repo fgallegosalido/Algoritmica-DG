@@ -4,7 +4,6 @@
 #include <chrono>
 #include <ctime>
 #include "grafo.h"
-#include "point.h" //
 using namespace std;
 
 Point* readPoints(char* nombre, int& size){
@@ -48,29 +47,23 @@ int main(int argc, char* argv[]){
    }
 
    srandom(time(0));
-   int size;
+   int size, nodes, queueMaxSize, cuts;
    //int* order;
    double distance;
    Point* points = readPoints(argv[1], size);
    Graph graph(points, size);
-
+   Path path;
+   
    chrono::high_resolution_clock::time_point tbefore, tafter;
    chrono::duration<double> duration;
 
    tbefore = chrono::high_resolution_clock::now();
-
-   // order = graph.insertion(distance);
-   int nodes, queueMaxSize, cuts;
-   Path path;
    path = graph.TSP_BB(nodes, queueMaxSize, cuts, atoi(argv[2]));
-
    tafter = chrono::high_resolution_clock::now();
+
    duration = chrono::duration_cast<chrono::duration<double>>(tafter - tbefore);
 
-
-
    cout << size << " " << duration.count() << endl;
-
 
    ofstream data("data.dat");
    data << path.getLength() << " " << nodes << " " << queueMaxSize << " " << cuts << " " << duration.count() << endl;

@@ -1,18 +1,19 @@
 #ifndef _BBTOOLS_H_
 #define _BBTOOLS_H_
 
+#include <list>
 #include <vector>
 #include "point.h"
 using namespace std;
 
 class Path{
 private:
-   vector<Point> path;
+   list<Point> path;
 public:
    Path();
    Path(const Path& p);
 
-   vector<Point> getPath() const;
+   list<Point> getPath() const;
    double getLength() const;
 
    void addPoint(const Point& p);
@@ -34,7 +35,7 @@ public:
 
    double PartialBound() const; // Cota inferior parcial por defecto (mínimo de cada fila)
    double PartialBound2(); //Cota propuesta por Francisco
-   double PartialBound3(); //Cota propuesta por Francisco
+   double PartialBound3(); //Cota propuesta por Rubén
 };
 
 #endif

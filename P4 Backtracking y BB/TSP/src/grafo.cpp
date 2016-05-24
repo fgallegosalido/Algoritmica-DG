@@ -1,6 +1,4 @@
 #include "grafo.h"
-#include "node.h"
-#include "BBtools.h"
 using namespace std;
 
 // Constructor
@@ -48,7 +46,8 @@ Point Graph::getPoint(const int &i) const{
 
 
 
-Path Graph::TSP_BB(int& nodes, int& queueMaxSize, int& cuts, int& typeEstimate){
+
+Path Graph::TSP_BB(int& nodes, int& queueMaxSize, int& cuts, int typeEstimate){
    DistanceMatrix dm(matrix, size);
    vector<double> rm = dm.rowMinimums();
    priority_queue<Node> queue;
@@ -93,3 +92,4 @@ Path Graph::TSP_BB(int& nodes, int& queueMaxSize, int& cuts, int& typeEstimate){
 
    return optPath;
 }
+

@@ -4,6 +4,7 @@
 #include <list>
 #include "point.h"
 #include "BBtools.h"
+#include "node.h"
 using namespace std;
 
 class Graph{
@@ -23,7 +24,7 @@ class Graph{
     Point getPoint(const int &i) const;
     int getSize() const{return size;}
     int* insertion(double &tam);
-    Path TSP_BB(int& nodes, int& queueMaxSize, int& cuts, int& typeEstimate);
+    Path TSP_BB(int& nodes, int& queueMaxSize, int& cuts, int typeEstimate);
 };
 
 #endif

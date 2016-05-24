@@ -1,24 +1,22 @@
-#include <vector>
 #include "BBtools.h"
-#include "point.h"
 using namespace std;
 
-Path::Path(){
-    path.clear();
-}
+Path::Path(){}
 
 Path::Path(const Path& p){
    path = p.getPath();
 }
 
-vector<Point> Path::getPath() const{
+list<Point> Path::getPath() const{
    return path;
 }
 
 double Path::getLength() const{
    double length = 0;
-   for (unsigned int i = 1; i < path.size(); ++i)
-      length += path[i-1].distance(path[i]);
+   auto it = path.begin();
+   ++it;
+   for (auto aux=path.begin(); it != path.end(); it++, aux++)
+      length += (*it).distance(*aux);
    return length;
 }
 
@@ -27,12 +25,14 @@ void Path::addPoint(const Point& p){
 }
 
 Point Path::getLastPoint() const{
-   return path[path.size()-1];
+   auto ret = path.end();
+   ret--;
+   return *ret;
 }
 
 
 
-// DistanceMatrix classs
+// DistanceMatrix class
 DistanceMatrix::DistanceMatrix(const int& n){
    D = new double*[n];
    for (int i=0; i<n; ++i)
