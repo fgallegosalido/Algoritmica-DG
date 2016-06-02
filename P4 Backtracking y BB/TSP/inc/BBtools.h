@@ -18,6 +18,8 @@ public:
 
    void addPoint(const Point& p);
    Point getLastPoint() const;
+
+   int getNumPoints();
 };
 
 class DistanceMatrix{

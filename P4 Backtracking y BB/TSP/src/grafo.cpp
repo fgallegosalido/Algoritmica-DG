@@ -1,3 +1,6 @@
+#include <queue>
+#include <vector>
+#include <functional>
 #include "grafo.h"
 using namespace std;
 
@@ -44,52 +47,83 @@ Point Graph::getPoint(const int &i) const{
 }
 
 
+// Estructura que guarda un camino y la cota de su coste
+struct PathAndCost{
+  Path path;
+  double cost;
+  vector<Point> leftPoints; // Puntos que quedan para cerrar el ciclo
+  vector<int> indexes; // Inices en "points[]" de los puntos que tiene el camino
+  bool operator< (const PathAndCost& rhs) const {
+    return this->cost < rhs.cost;
+  }
+  bool operator> (const PathAndCost& rhs) const {
+    return this->cost > rhs.cost;
+  }
+};
 
+
+// Suma los valores de rm excluyendo los indices de p
+int sum(vector<double> rm, PathAndCost p){
+  int count = 0;
+  int j = 0;
+  for (int i=0; i < rm.size(); ++i){
+    if (i != p.indexes[j])
+      count += rm[i];
+    else
+      j = j < p.indexes.size() - 1 ? j + 1 : j;
+  }
+
+  return count;
+}
 
 
 Path Graph::TSP_BB(int& nodes, int& queueMaxSize, int& cuts, int typeEstimate){
    DistanceMatrix dm(matrix, size);
    vector<double> rm = dm.rowMinimums();
-   priority_queue<Node> queue;
+   priority_queue<PathAndCost, vector<PathAndCost>, greater<PathAndCost> > liveNodesQueue;
    double optSolutionLength = 0;
-   Path optPath, firstP;
-   vector<Point> firstRemaining;
-   
+   Path optPath;
+
    nodes = queueMaxSize = cuts = 0;
 
+   // Genera las permutaciones del primer nivel
+   PathAndCost p;
+   for (int i = 1; i < size; ++i){
+     p.path.addPoint(points[0]);
+     p.path.addPoint(points[i]);
+     p.leftPoints = vector<Point>(points, points + sizeof(points) / sizeof(Point)); // conversion a std::vector de points[]
+     p.leftPoints.erase(p.leftPoints.begin());
+     p.leftPoints.erase(p.leftPoints.begin()+i);
+     p.indexes.push_back(0);
+     p.indexes.push_back(i);
+     p.cost = sum(rm, p) + p.path.getLength();
+     liveNodesQueue.push(p); // ¡Bad Alloc!
+   }
 
-   for (int i = 0; i < size; ++i)
-      firstRemaining.push_back(points[i]);
+   while (!liveNodesQueue.empty()){
+      if (queueMaxSize < liveNodesQueue.size())
+         queueMaxSize = liveNodesQueue.size(); //
 
-   Node firstNode = Node(firstP, firstRemaining, 0, rm);
-   queue.push(firstNode);
-
-   while (!queue.empty()){
-      if (queueMaxSize < queue.size())
-         queueMaxSize = queue.size(); //
-
-      if ((queue.top().lowerBound() > optSolutionLength) && (optSolutionLength != 0)){
-         queue.pop();
-         ++cuts; // 
+      PathAndCost p = liveNodesQueue.top();
+      for (int i=0; i < p.leftPoints.size(); ++i){
+        p.path.addPoint(p.leftPoints[i]);
+        p.leftPoints.erase(p.leftPoints.begin()+i);
+        p.indexes.push_back(i);
+        p.cost = sum(rm, p) + p.path.getLength();
+        if (p.path.getNumPoints() == size-2 && p.cost < optSolutionLength && optSolutionLength != 0){
+          p.path.addPoint(p.leftPoints[0]);
+          p.path.addPoint(points[0]);
+          optSolutionLength = p.path.getLength();
+          optPath = p.path;
+        }
+        liveNodesQueue.push(p);
       }
-      else{
-         if (queue.top().numberOfBranches() == 0){
-            double totalLength = queue.top().getPathLength() + queue.top().getPath().getLastPoint().distance(points[0]);
-            if (totalLength < optSolutionLength){
-               optSolutionLength = totalLength;
-               optPath = queue.top().getPath();
-            }
-            queue.pop();
-         }
-         else{
-            for (int i = 0; i < queue.top().numberOfBranches(); ++i){
-               queue.push(queue.top().getSubnode(i));
-               ++nodes; // 
-            }
-         }
+
+      while ((liveNodesQueue.top().cost >= optSolutionLength) && (optSolutionLength != 0)){
+         liveNodesQueue.pop();
+         ++cuts; //
       }
    }
 
    return optPath;
 }
-

@@ -30,6 +30,10 @@ Point Path::getLastPoint() const{
    return *ret;
 }
 
+int Path::getNumPoints(){
+  return path.size();
+}
+
 
 
 // DistanceMatrix class

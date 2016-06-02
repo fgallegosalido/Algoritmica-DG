@@ -53,7 +53,7 @@ int main(int argc, char* argv[]){
    Point* points = readPoints(argv[1], size);
    Graph graph(points, size);
    Path path;
-   
+
    chrono::high_resolution_clock::time_point tbefore, tafter;
    chrono::duration<double> duration;
 
