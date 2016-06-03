@@ -91,7 +91,7 @@ Path Graph::TSP_BB(int& nodes, int& queueMaxSize, int& cuts, int typeEstimate){
    for (int i = 1; i < size; ++i){
      p.path.addPoint(points[0]);
      p.path.addPoint(points[i]);
-     p.leftPoints = vector<Point>(points, points + sizeof(points) / sizeof(Point)); // conversion a std::vector de points[]
+     p.leftPoints = vector<Point>(points, points + size); // conversion a std::vector de points[]
      p.leftPoints.erase(p.leftPoints.begin());
      p.leftPoints.erase(p.leftPoints.begin()+i);
      p.indexes.push_back(0);
@@ -100,6 +100,7 @@ Path Graph::TSP_BB(int& nodes, int& queueMaxSize, int& cuts, int typeEstimate){
      liveNodesQueue.push(p); // ¡Bad Alloc!
    }
 
+   // FIX Este bucle no acaba aún poniendo solo 4 puntos
    while (!liveNodesQueue.empty()){
       if (queueMaxSize < liveNodesQueue.size())
          queueMaxSize = liveNodesQueue.size(); //
