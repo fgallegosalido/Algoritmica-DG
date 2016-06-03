@@ -52,18 +52,18 @@ struct PathAndCost{
   Path path;
   double cost;
   vector<Point> leftPoints; // Puntos que quedan para cerrar el ciclo
-  vector<int> indexes; // Inices en "points[]" de los puntos que tiene el camino
+  vector<int> indexes; // Índices en "points[]" de los puntos que tiene el camino
   bool operator< (const PathAndCost& rhs) const {
-    return this->cost < rhs.cost;
+    return cost < rhs.cost;
   }
   bool operator> (const PathAndCost& rhs) const {
-    return this->cost > rhs.cost;
+    return cost > rhs.cost;
   }
 };
 
 
 // Suma los valores de rm excluyendo los indices de p
-int sum(vector<double> rm, PathAndCost p){
+int sum(vector<double> rm, PathAndCost &p){
   int count = 0;
   int j = 0;
   for (int i=0; i < rm.size(); ++i){
