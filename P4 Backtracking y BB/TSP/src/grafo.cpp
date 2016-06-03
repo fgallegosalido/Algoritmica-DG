@@ -1,6 +1,7 @@
 #include <queue>
 #include <vector>
 #include <functional>
+#include <set>
 #include "grafo.h"
 using namespace std;
 
@@ -80,7 +81,7 @@ int sum(vector<double> rm, PathAndCost &p){
 Path Graph::TSP_BB(int& nodes, int& queueMaxSize, int& cuts, int typeEstimate){
    DistanceMatrix dm(matrix, size);
    vector<double> rm = dm.rowMinimums();
-   priority_queue<PathAndCost, vector<PathAndCost>, greater<PathAndCost> > liveNodesQueue;
+   set<PathAndCost, greater<PathAndCost> > liveNodesSet;
    double optSolutionLength = 0;
    Path optPath;
 
@@ -97,15 +98,17 @@ Path Graph::TSP_BB(int& nodes, int& queueMaxSize, int& cuts, int typeEstimate){
      p.indexes.push_back(0);
      p.indexes.push_back(i);
      p.cost = sum(rm, p) + p.path.getLength();
-     liveNodesQueue.push(p); // ¡Bad Alloc!
+     liveNodesSet.insert(p); // ¡Bad Alloc!
    }
 
    // FIX Este bucle no acaba aún poniendo solo 4 puntos
-   while (!liveNodesQueue.empty()){
-      if (queueMaxSize < liveNodesQueue.size())
-         queueMaxSize = liveNodesQueue.size(); //
+   while (!liveNodesSet.empty()){
+      if (queueMaxSize < liveNodesSet.size())
+         queueMaxSize = liveNodesSet.size(); //
 
-      PathAndCost p = liveNodesQueue.top();
+      // Desarrollo del nodo con menor coste
+      PathAndCost p = *(liveNodesSet.begin());
+      liveNodesSet.erase(liveNodesSet.begin()); // Una vez desarrollado el nodo lo eliminamos para no volver a pasar por el
       for (int i=0; i < p.leftPoints.size(); ++i){
         p.path.addPoint(p.leftPoints[i]);
         p.leftPoints.erase(p.leftPoints.begin()+i);
@@ -117,12 +120,14 @@ Path Graph::TSP_BB(int& nodes, int& queueMaxSize, int& cuts, int typeEstimate){
           optSolutionLength = p.path.getLength();
           optPath = p.path;
         }
-        liveNodesQueue.push(p);
+        liveNodesSet.insert(p);
       }
 
-      while ((liveNodesQueue.top().cost >= optSolutionLength) && (optSolutionLength != 0)){
-         liveNodesQueue.pop();
-         ++cuts; //
+      for (set<PathAndCost, greater<PathAndCost> >::iterator it = liveNodesSet.begin(); it != liveNodesSet.end(); ++it){
+        if (it->cost >= optSolutionLength && optSolutionLength != 0){
+          liveNodesSet.erase(it);
+          ++cuts;
+        }
       }
    }
 
