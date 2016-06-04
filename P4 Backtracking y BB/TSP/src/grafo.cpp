@@ -85,7 +85,8 @@ Path Graph::TSP_BB(int& nodes, int& queueMaxSize, int& cuts, int typeEstimate){
    DistanceMatrix dm(matrix, size);
    vector<double> rm = dm.rowMinimums();
    set<PathAndCost, greater<PathAndCost> > liveNodesSet;
-   double optSolutionLength = 0;
+   double optSolutionLength;
+   insertion(optSolutionLength);
    Path optPath;
 
    nodes = queueMaxSize = cuts = 0;
