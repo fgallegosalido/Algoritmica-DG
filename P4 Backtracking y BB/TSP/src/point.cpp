@@ -56,3 +56,8 @@ bool Point::operator==(const Point &other) const{
 bool Point::operator!=(const Point &other) const{
    return (! (*this == other) );
 }
+
+ostream& operator<<(ostream& os, const Point& p){
+  os << "(" << p.getX() << ", " << p.getY() << ")";
+  return os;
+}

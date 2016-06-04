@@ -26,6 +26,7 @@ Point* readPoints(char* nombre, int& size){
          datos >> act >> x >> y;
          p.setXY(x, y);
 	      points[act-1] = p;
+        cerr << "Leido punto " << p << endl;
 	      i++;
       }
 
@@ -33,7 +34,7 @@ Point* readPoints(char* nombre, int& size){
       return points;
    }
    else {
-      cout << "Error de Lectura en " << nombre << endl;
+      cerr << "Error de Lectura en " << nombre << endl;
    }
    return points;
 }

@@ -2,6 +2,7 @@
 #include <vector>
 #include <functional>
 #include <set>
+#include <iostream>
 #include "grafo.h"
 using namespace std;
 
@@ -9,8 +10,10 @@ using namespace std;
 Graph::Graph(Point* coordenadas, int n){
    if ( n > 0 ){
       points = new Point[n];
-      for (int i=0; i<n; ++i)
+      for (int i=0; i<n; ++i){
          points[i] = coordenadas[i];
+         cerr << "Añadido punto al grafo " << points[i] << endl;
+      }
 
       matrix = new double*[n];
 
@@ -88,48 +91,58 @@ Path Graph::TSP_BB(int& nodes, int& queueMaxSize, int& cuts, int typeEstimate){
    nodes = queueMaxSize = cuts = 0;
 
    // Genera las permutaciones del primer nivel
-   PathAndCost p;
    for (int i = 1; i < size; ++i){
-     p.path.addPoint(points[0]);
-     p.path.addPoint(points[i]);
+     PathAndCost p;
+     p.path.addPoint(getPoint(0));
+     cerr << "Añadido punto: " << getPoint(0) << endl;
+     p.path.addPoint(getPoint(i));
+     cerr << "Añadido punto: " << getPoint(i) << endl;
      p.leftPoints = vector<Point>(points, points + size); // conversion a std::vector de points[]
      p.leftPoints.erase(p.leftPoints.begin());
-     p.leftPoints.erase(p.leftPoints.begin()+i);
+     p.leftPoints.erase(p.leftPoints.begin()+i-1);
      p.indexes.push_back(0);
      p.indexes.push_back(i);
      p.cost = sum(rm, p) + p.path.getLength();
-     liveNodesSet.insert(p); // ¡Bad Alloc!
+     liveNodesSet.insert(p);
+     cerr << "Añadido camino: " << p.path << endl;
    }
 
-   // FIX Este bucle no acaba aún poniendo solo 4 puntos
    while (!liveNodesSet.empty()){
       if (queueMaxSize < liveNodesSet.size())
          queueMaxSize = liveNodesSet.size(); //
 
       // Desarrollo del nodo con menor coste
-      PathAndCost p = *(liveNodesSet.begin());
+      PathAndCost nodeToDevelop = *(liveNodesSet.begin());
       liveNodesSet.erase(liveNodesSet.begin()); // Una vez desarrollado el nodo lo eliminamos para no volver a pasar por el
-      for (int i=0; i < p.leftPoints.size(); ++i){
+      cerr << "Desarrollando camino: " << nodeToDevelop.path << ": " << endl;
+      for (int i=0; i < nodeToDevelop.leftPoints.size(); ++i){
+        PathAndCost p = nodeToDevelop;
         p.path.addPoint(p.leftPoints[i]);
         p.leftPoints.erase(p.leftPoints.begin()+i);
         p.indexes.push_back(i);
         p.cost = sum(rm, p) + p.path.getLength();
-        if (p.path.getNumPoints() == size-2 && p.cost < optSolutionLength && optSolutionLength != 0){
+        if (p.path.getNumPoints() == size-1 && (p.cost < optSolutionLength || optSolutionLength == 0)){
           p.path.addPoint(p.leftPoints[0]);
           p.path.addPoint(points[0]);
-          optSolutionLength = p.path.getLength();
-          optPath = p.path;
+          if (p.path.getLength() < optSolutionLength || optSolutionLength == 0){
+            optSolutionLength = p.path.getLength();
+            optPath = p.path;
+            cerr << "Encontrada solución provisional: " << optPath << " (" << optSolutionLength << ")" << endl;
+          }
         }
         liveNodesSet.insert(p);
+        cerr << "Añadido camino: " << p.path << endl;
       }
 
       for (set<PathAndCost, greater<PathAndCost> >::iterator it = liveNodesSet.begin(); it != liveNodesSet.end(); ++it){
-        if (it->cost >= optSolutionLength && optSolutionLength != 0){
+        if ((it->cost >= optSolutionLength && optSolutionLength != 0) || ((*it).path.getNumPoints() == size+1)){
+          cerr << "Cortado nodo: " << it->path << endl;
           liveNodesSet.erase(it);
           ++cuts;
         }
       }
    }
 
+   cerr << "Solución: " << optPath << endl;
    return optPath;
 }

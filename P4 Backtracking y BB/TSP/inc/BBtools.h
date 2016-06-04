@@ -3,6 +3,7 @@
 
 #include <list>
 #include <vector>
+#include <iostream>
 #include "point.h"
 using namespace std;
 
@@ -20,7 +21,11 @@ public:
    Point getLastPoint() const;
 
    int getNumPoints();
+   int getNumPoints() const;
 };
+
+std::ostream& operator<<(std::ostream& os, const Path& p);
+
 
 class DistanceMatrix{
 private:

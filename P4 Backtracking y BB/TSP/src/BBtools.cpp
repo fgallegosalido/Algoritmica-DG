@@ -34,6 +34,19 @@ int Path::getNumPoints(){
   return path.size();
 }
 
+int Path::getNumPoints() const{
+  return path.size();
+}
+
+ostream& operator<<(ostream& os, const Path& p){
+  list<Point> pList  = p.getPath();
+  os << "Path: [";
+  for (list<Point>::iterator it=pList.begin(); it != pList.end(); ++it)
+    os << " " << *it;
+  os << "]";
+  return os;
+}
+
 
 
 // DistanceMatrix class

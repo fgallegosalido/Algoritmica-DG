@@ -2,6 +2,7 @@
 #define _POINT_H_
 
 #include <cmath>
+#include <iostream>
 
 class Point{
   private:
@@ -21,12 +22,13 @@ class Point{
     void setY(const double &c);
     void setXY(const double &c1, const double &c2);
 
-    
+
     double distance(const Point &p) const;
     Point& operator=(const Point &other);
     bool operator==(const Point &other) const;
     bool operator!=(const Point &other) const;
 };
 
-#endif
+std::ostream& operator<<(std::ostream& os, const Point& p);
 
+#endif
