@@ -1,5 +1,5 @@
 set terminal pngcairo
-set output "../Graficas/graficaTiempos0.png"
+set output "../Graficas/graficaTiempos.png"
 
 set title "Comparativa del tiempo según tipo de poda"
 set xlabel "Fichero en datosTSP"

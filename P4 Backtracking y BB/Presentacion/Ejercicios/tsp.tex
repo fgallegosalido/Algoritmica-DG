@@ -45,7 +45,96 @@ mucho más reducido que con los métodos voraces). La visualización de las solu
 puede hacerse de la misma forma que en la práctica $2$ (usando gnuplot).
 
 \subsection{Explicación}
+
+
+
 \subsection{Eficiencia}
+
+
+
 \subsection{Comparativa}
-Comparamos los tiempos gastados con las diferentes formas de hayar cotas inferiores para poda.
+Comparamos los tiempos gastados con las diferentes formas de calcular cotas inferiores para poda.
+
+Las diferentes funciones para conseguir una cota inferior hacen que en un mismo mapa
+el algoritmo de ramificación y poda varíe. 
+Estas variaciones se traducen en los nodos expandidos, la mayor cola de nodos vivos, la cantidad de
+cortes que ha hecho cada uno y el tiempo.
+
+
+\subsubsection{Cortes producidos}
+Empecemos con la cantidad de cortes producidos. Esta información puede no ser representativa de la
+magnitud real de los cortes aplicados. Dados dos algoritmos $X,Y$ que han hecho $x_i,y_i$ cortes
+respectivamente con $x_1>y_1$ no nos está diciendo que el primero sea más rapido.
+El primer algoritmo podría haber recorrido más nodos y hacer los cortes en niveles del árbol más profundos. 
+
+Como esta gráfica solamente tiene en cuenta el número si el primer algoritmo ha podido 
+cortar muchos nodos pero el segundo hacer solamente un corte que sea mejor que todos los cortes
+anteriores por haberse hecho en un nivel superior.
+ 
+\begin{figure}[H]
+    \centering
+%    \includegraphics[scale=0.75]{../TSP/Graficas/graficaCortes.png}
+    \caption{Cortes efectuados}
+\end{figure}
+
+
+\subsubsection{Colas con prioridad}
+A continuación exponemos el mayor tamaño alcanzado por la cola con prioridad.
+Esta información nos puede dar una idea de lo bueno que es nuestro algoritmo para el cálculo
+de una cota inferior, es un dato mucho más valioso que la cantidad de cortes efectuados.
+
+En los algoritmos usados nos es útil este dato, por ser algoritmos que solamente difieren en
+la función de la cota inferior. Hay versiones de ramificación y poda para el problema del viajante
+de comercio que no usan por ejemplo la aproximación greedy inicial, por lo que ha podido 
+sobrecargar la cola con prioridad mientras busca la primera solución con la que podará después.
+
+\begin{figure}[H]
+    \centering
+%    \includegraphics[scale=0.75]{../TSP/graficaColaMaxima.png}
+    \caption{Cola con prioridad más grande}
+\end{figure}
+
+
+\subsubsection{Nodos procesados}
+Otro dato interesante son los nodos que ha procesado cada algoritmo, pero esto no nos asegura
+que tarde menos tiempo, ya que un algoritmo con más nodos expandidos que otro ha podido usar una
+función para calcular las cotas inferiores demasiado costosa.
+\begin{figure}[H]
+    \centering
+%    \includegraphics[scale=0.75]{../TSP/graficaNodos.png}
+    \caption{Nodos expandidos}
+\end{figure}
+
+
+
+\subsubsection{Tiempos}
+Todos estos datos son interesantes académicamente, pero en la práctica el tiempo es el dato
+que mayor peso tendrá (además del uso de memoria) para elegir el algoritmo más eficiente o 
+decantarnos por una alternativa greedy.
+\begin{figure}[H]
+    \centering
+%    \includegraphics[scale=0.75]{../TSP/graficaTiempos0.png}
+    \caption{Tiempo algoritmo 1 y su ajuste}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+%    \includegraphics[scale=0.75]{../TSP/graficaTiempos1.png}
+    \caption{Tiempo algoritmo 2 y su ajuste}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+%    \includegraphics[scale=0.75]{../TSP/graficaTiempos.png}
+    \caption{Comparativa de tiempos}
+\end{figure}
+
+
+
 \subsection{Conclusión}
+Aunque los algoritmos de ramificación y poda nos aseguraran la optimalidad a problemas con
+tiempos de ejecución exponenciales ahorrándonos pasos, no resultan prácticos cuando el tamaño
+del problema crece. Los algoritmos greedy estudiados anteriormente nos pueden dar una aproximación
+más que razonable para el problema.

@@ -24,9 +24,8 @@ for i in `ls ../datosTSP`; do
    printf "$contador" >> ../DatosGraficas/cortes.dat
    printf "$contador" >> ../DatosGraficas/tiempos.dat
 
-   for j in `seq 0 2`;do
+   for j in `seq 0 2`; do
       ./bin/main $i $j
-      # No estoy seguro de como manejar el size(?)
 
       printf " " >> ../DatosGraficas/longitud.dat
       printf " " >> ../DatosGraficas/nodos.dat

@@ -101,7 +101,6 @@ Path Graph::TSP_BB(int& nodes, int& queueMaxSize, int& cuts, int typeEstimate){
      p.leftPoints = vector<Point>(points, points + size); // conversion a std::vector de points[]
      p.leftPoints.erase(p.leftPoints.begin());
      p.leftPoints.erase(p.leftPoints.begin()+i-1);
-
      p.indexes.push_back(0);
      p.indexes.push_back(i);
      p.cost = sum(rm, p) + p.path.getLength();
