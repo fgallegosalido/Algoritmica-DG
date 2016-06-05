@@ -26,7 +26,6 @@ Point* readPoints(char* nombre, int& size){
          datos >> act >> x >> y;
          p.setXY(x, y);
 	      points[act-1] = p;
-        cerr << "Leido punto " << p << endl;
 	      i++;
       }
 
