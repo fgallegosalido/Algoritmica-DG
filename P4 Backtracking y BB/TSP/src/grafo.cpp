@@ -49,8 +49,8 @@ Point Graph::getPoint(const int &i) const{
 
 
 // Estructura que guarda un camino y la cota de su coste
+Path path;
 struct PathAndCost{
-  Path path;
   double cost;
   vector<Point> leftPoints; // Puntos que quedan para cerrar el ciclo
   vector<int> indexes; // Índices en "points[]" de los puntos que tiene el camino
@@ -99,7 +99,14 @@ Path Graph::TSP_BB(int& nodes, int& queueMaxSize, int& cuts, int typeEstimate){
 
      p.indexes.push_back(0);
      p.indexes.push_back(i);
-     p.cost = sum(rm, p) + p.path.getLength();
+
+     if (typeEstimate == 1)
+         p.cost = sum(rm, p) + p.path.getLength();
+     //else if (typeEstimate == 2)
+      //   p.cost = p.PartialBound + p.path.getLength();
+     //else if (typeEstimate == 3)
+      //   p.cost = ... + p.path.getLength();
+
      liveNodesSet.insert(p);
    }
 
@@ -115,9 +122,17 @@ Path Graph::TSP_BB(int& nodes, int& queueMaxSize, int& cuts, int typeEstimate){
         p.path.addPoint(p.leftPoints[i]);
         p.leftPoints.erase(p.leftPoints.begin()+i);
         p.indexes.push_back(i);
-        p.cost = sum(rm, p) + p.path.getLength();
 
-        if (p.path.getNumPoints() == size-1 && (p.cost < optSolutionLength)){
+
+        if (typeEstimate == 1)
+           p.cost = sum(rm, p) + p.path.getLength();
+       //else if (typeEstimate == 2)
+        //   p.cost = p.PartialBound + p.path.getLength();
+       //else if (typeEstimate == 3)
+        //   p.cost = ... + p.path.getLength();
+
+
+        if (p.path.getNumPoints() == (size-1) && (p.cost < optSolutionLength)){
           p.path.addPoint(p.leftPoints[0]);
           p.path.addPoint(points[0]);
 
