@@ -18,13 +18,62 @@
 
 
 \subsection{Explicación}
+	
 \begin{frame}
+Hemos utilizado dos algoritmos para encontrar una cota inferior.
+	
+	\begin{block}{Algoritmo propuesto}
+	Para encontrar la longitud del grafo con los menores arcos sumamos el menor elemento de cada fila de la matriz de adyacencia.
+	\end{block}
+	
+	\begin{alertblock}{Problema}
+	En matrices simétricas podemos repetir elementos simétricos y acabar con un grafo inconexo.
+	\end{alertblock}
+	
+	\begin{block}{Algoritmo mejorado}
+	Si hemos usado el simétrico de un elemento escogemos el siguiente menor.
+	\end{block}
+\end{frame}
 
+\begin{frame}{Ejemplo}
+\begin{columns}
+\begin{column}{5cm}
+	\[
+	\begin{bmatrix}
+	    0 & 1 & 2 & 3\\
+	    1 & 0 & 4 & 5\\
+	    2 & 4 & 0 & 6\\
+	    3 & 5 & 6 & 0\\
+	\end{bmatrix}
+	\]
+\end{column}
+
+\begin{column}{7cm}
+	\begin{figure}[H]
+    		\includegraphics[scale=0.25]{./Imagenes/ej.png}
+	\end{figure}
+	
+	\begin{figure}[H]
+	    		\includegraphics[scale=0.25]{./Imagenes/ej_mejorado.png}
+	\end{figure}
+\end{column}
+\end{columns}
 \end{frame}
 
 
 \subsection{Eficiencia}
 \begin{frame}
+	\begin{block}{Eficiencia recorriendo el arbol}
+	Tenemos que evaluar las permutaciones de un conjunto de $n-1$ elementos, por tanto la eficiencia será $O(n!)$.
+	\end{block}
+	
+	\begin{block}{Eficiencia de la primera cota}
+		Recorremos los elementos de todas las filas. Por tanto $O(n^2)$.
+	\end{block}
+	
+	\begin{block}{Eficiencia de la segunda cota}
+		Como sabemos en que fila se encuentra el simétrico de cualquier elemento y solo guardamos un elemento por fila, la comprobación es $O(1)$ y el algoritmo $O(n^2)$.
+	\end{block}
 
 \end{frame}
 
