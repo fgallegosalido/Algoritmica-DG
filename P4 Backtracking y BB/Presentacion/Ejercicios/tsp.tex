@@ -46,9 +46,29 @@ puede hacerse de la misma forma que en la práctica $2$ (usando gnuplot).
 
 \subsection{Explicación}
 
+Implementaremos dos versiones del algoritmo con diferentes formas de calcular la cota inferior.
+
+\begin{itemize}
+\item
+La primera versión calculará la cota de la forma propuesta en el enunciado. Esto se traduce en utilizar  la suma de los elementos mínimos de cada fila (obviando las filas que corresponden a los nodos que ya hemos recorrido) de la matriz de adyacencia.
+
+\item
+La segunda versión es una mejora de la primera. Dado que las matrices con las que vamos a trabajar son simétricas puede ocurrir que al elegir el mínimo de cada fila utilicemos dos elementos simétricos (escogemos dos veces el mismo arco), por tanto la cota resultante no es todo lo alta que podría ser (el grafo puede no ser conexo). Para solucionar esto, si a la hora de elegir un elemento de una fila vemos que ya hemos utilizado su simétrico, escogeremos el siguiente elemento mínimo, como resultado obtendremos que nuestra cota inferior es un grafo conexo cuyo recorrido es menor que el del ciclo que queremos hallar.
+\end{itemize}
 
 
 \subsection{Eficiencia}
+\subsubsection{Eficiencia del backtracking}
+
+Tenemos que evaluar todos los resultados de la forma $(1, X, 1)$ donde los $X = (x_1, x_2, ... , x_n)$ son permutaciones del conjunto de nodos sin el primero ($N - \{1\} = \{2, 3, ... , n\}$), por tanto tendremos que probar $(n-1)!$ posibles resultados.\\
+La eficiencia será $O(n!)$.
+
+\subsubsection{Eficiencia de las cotas}
+
+Para encontrar la primera cota tenemos que recorrer los elementos de todas las filas del la matriz de adyacencia, por tanto su eficiencia será $O(n^2)$.\\
+
+Para hallar la segunda cota, además de recorrer todos los elementos de la matriz, tendremos que asegurarnos de que no elijamos dos simétricos, por tanto la eficiencia será\\ $n*(n + k \cdot "comprobar\ si\ hemos\ usado\ el\ simetrico")$ ($k \leq n$ son las veces que tenemos que elegir otro valor).\\
+Como siempre sabemos en que fila está el elemento simétrico de otro y solo guardamos un elemento por fila, la comprobación es $O(1)$, y por lo tanto la eficiencia del calculo de la cota será $O(n^2)$, del mismo orden que la primera cota.
 
 
 
