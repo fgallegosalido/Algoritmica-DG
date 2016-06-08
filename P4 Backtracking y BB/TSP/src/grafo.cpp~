@@ -67,38 +67,6 @@ struct PathAndCost{
 double sum(vector<double> rm, PathAndCost &p){
   double count = 0;
   int j = 0;
-/*
-  for (int i=0; i < rm.size(); ++i){
-    if (i != p.indexes[j])
-      count += rm[i];
-    else
-      j = j < p.indexes.size() - 1 ? j + 1 : j;
-  }
-*/
-   vector<int> indexNotUsed;
-   for (int i=0; i<rm.size(); ++i)
-      indexNotUsed.push_back(i);
-
-   for (int i=0; i < p.indexes.size(); ++i)
-      indexNotUsed[i] = -1;
-
-   vector<int>::iterator it;
-   for (it=indexNotUsed.begin(); it != indexNotUsed.end(); ++it){
-      if ( (*it) == -1 )
-         indexNotUsed.erase(it);
-      it = indexNotUsed.begin();
-   }
-   for (it=indexNotUsed.begin(); it != indexNotUsed.end(); ++it)
-      count += *it;
-
-  return count;
-}
-
-
-double sumWithoutRepeat(PathAndCost &p){
-  double count = 0;
-  int j = 0;
-
   for (int i=0; i < rm.size(); ++i){
     if (i != p.indexes[j])
       count += rm[i];
@@ -108,7 +76,6 @@ double sumWithoutRepeat(PathAndCost &p){
 
   return count;
 }
-
 
 Path path;
 struct PathAndCost{
@@ -122,7 +89,6 @@ struct PathAndCost{
     return cost > rhs.cost;
   }
 };
-
 
 
 

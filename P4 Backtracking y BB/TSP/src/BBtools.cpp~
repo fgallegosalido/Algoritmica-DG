@@ -153,11 +153,7 @@ double DistanceMatrix::PartialBound() const{
 
 //Cota propuesta por Francisco
 double DistanceMatrix::PartialBound2(){
-   for (int i=0; i<dimension; ++i){
-       for (int j=0; j<dimensiones; ++j){
-
-       }    
-   }
+   // IMPLEMENTACIÓN
    return 0;
 }
 

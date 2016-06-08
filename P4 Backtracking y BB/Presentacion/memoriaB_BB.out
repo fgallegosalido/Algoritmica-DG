@@ -1,0 +1,22 @@
+\BOOKMARK [1][-]{section.1}{Divisi\363n en dos equipos}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Enunciado}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{Explicaci\363n}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{Eficiencia}{section.1}% 4
+\BOOKMARK [2][-]{subsection.1.4}{Comparando ambos algoritmos}{section.1}% 5
+\BOOKMARK [3][-]{subsubsection.1.4.1}{Tiempos}{subsection.1.4}% 6
+\BOOKMARK [3][-]{subsubsection.1.4.2}{Diferencia de nivel}{subsection.1.4}% 7
+\BOOKMARK [3][-]{subsubsection.1.4.3}{Diferencia de jugadores}{subsection.1.4}% 8
+\BOOKMARK [2][-]{subsection.1.5}{Conclusi\363n}{section.1}% 9
+\BOOKMARK [1][-]{section.2}{Viajante de comercio}{}% 10
+\BOOKMARK [2][-]{subsection.2.1}{Enunciado}{section.2}% 11
+\BOOKMARK [2][-]{subsection.2.2}{Explicaci\363n}{section.2}% 12
+\BOOKMARK [2][-]{subsection.2.3}{Eficiencia}{section.2}% 13
+\BOOKMARK [3][-]{subsubsection.2.3.1}{Eficiencia del backtracking}{subsection.2.3}% 14
+\BOOKMARK [3][-]{subsubsection.2.3.2}{Eficiencia de las cotas}{subsection.2.3}% 15
+\BOOKMARK [2][-]{subsection.2.4}{Comparativa}{section.2}% 16
+\BOOKMARK [3][-]{subsubsection.2.4.1}{Cortes producidos}{subsection.2.4}% 17
+\BOOKMARK [3][-]{subsubsection.2.4.2}{Colas con prioridad}{subsection.2.4}% 18
+\BOOKMARK [3][-]{subsubsection.2.4.3}{Nodos procesados}{subsection.2.4}% 19
+\BOOKMARK [3][-]{subsubsection.2.4.4}{Tiempos}{subsection.2.4}% 20
+\BOOKMARK [2][-]{subsection.2.5}{Conclusi\363n}{section.2}% 21
+\BOOKMARK [1][-]{section.3}{Bibliografia}{}% 22

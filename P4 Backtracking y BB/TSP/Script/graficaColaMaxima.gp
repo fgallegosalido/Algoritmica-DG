@@ -1,7 +1,7 @@
 set terminal pngcairo
 set output "../Graficas/graficaColaMaxima.png"
 
-set title "Comparativa de la mayor cola de nodos según poda"
+set title "Comparativa de la mayor cola"
 set xlabel "Fichero en datosTSP"
 set ylabel "Mayor cola"
 

@@ -1,7 +1,7 @@
 set terminal pngcairo
 set output "../Graficas/graficaCortes.png"
 
-set title "Comparativa del número de cortes según poda"
+set title "Comparativa del número de cortes"
 set xlabel "Fichero en datosTSP"
 set ylabel "Cortes"
 

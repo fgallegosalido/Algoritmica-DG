@@ -1,0 +1,23 @@
+\select@language {spanish}
+\contentsline {section}{\numberline {1}Divisi\IeC {\'o}n en dos equipos}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}Enunciado}{2}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Explicaci\IeC {\'o}n}{2}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.3}Eficiencia}{2}{subsection.1.3}
+\contentsline {subsection}{\numberline {1.4}Comparando ambos algoritmos}{3}{subsection.1.4}
+\contentsline {subsubsection}{\numberline {1.4.1}Tiempos}{4}{subsubsection.1.4.1}
+\contentsline {subsubsection}{\numberline {1.4.2}Diferencia de nivel}{5}{subsubsection.1.4.2}
+\contentsline {subsubsection}{\numberline {1.4.3}Diferencia de jugadores}{6}{subsubsection.1.4.3}
+\contentsline {subsection}{\numberline {1.5}Conclusi\IeC {\'o}n}{6}{subsection.1.5}
+\contentsline {section}{\numberline {2}Viajante de comercio}{7}{section.2}
+\contentsline {subsection}{\numberline {2.1}Enunciado}{7}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Explicaci\IeC {\'o}n}{7}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Eficiencia}{8}{subsection.2.3}
+\contentsline {subsubsection}{\numberline {2.3.1}Eficiencia del backtracking}{8}{subsubsection.2.3.1}
+\contentsline {subsubsection}{\numberline {2.3.2}Eficiencia de las cotas}{8}{subsubsection.2.3.2}
+\contentsline {subsection}{\numberline {2.4}Comparativa}{8}{subsection.2.4}
+\contentsline {subsubsection}{\numberline {2.4.1}Cortes producidos}{8}{subsubsection.2.4.1}
+\contentsline {subsubsection}{\numberline {2.4.2}Colas con prioridad}{9}{subsubsection.2.4.2}
+\contentsline {subsubsection}{\numberline {2.4.3}Nodos procesados}{10}{subsubsection.2.4.3}
+\contentsline {subsubsection}{\numberline {2.4.4}Tiempos}{11}{subsubsection.2.4.4}
+\contentsline {subsection}{\numberline {2.5}Conclusi\IeC {\'o}n}{12}{subsection.2.5}
+\contentsline {section}{\numberline {3}Bibliografia}{12}{section.3}
