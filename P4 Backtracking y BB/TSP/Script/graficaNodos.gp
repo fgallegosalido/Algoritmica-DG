@@ -14,9 +14,7 @@ set style line 1 lt 1 lw 0.5 lc rgb '#409f40'
 set style line 2 lt 1 lw 0.5 lc rgb '#fcbb06'
 set style line 3 lt 1 lw 0.5 lc rgb '#f44c04'
 
-plot "../DatosGraficas/nodos.dat" using 2:xticlabels(1) title 'Nodos algoritmo x0' ls 1,
-"../DatosGraficas/nodos.dat" using 3:xticlabels(1) title 'Nodos algoritmo x1' ls 2,
-"../DatosGraficas/nodos.dat" using 4:xticlabels(1) title 'Nodos algoritmo x2' ls 3
+plot "../DatosGraficas/nodos.dat" using 2:xticlabels(1) title 'Nodos algoritmo x0' ls 1, "../DatosGraficas/nodos.dat" using 3:xticlabels(1) title 'Nodos algoritmo x1' ls 2, "../DatosGraficas/nodos.dat" using 4:xticlabels(1) title 'Nodos algoritmo x2' ls 3
 
 
 set terminal tikz
