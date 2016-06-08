@@ -26,12 +26,10 @@ pair<double, list<int>::iterator> Graph::buscar_posicion(list<int> &lista, int n
 
    for (auto it = lista.begin(); it != lista.end(); ++it){
       if (it==lista.begin()){
-         aux = lista.end();
-         --aux;
-         ret.first = original_length - matrix[*aux][*it];
+         ret.first = original_length - matrix[lista.back()][*it];
          lista.insert(it, nuevo);
-         ret.first = ret.first + matrix[*(lista.begin())][*it] + matrix[*aux][*(lista.begin())];
-         it = ret.second = lista.erase(it);
+         ret.first = ret.first + matrix[lista.front()][*it] + matrix[lista.back()][lista.front()];
+         it = ret.second = lista.erase(lista.begin());
       }
       else{
          aux = it;
@@ -121,7 +119,7 @@ int* Graph::insertion(double &tam){
    pair<int, list<int>::iterator> insertor;
 
    // Vamos creando la lista del recorrido
-   while (abs(recorrido.size()) < abs(size)){
+   while (recorrido.size() < size){
       insertor = buscar_punto(recorrido, usados);
       recorrido.insert(insertor.second, insertor.first);
       usados[insertor.first] = true;
